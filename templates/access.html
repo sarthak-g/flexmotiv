@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block content %}
+<button> <a href="/logout/">Logout</a> </button>
+{% if request.user.is_superuser %}
+<h1>Admin</h1>
+{% endif %}
+
+{% ifequal user.groups.all.0.name "accountant" %}
+<h1>Accountant</h1>
+{% endifequal %}
+
+{% ifequal user.groups.all.0.name "projectmanager" %}
+<h1>Project Manager</h1>
+{% endifequal %}
+
+{% ifequal user.groups.all.0.name "employee" %}
+<h1>Employee</h1>
+{% endifequal %}
+
+
+{% endblock %}
