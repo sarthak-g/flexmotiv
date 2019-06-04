@@ -21,5 +21,6 @@ urlpatterns = [
     path('', views.index, name="index"),
     path('', include('django.contrib.auth.urls')),
     path('access/', views.access,name="access"),
+    path("erp/",include("erpAPP.urls")),
 
 ]

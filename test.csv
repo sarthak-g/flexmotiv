@@ -1,0 +1,2 @@
+trans_account,trans_id,trans_date,trans_posted_date,trans_cheque,trans_desc,cr_or_dr,value,balance
+1,s98989,2019-06-01,2019-06-01,c1,mmt/pi,dr,5678,43532.80
