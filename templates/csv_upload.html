@@ -1,3 +1,16 @@
+<form method="POST">
+  {% csrf_token %}
+  Select Account:
+  <select id="mySelect">
+    <option value="Main">Main</option>
+    <option value="Birac">Birac</option>
+  </select>
+</form>
+
+
+<h1>{{obj}}</h1
+
+<strong>Note:</strong> <p>{{order}}</p>
 {% if messages %}
   {% for message in messages %}
     <div>

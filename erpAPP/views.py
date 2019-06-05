@@ -7,11 +7,9 @@ from .models import csv_model
 
 def csv_upload(request):
     template = 'csv_upload.html'
-    prompt = {
-        'order': 'Order of the CSV should be S.no,Transaction Id,Value Date,Txn Posted Date,ChequeNo.,Description,Cr/Dr,Transaction Amount,Available Balance(INR)'
-    }
+    order = 'Order of the CSV should be S.no,Transaction Id,Value Date(YYYY-MM-DD),Txn Posted Date,ChequeNo.,Description,Cr/Dr,Transaction Amount,Available Balance(INR)'
     if request.method == "GET":
-        return render(request, template, prompt)
+        return render(request, template, {'order':order})
     csv_file = request.FILES['file']
     #Checking if file is of type CSV or not
     if not csv_file.name.endswith('.csv'):
@@ -34,5 +32,8 @@ def csv_upload(request):
             value = column[7],
             balance = column[8]
         )
-    context = {}
+        obj = csv_model.objects.order_by('transc_time').reverse()
+        obj = obj[:2]
+
+    context = {'obj':obj}
     return render(request, template, context)

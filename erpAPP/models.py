@@ -10,5 +10,6 @@ class csv_model(models.Model):
     cr_or_dr = models.CharField(max_length=2)
     value = models.FloatField()
     balance = models.FloatField()
+    transc_time = models.DateTimeField(auto_now_add=True)
     def __str__(self):
         return self.trans_id
