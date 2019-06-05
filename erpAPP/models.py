@@ -1,15 +1,18 @@
 from django.db import models
+from djchoices import DjangoChoices,ChoiceItem
+
+
 # Create your models here.
-class csv_model(models.Model):
-    trans_account = models.IntegerField()
-    trans_id = models.CharField(max_length=20,primary_key=True)
-    trans_date = models.DateField(auto_now=False,auto_now_add=False,null=False,blank=False)
-    trans_posted_date = models.DateField(auto_now=False,auto_now_add=False,null=False,blank=False)
-    trans_cheque = models.CharField(max_length=20)
-    trans_desc = models.CharField(max_length=100)
-    cr_or_dr = models.CharField(max_length=2)
-    value = models.FloatField()
-    balance = models.FloatField()
+class csv_fm_txn(models.Model):
+    txnID = models.CharField(max_length=20,primary_key=True)
+    accID = models.IntegerField(default=0)
+    txnDate = models.DateField(auto_now=False,auto_now_add=False,null=False,blank=False)
+    txnPostedDate = models.DateField(auto_now=False,auto_now_add=False,null=False,blank=False)
+    txnCheque = models.IntegerField()
+    txnDir = models.CharField(max_length=1)
+    txnDesc = models.CharField(max_length=100)
+    txnValue = models.FloatField()
+    txnBalance = models.FloatField()
     transc_time = models.DateTimeField(auto_now_add=True)
     def __str__(self):
-        return self.trans_id
+        return self.txnID

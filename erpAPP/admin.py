@@ -1,4 +1,4 @@
 from django.contrib import admin
-from .models import csv_model
+from .models import csv_fm_txn
 # Register your models here.
-admin.site.register(csv_model)
+admin.site.register(csv_fm_txn)
