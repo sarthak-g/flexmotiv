@@ -4,17 +4,20 @@ from django.contrib import messages
 from .models import csv_fm_txn
 
 # Create your views here.
+def account_type(request):
+    return render(request,"account_type.html")
 
 def csv_upload(request):
     template = 'csv_upload.html'
     order = 'Order of the CSV should be: '
     if request.method == "GET":
-        return render(request, template, {'order':order})
+        jsvalue = request.GET.get["val"]
+        return render(request, template, {'order':order,'jsvalue':jsvalue})
     csv_file = request.FILES['file']
     #Checking if file is of type CSV or not
     if not csv_file.name.endswith('.csv'):
         messages.error(request, 'This is not a CSV file')
-    jsvalue = request.POST.get('val')
+
     #Taking the dataset
     data_set = csv_file.read().decode('UTF-8')
     #loop through all data using streams
@@ -33,10 +36,9 @@ def csv_upload(request):
             txnValue = column[7],
             txnBalance = column[8],
         )
-        # obj = csv_fm_txn.objects.order_by('transc_time').reverse()
-        # obj = obj[:2]
+        obj = csv_fm_txn.objects.order_by('transc_time').reverse()
+        obj = obj[:2]
 
 
-
-    context = {}    #'obj':obj
+    context = {'obj':obj,'jsvalue':jsvalue}
     return render(request, template, context)

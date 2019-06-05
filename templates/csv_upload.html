@@ -4,13 +4,14 @@
   {% csrf_token %}
   Select Account:
   <select id="mySelect">
-    <option value="Main">Main</option>
-    <option value="Birac">Birac</option>
+    <option value="1">Main</option>
+    <option value="2">Birac</option>
   </select>
 </form>
+<button type="button" onclick="myFunction()">Submit</button>
 
-
-<!-- <h1>{{obj}}</h1 -->
+<h1>{{obj}}</h1
+<h1>javascript variable value:{{jsvalue}}</h1><br>
 
 <strong>Note:</strong> <p>{{order}}</p>
 {% if messages %}
@@ -29,11 +30,11 @@
 </form>
 {% endif %}
 
-<button type="button" onclick="myFunction()">Submit</button>
-
 <script>
 function myFunction() {
-  val = document.getElementById("mySelect").value;
+  var val = document.getElementById("mySelect").value;
+  console.log(val);
+
 
 }
 </script>
