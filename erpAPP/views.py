@@ -21,11 +21,12 @@ class AccountType(TemplateView):
     template_name = "account_type.html"
     option_selected = ''
     accountID = 0
+    show_csv = 'No'
     def get(self,request):
         form = AccountTypeForm()
         return render(request, self.template_name, {'form':form})
     def post(self, request):
-
+        show_csv = 'Yes'
         form = AccountTypeForm(request.POST)
         if form.is_valid():
             option_selected = form.cleaned_data['choices']
@@ -33,7 +34,7 @@ class AccountType(TemplateView):
             global accountID
             accountID = option_selected
             record  = csv_fm_txn.objects.filter(accID=option_selected)
-            message = 'Yes'
+            message = ''
             obj = None
             if record.count()==0:   #  count=0 i.e. no record present for particular account type
                 message = 'No record corresponding to this account type is present.'
@@ -41,7 +42,7 @@ class AccountType(TemplateView):
                 obj = record
                 obj = obj.order_by('transc_time').reverse()
                 obj = obj[:2]
-            args = {'form':form,"record":record,'message':message,'obj':obj}
+            args = {'form':form,"record":record,'message':message,'obj':obj,'show_csv':show_csv}
             return render(request, self.template_name,args)
         # if not AccountTypeForm.is_valid():
         else:
@@ -71,6 +72,6 @@ class AccountType(TemplateView):
 
 
 
-            context = {}
+            context = {'show_csv':show_csv}
 
             return render(request, "try.html",context)
