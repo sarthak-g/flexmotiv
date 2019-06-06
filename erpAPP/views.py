@@ -2,7 +2,8 @@ from django.shortcuts import render
 import csv, io
 from django.contrib import messages
 from .models import csv_fm_txn
-
+from django.views.generic import TemplateView
+from .forms import AccountTypeForm
 # Create your views here.
 def account_type(request):
     return render(request,"account_type.html")
@@ -42,3 +43,14 @@ def csv_upload(request):
 
     context = {'obj':obj,'jsvalue':jsvalue}
     return render(request, template, context)
+class AccountType(TemplateView):
+    template_name = "account_type.html"
+    def get(self,request):
+        form = AccountTypeForm()
+        return render(request, self.template_name, {'form':form})
+    def post(self, request):
+        form = AccountTypeForm(request.POST)
+        if form.is_valid():
+            text = form.cleaned_data['choices']
+        args = {'form':form, 'text':text}
+        return render(request, self.template_name,args)
