@@ -44,15 +44,17 @@ def csv_upload(request):
 class AccountType(TemplateView):
     template_name = "account_type.html"
     option_selected = ''
+    accountID = 0
     def get(self,request):
         form = AccountTypeForm()
         return render(request, self.template_name, {'form':form})
     def post(self, request):
+
         form = AccountTypeForm(request.POST)
-        accountID = 1
         if form.is_valid():
             option_selected = form.cleaned_data['choices']
             option_selected = int(option_selected)
+            global accountID
             accountID = option_selected
             record  = csv_fm_txn.objects.filter(accID=option_selected)
             message = ''
@@ -64,6 +66,7 @@ class AccountType(TemplateView):
                 obj = obj.order_by('transc_time').reverse()
                 obj = obj[:2]
                 print(obj)
+            print(accountID)
             args = {'form':form,"record":record,'message':message,'obj':obj}
             return render(request, self.template_name,args)
         # if not AccountTypeForm.is_valid():
