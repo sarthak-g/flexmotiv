@@ -1,17 +1,5 @@
 {% extends 'base.html' %}
 {% block content %}
-<form method="POST">
-  {% csrf_token %}
-  Select Account:
-  <select id="mySelect">
-    <option value="1">Main</option>
-    <option value="2">Birac</option>
-  </select>
-</form>
-<button type="button" onclick="myFunction()">Submit</button>
-
-<h1>{{obj}}</h1
-<h1>javascript variable value:{{jsvalue}}</h1><br>
 
 <strong>Note:</strong> <p>{{order}}</p>
 {% if messages %}
@@ -30,12 +18,4 @@
 </form>
 {% endif %}
 
-<script>
-function myFunction() {
-  var val = document.getElementById("mySelect").value;
-  console.log(val);
-
-
-}
-</script>
 {% endblock %}
