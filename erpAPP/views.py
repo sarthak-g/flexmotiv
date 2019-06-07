@@ -1,9 +1,9 @@
 from django.shortcuts import render
 import csv, io
 from django.contrib import messages
-from .models import csv_fm_txn
+from .models import csv_fm_txn,CSVfileStorage
 from django.views.generic import TemplateView
-from .forms import AccountTypeForm
+from .forms import AccountTypeForm, CSVFileForm
 # Create your views here.
 def account_type(request):
     return render(request,"account_type.html")
@@ -46,6 +46,7 @@ class AccountType(TemplateView):
             return render(request, self.template_name,args)
         # if not AccountTypeForm.is_valid():
         else:
+
             csv_file = request.FILES['file']
             #Checking if file is of type CSV or not
             if not csv_file.name.endswith('.csv'):
@@ -57,6 +58,7 @@ class AccountType(TemplateView):
             io_string = io.StringIO(data_set)
             #Skipping first line of csv  as it contain headers
             next(io_string)
+            #generate any 4-5 digit no here and store that in place of file link
             for column in csv.reader(io_string, delimiter=',',quotechar="|"):
                 _, created = csv_fm_txn.objects.update_or_create(
                     txnID = column[0],
@@ -68,10 +70,10 @@ class AccountType(TemplateView):
                     txnDesc = column[6],
                     txnValue = column[7],
                     txnBalance = column[8],
+                    txnAuditFile = csv_file,
+
                 )
-
-
-
-            context = {'show_csv':show_csv}
+            CSVfileStorage.objects.create(txnAuditFileStorage=csv_file)
+            context = {'show_csv':show_csv,'created':created,}
 
             return render(request, "try.html",context)

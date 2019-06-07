@@ -15,10 +15,20 @@
   <form method="POST" enctype="multipart/form-data">
     {% csrf_token %}
     <label>Upload a file</label>
-    <input type="file" name="file">
+    <input type="file" name="file" onclick="myFunction()">
     <p>Only accepts CSV files</p>
     <button type="submit">Upload</button>
+    <!-- {{form}} -->
   </form>
 {% endif %}
+
+<p id="demo"></p>
+
+<script>
+function myFunction() {
+  var x = document.getElementById("myFile").value;
+  console.log(x);
+}
+</script>
 
 {% endblock %}
