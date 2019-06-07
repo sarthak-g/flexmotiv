@@ -6,3 +6,4 @@ class AccountTypeForm(forms.Form):
 
 class CSVFileForm(forms.Form):
     file = forms.FileField()
+# class FormForUntagged(forms.Form):

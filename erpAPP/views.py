@@ -4,6 +4,8 @@ from django.contrib import messages
 from .models import csv_fm_txn,CSVfileStorage
 from django.views.generic import TemplateView
 from .forms import AccountTypeForm, CSVFileForm
+import os.path
+from django.conf import settings
 # Create your views here.
 def account_type(request):
     return render(request,"account_type.html")
@@ -52,6 +54,14 @@ class AccountType(TemplateView):
             if not csv_file.name.endswith('.csv'):
                 messages.error(request, 'This is not a CSV file')
 
+
+            destination = settings.MEDIA_ROOT + '/file_link/'
+            if os.path.isfile(destination + str(csv_file)):
+                print("file already exists")
+            else:
+                print("file not exists")
+
+
             #Taking the dataset
             data_set = csv_file.read().decode('UTF-8')
             #loop through all data using streams
@@ -74,6 +84,13 @@ class AccountType(TemplateView):
 
                 )
             CSVfileStorage.objects.create(txnAuditFileStorage=csv_file)
-            context = {'show_csv':show_csv,'created':created,}
+            if created:
+                result = 'transaction is successful'
+            else:
+                result = 'transaction is unsuccessful'
+            context = {'show_csv':show_csv,'created':created,'result':result}
 
             return render(request, "try.html",context)
+def CompleteTransaction(request):
+    untagged_objects = csv_fm_txn.objects.filter(txnType='U')
+    return render(request,'CompleteTransaction.html',{'untagged_objects':untagged_objects})
