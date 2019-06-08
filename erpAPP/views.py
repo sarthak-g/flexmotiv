@@ -6,6 +6,7 @@ from django.views.generic import TemplateView
 from .forms import AccountTypeForm, CSVFileForm
 import os.path
 from django.conf import settings
+from django.db import IntegrityError
 # Create your views here.
 def account_type(request):
     return render(request,"account_type.html")
@@ -57,40 +58,57 @@ class AccountType(TemplateView):
 
             destination = settings.MEDIA_ROOT + '/file_link/'
             if os.path.isfile(destination + str(csv_file)):
-                print("file already exists")
+                print("file with same name already exists")
             else:
-                print("file not exists")
+                result = ''
+                duplicate = 0
+                imported = 0
+                # print("file not exists")
 
 
-            #Taking the dataset
-            data_set = csv_file.read().decode('UTF-8')
-            #loop through all data using streams
-            io_string = io.StringIO(data_set)
-            #Skipping first line of csv  as it contain headers
-            next(io_string)
-            #generate any 4-5 digit no here and store that in place of file link
-            for column in csv.reader(io_string, delimiter=',',quotechar="|"):
-                _, created = csv_fm_txn.objects.update_or_create(
-                    txnID = column[0],
-                    accID = accountID,
-                    txnDate = column[2],
-                    txnPostedDate = column[3],
-                    txnCheque = column[4],
-                    txnDir = column[5],
-                    txnDesc = column[6],
-                    txnValue = column[7],
-                    txnBalance = column[8],
-                    txnAuditFile = csv_file,
+                #Taking the dataset
+                data_set = csv_file.read().decode('UTF-8')
+                #loop through all data using streams
+                io_string = io.StringIO(data_set)
+                #Skipping first line of csv  as it contain headers
+                next(io_string)
+                #generate any 4-5 digit no here and store that in place of file link
+                try:
+                    for column in csv.reader(io_string, delimiter=',',quotechar="|"):
+                        _, created = csv_fm_txn.objects.update_or_create(
+                            txnID = column[0],
+                            accID = accountID,
+                            txnDate = column[2],
+                            txnPostedDate = column[3],
+                            txnCheque = column[4],
+                            txnDir = column[5],
+                            txnDesc = column[6],
+                            txnValue = column[7],
+                            txnBalance = column[8],
+                            txnAuditFile = csv_file,
 
-                )
-            CSVfileStorage.objects.create(txnAuditFileStorage=csv_file)
-            if created:
-                result = 'transaction is successful'
-            else:
-                result = 'transaction is unsuccessful'
-            context = {'show_csv':show_csv,'created':created,'result':result}
+                        )
+                        if created == True:
+                            imported = imported + 1
+                        else:
+                            duplicate = duplicate + 1
+                        # total transaction = imported + duplicate
 
-            return render(request, "try.html",context)
+                    CSVfileStorage.objects.create(txnAuditFileStorage=csv_file)
+                    result = 'success,file is imported'
+                except IntegrityError as e:      #IntegrityError - Error for primary key
+                    print(e)
+                    print("same Transaction ID exists in database")
+                    result = 'unsuccess,file is not imported'
+                # if created:
+                #     result = 'transaction is successful'
+                # else:
+                #     result = 'transaction is unsuccessful'
+                context = {'show_csv':show_csv,'result':result,'imported':imported,'duplicate':duplicate}
+                print(context)
+
+
+            return render(request, "try.html")
 def CompleteTransaction(request):
     untagged_objects = csv_fm_txn.objects.filter(txnType='U')
     return render(request,'CompleteTransaction.html',{'untagged_objects':untagged_objects})
