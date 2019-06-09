@@ -51,6 +51,7 @@ class AccountType(TemplateView):
         else:
 
             csv_file = request.FILES['file']
+            # name_diff_csv = csv_file +
             #Checking if file is of type CSV or not
             if not csv_file.name.endswith('.csv'):
                 messages.error(request, 'This is not a CSV file')
@@ -82,20 +83,22 @@ class AccountType(TemplateView):
                     if last.exists():
                         last = last.first()
                         field_object = csv_fm_txn.objects.filter(txnID=last).values('txnBalance').get()
-                        print(type(str(field_object['txnBalance'])))
+                        field_object = field_object['txnBalance']
+                        # print(type(str(field_object['txnBalance'])))
                     else:
                         print('No record present initially')
-                        field_object = None
+                        field_object = 'No record present initially'
 
                     for column in csv.reader(io_string, delimiter=',',quotechar="|"):
 
                         if balance_temp == 1:
 
-                            if column[8] == str(field_object['txnBalance']):
+                            if column[8] == str(field_object):
                                 balance_check = 'successful'
                                 balance_temp = 0
                             else:
                                 balance_check = 'unsuccessful'
+                                balance_temp = 0
                             print(balance_check)
                         dash, created = csv_fm_txn.objects.update_or_create(
                             txnID = column[0],
@@ -127,9 +130,10 @@ class AccountType(TemplateView):
                 #     result = 'transaction is successful'
                 # else:
                 #     result = 'transaction is unsuccessful'
+                path_csv = "/media/file_link/" + str(csv_file)
                 context = {'show_csv':show_csv,'result':result,'imported':imported,'duplicate':duplicate}
                 print(context)
-
+                return render(request, "try.html",{'path_csv':path_csv})
 
             return render(request, "try.html")
 def CompleteTransaction(request):
