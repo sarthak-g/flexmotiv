@@ -1,6 +1,14 @@
 {% load static %}
-{{ result }}
-{{ created }}
-{{ txnAuditFile }}
-{{counter}}
-<a href="{{ path_csv }}">file path</a>
+
+{% if balance_check == False %}
+  <h2>Balance Integrity fails</h2>
+{% endif %}
+<p>Result - {{ result }}</p>
+<p>Total Transactions - {{ total_trnsactions }}</p>
+<p>Imported - {{ imported }}</p>
+<p>Duplicate - {{ duplicate }}</p>
+<script>
+  {% if error == True %}
+    alert("File Uploaded is not csv file");
+  {% endif %}
+</script>

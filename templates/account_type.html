@@ -7,9 +7,14 @@
   <button type="submit">Submit</button>
 </form>
 
-{{option_selected}}<br>
-{{message}}<br>
-{{obj}}
+
+{% if obj == 0 %}
+  <h2>No previous record present corresponding to this option</h2>
+{% else %}
+  {% for i in obj %}
+    {{i.txnID}}
+  {% endfor %}
+{% endif %}
 
 {% if show_csv == "Yes" %}
   <form method="POST" enctype="multipart/form-data">
@@ -22,13 +27,13 @@
   </form>
 {% endif %}
 
-<p id="demo"></p>
+<!-- <p id="demo"></p>
 
 <script>
 function myFunction() {
   var x = document.getElementById("myFile").value;
   console.log(x);
 }
-</script>
+</script -->
 
 {% endblock %}
