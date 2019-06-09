@@ -24,5 +24,5 @@ class csv_fm_txn(models.Model):
     def __str__(self):
         return self.txnID
 
-class CSVfileStorage(models.Model):
-    txnAuditFileStorage = models.FileField(upload_to="file_link",max_length=100,unique=True)
+# class CSVfileStorage(models.Model):
+#     txnAuditFileStorage = models.FileField(upload_to="file_link",max_length=100,unique=True)
