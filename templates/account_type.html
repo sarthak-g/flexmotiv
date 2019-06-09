@@ -8,15 +8,34 @@
 </form>
 
 
+<br>
+{% if show_csv == "Yes" %}
+
 {% if obj == 0 %}
-  <h2>No previous record present corresponding to this option</h2>
+  <h2>No previous record present corresponding to this account type</h2>
 {% else %}
+  <table>
+    <tr>
+    <th>Trans ID</th>
+    <th>Trans Date</th>
+    <th>Desc</th>
+    <th>Trans Value</th>
+    <th>Balance</th>
+  </tr>
   {% for i in obj %}
-    {{i.txnID}}
+    <tr>
+    <td>{{i.txnID}}</td>
+    <td>{{i.txnDate}}</td>
+    <td>{{i.txnDesc}}</td>
+    <td>{{i.txnValue}}</td>
+    <td>{{i.txnBalance}}</td>
+    </tr>
   {% endfor %}
+  </table>
 {% endif %}
 
-{% if show_csv == "Yes" %}
+
+<br>
   <form method="POST" enctype="multipart/form-data">
     {% csrf_token %}
     <label>Upload a file</label>

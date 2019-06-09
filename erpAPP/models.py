@@ -3,7 +3,7 @@ from djchoices import DjangoChoices,ChoiceItem
 
 
 # Create your models here.
-class csv_fm_txn(models.Model):
+class fm_txn(models.Model):
     txnID = models.CharField(max_length=20,primary_key=True)
     accID = models.IntegerField(default=0)
     txnDate = models.DateField(auto_now=False,auto_now_add=False,null=False,blank=False)

@@ -1,9 +1,9 @@
 from django.shortcuts import render
 import csv, io
 from django.contrib import messages
-from .models import csv_fm_txn
+from .models import fm_txn
 from django.views.generic import TemplateView
-from .forms import AccountTypeForm, CSVFileForm
+from .forms import AccountTypeForm
 import os.path
 from django.conf import settings
 from django.db import IntegrityError
@@ -12,14 +12,6 @@ import os.path
 # Create your views here.
 def account_type(request):
     return render(request,"account_type.html")
-
-# def csv_upload(request):
-#     template = 'csv_upload.html'
-#     order = 'Order of the CSV should be: '
-#     if request.method == "GET":
-#         return render(request, template, {'order':order})
-#     context = {}
-#     return render(request, template, context)
 
 
 class AccountType(TemplateView):
@@ -41,7 +33,7 @@ class AccountType(TemplateView):
             global accountID
             accountID = option_selected
             # accountID = option_selected
-            record  = csv_fm_txn.objects.filter(accID=option_selected)
+            record  = fm_txn.objects.filter(accID=option_selected)
             message = ''
             obj = 0
             if record.count()==0:   #  count=0 i.e. no record present for particular account type
@@ -87,20 +79,18 @@ class AccountType(TemplateView):
 
 
                     #last used to check database integrity
-                last = csv_fm_txn.objects.all()
+                last = fm_txn.objects.all()
                 last = last.order_by('transc_time').reverse()
                 balance_temp = 1
                 balance_check = 'unsuccess,file is not imported'
                 if last.exists():
                     last = last.first()
-                    field_object = csv_fm_txn.objects.filter(txnID=last).values('txnBalance').get()
+                    field_object = fm_txn.objects.filter(txnID=last).values('txnBalance').get()
                     field_object = field_object['txnBalance']
 
 
                 for column in csv.reader(io_string, delimiter=',',quotechar="|"):
                     if balance_temp == 1:
-                        print(column[8])
-                        print(field_object)
                         if column[8] == str(field_object) or field_object == 0.0:
                             # checking integrity check of balance
                             balance_check = True
@@ -113,7 +103,7 @@ class AccountType(TemplateView):
 
                     if balance_check == True:
                         try:
-                            dash, created = csv_fm_txn.objects.update_or_create(
+                            dash, created = fm_txn.objects.update_or_create(
                             txnID = column[0],
                             accID = accountID,
                             txnDate = column[2],
@@ -142,11 +132,11 @@ class AccountType(TemplateView):
                     file.close()
                 # path_csv = "/media/file_link/" + name_diff_csv
                 total_trnsactions = imported + duplicate
-                print(balance_check)
-                return render(request, "try.html",{'balance_check':balance_check,'result':result,'imported':imported,'duplicate':duplicate,'total_trnsactions':total_trnsactions})
 
-            return render(request, "try.html",{'error':error})
+                return render(request, "pmTransactionResult.html",{'balance_check':balance_check,'result':result,'imported':imported,'duplicate':duplicate,'total_trnsactions':total_trnsactions})
+
+            return render(request, "pmTransactionResult.html",{'error':error})
         return render(request,self.template_name)
 def CompleteTransaction(request):
-    untagged_objects = csv_fm_txn.objects.filter(txnType='U')
+    untagged_objects = fm_txn.objects.filter(txnType='U')
     return render(request,'CompleteTransaction.html',{'untagged_objects':untagged_objects})
