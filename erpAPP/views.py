@@ -63,6 +63,8 @@ class AccountType(TemplateView):
                 result = ''
                 duplicate = 0
                 imported = 0
+                balance_check = ''
+                field_object = 0.0
                 # print("file not exists")
 
 
@@ -74,8 +76,28 @@ class AccountType(TemplateView):
                 next(io_string)
                 #generate any 4-5 digit no here and store that in place of file link
                 try:
+                    last = csv_fm_txn.objects.all()
+                    last = last.order_by('transc_time').reverse()
+                    balance_temp = 1
+                    if last.exists():
+                        last = last.first()
+                        field_object = csv_fm_txn.objects.filter(txnID=last).values('txnBalance').get()
+                        print(type(str(field_object['txnBalance'])))
+                    else:
+                        print('No record present initially')
+                        field_object = None
+
                     for column in csv.reader(io_string, delimiter=',',quotechar="|"):
-                        _, created = csv_fm_txn.objects.update_or_create(
+
+                        if balance_temp == 1:
+
+                            if column[8] == str(field_object['txnBalance']):
+                                balance_check = 'successful'
+                                balance_temp = 0
+                            else:
+                                balance_check = 'unsuccessful'
+                            print(balance_check)
+                        dash, created = csv_fm_txn.objects.update_or_create(
                             txnID = column[0],
                             accID = accountID,
                             txnDate = column[2],
@@ -88,6 +110,7 @@ class AccountType(TemplateView):
                             txnAuditFile = csv_file,
 
                         )
+
                         if created == True:
                             imported = imported + 1
                         else:
@@ -98,7 +121,7 @@ class AccountType(TemplateView):
                     result = 'success,file is imported'
                 except IntegrityError as e:      #IntegrityError - Error for primary key
                     print(e)
-                    print("same Transaction ID exists in database")
+                    print("same Transaction ID exists in database with different account ID")
                     result = 'unsuccess,file is not imported'
                 # if created:
                 #     result = 'transaction is successful'
