@@ -1,6 +1,6 @@
 from django.db import models
-from djchoices import DjangoChoices,ChoiceItem
-
+from django.contrib.auth.models import User
+from django.urls import reverse
 
 # Create your models here.
 class fm_txn(models.Model):
@@ -26,3 +26,15 @@ class fm_txn(models.Model):
 
 # class CSVfileStorage(models.Model):
 #     txnAuditFileStorage = models.FileField(upload_to="file_link",max_length=100,unique=True)
+
+
+class fm_utrans(models.Model):
+    utranID = models.IntegerField(null=True)
+    txnID = models.IntegerField(null=True)
+    utranDesc = models.CharField(max_length=50,verbose_name='Description')
+    utranValue = models.IntegerField(verbose_name='Amount',null=True)
+    utranConfirmed = models.CharField(max_length=1)
+    utranSender = models.CharField(max_length=10,default='no')
+    utranReceiver = models.ForeignKey(User, on_delete=models.CASCADE,verbose_name='Receiver')
+    def get_absolute_url(self):
+        return reverse('transferMoney')

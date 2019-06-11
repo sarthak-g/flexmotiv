@@ -1,14 +1,19 @@
 from django.shortcuts import render
 import csv, io
 from django.contrib import messages
-from .models import fm_txn
+from .models import fm_txn,fm_utrans
 from django.views.generic import TemplateView
-from .forms import AccountTypeForm
+from .forms import AccountTypeForm,TransferMoneyForm
 import os.path
 from django.conf import settings
 from django.db import IntegrityError
 import uuid
 import os.path
+from django.contrib.auth.decorators import login_required
+from django.views.generic import CreateView
+from django.urls import reverse_lazy
+from django.http import HttpResponseRedirect
+
 # Create your views here.
 def account_type(request):
     return render(request,"account_type.html")
@@ -140,3 +145,13 @@ class AccountType(TemplateView):
 def CompleteTransaction(request):
     untagged_objects = fm_txn.objects.filter(txnType='U')
     return render(request,'CompleteTransaction.html',{'untagged_objects':untagged_objects})
+    
+
+class transferMoney(CreateView):
+    model = fm_utrans
+    template_name = 'try.html'
+    fields = ['utranValue','utranDesc','utranReceiver']
+
+    def form_valid(self, form):
+        form.instance.utranSender = self.request.user.id
+        return super(transferMoney, self).form_valid(form)
