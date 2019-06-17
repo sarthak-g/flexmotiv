@@ -29,11 +29,12 @@ class fm_txn(models.Model):
 
 
 class fm_utrans(models.Model):
+    utanDate = models.DateField(auto_now_add=True)
     utranID = models.IntegerField(null=True)
     txnID = models.IntegerField(null=True)
     utranDesc = models.CharField(max_length=50,verbose_name='Description')
     utranValue = models.IntegerField(verbose_name='Amount',null=True)
-    utranConfirmed = models.CharField(max_length=1)
+    utranConfirmed = models.CharField(max_length=1,default='N')
     utranSender = models.CharField(max_length=10,default='no')
     utranReceiver = models.ForeignKey(User, on_delete=models.CASCADE,verbose_name='Receiver')
     def get_absolute_url(self):

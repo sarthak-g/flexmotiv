@@ -1,0 +1,24 @@
+<h2>Transaction for you to confirm</h2>
+<form method="POST">
+  {% csrf_token %}
+  <table>
+    <tr>
+      <th>Date</th>
+      <th>Description</th>
+      <th>Cr/Dr</th>
+      <th>Value</th>
+      <th>Accept</th>
+      <th>Decline</th>
+    </tr>
+  {% for i in record %}
+  <tr>
+  <td>{{i.utanDate}}</td>
+  <td>{{i.utranDesc}}</td>
+  <td>Cr</td>
+  <td>{{i.utranValue}}</td>
+  <td> <a href="{% url 'accept' i.pk %}">Accept</a> </td>
+  <td> <a href="{% url 'decline' i.pk %}">Decline</a> </td>
+  </tr>
+  {% endfor %}
+  </table>
+</form>

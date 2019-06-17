@@ -10,7 +10,7 @@ from django.db import IntegrityError
 import uuid
 import os.path
 from django.contrib.auth.decorators import login_required
-from django.views.generic import CreateView
+from django.views.generic import CreateView,ListView
 from django.urls import reverse_lazy
 from django.http import HttpResponseRedirect
 
@@ -145,13 +145,27 @@ class AccountType(TemplateView):
 def CompleteTransaction(request):
     untagged_objects = fm_txn.objects.filter(txnType='U')
     return render(request,'CompleteTransaction.html',{'untagged_objects':untagged_objects})
-    
+
 
 class transferMoney(CreateView):
     model = fm_utrans
-    template_name = 'try.html'
+    template_name = 'transferMoney.html'
     fields = ['utranValue','utranDesc','utranReceiver']
 
     def form_valid(self, form):
         form.instance.utranSender = self.request.user.id
         return super(transferMoney, self).form_valid(form)
+def financialAccount(request):
+    record = fm_utrans.objects.filter(utranReceiver=request.user.id)
+    record = record.filter(utranConfirmed='N')
+    return render(request,"financialAccount.html",{'record':record})
+def accept(request,pk):
+    record = fm_utrans.objects.get(id=pk)
+    record.utranConfirmed = 'Y'
+    record.save()
+    return render(request,"accept.html")
+def decline(request,pk):
+    record = fm_utrans.objects.get(id=pk)
+    record.utranConfirmed = 'D'
+    record.save()
+    return render(request,"decline.html")
