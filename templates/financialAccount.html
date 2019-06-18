@@ -1,3 +1,18 @@
+<h2>Overview</h2>
+<table>
+  <tr>
+    <th>Balance</th>
+    <th>Unconfirmed</th>
+    <th>Declined</th>
+  </tr>
+  <tr>
+    {% for j in overview %}
+    <td>{{j.uBalance}}</td>
+    <td>{{j.uUnconfirmed}}</td>
+    <td>{{j.uDeclined}}</td>
+    {% endfor %}
+  </tr>
+</table>
 <h2>Transaction for you to confirm</h2>
 <form method="POST">
   {% csrf_token %}

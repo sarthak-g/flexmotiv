@@ -1,7 +1,7 @@
 from django.shortcuts import render
 import csv, io
 from django.contrib import messages
-from .models import fm_txn,fm_utrans
+from .models import fm_txn,fm_utrans,fm_user_extend
 from django.views.generic import TemplateView
 from .forms import AccountTypeForm,TransferMoneyForm
 import os.path
@@ -159,6 +159,8 @@ def financialAccount(request):
     record = fm_utrans.objects.filter(utranReceiver=request.user.id)
     record = record.filter(utranConfirmed='N')
     record_message = record.exists()
+    overview = fm_user_extend.objects.filter(user=request.user.id)
+    print(overview)
     record_confirmed = fm_utrans.objects.filter(utranConfirmed='Y')
     record_confirmed_Cr = record_confirmed.filter(utranReceiver=request.user.id)
     record_confirmed_Dr = record_confirmed.filter(utranSender=request.user.id)
@@ -166,7 +168,7 @@ def financialAccount(request):
         record_confirmed_message = False
     else:
         record_confirmed_message = True
-    return render(request,"financialAccount.html",{'record':record,'record_confirmed_Cr':record_confirmed_Cr,'record_confirmed_Dr':record_confirmed_Dr,'record_message':record_message,'record_confirmed_message':record_confirmed_message})
+    return render(request,"financialAccount.html",{'record':record,'record_confirmed_Cr':record_confirmed_Cr,'record_confirmed_Dr':record_confirmed_Dr,'record_message':record_message,'record_confirmed_message':record_confirmed_message,'overview':overview})
 def accept(request,pk):
     record = fm_utrans.objects.get(id=pk)
     record.utranConfirmed = 'Y'

@@ -40,8 +40,6 @@ INSTALLED_APPS = [
     'erpAPP',
 ]
 
-# AUTH_USER_MODEL = 'erpAPP.CustomUser'
-
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
