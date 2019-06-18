@@ -22,3 +22,40 @@
   {% endfor %}
   </table>
 </form>
+{% if not record_message %}
+<p>  No Unconfirmed Transactions  </p>
+{% endif %}
+
+<h2>Statements</h2>
+<form method="POST">
+  <table>
+    <tr>
+      <th>Date</th>
+      <th>Description</th>
+      <th>Cr/Dr</th>
+      <th>Value</th>
+      <th>Status</th>
+    </tr>
+    {% for i in record_confirmed_Cr %}
+    <tr>
+      <td>{{i.utanDate}}</td>
+      <td>{{i.utranDesc}}</td>
+      <td>CR</td>
+      <td>{{i.utranValue}}</td>
+      <td>Confirmed</td>
+    </tr>
+    {% endfor %}
+    {% for j in record_confirmed_Dr %}
+    <tr>
+      <td>{{j.utanDate}}</td>
+      <td>{{j.utranDesc}}</td>
+      <td>DR</td>
+      <td>{{j.utranValue}}</td>
+      <td>Confirmed</td>
+    </tr>
+    {% endfor %}
+  </table>
+</form>
+{% if not record_confirmed_message %}
+<p>No Transaction Credited or Debited</p>
+{% endif %}

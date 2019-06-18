@@ -158,7 +158,15 @@ class transferMoney(CreateView):
 def financialAccount(request):
     record = fm_utrans.objects.filter(utranReceiver=request.user.id)
     record = record.filter(utranConfirmed='N')
-    return render(request,"financialAccount.html",{'record':record})
+    record_message = record.exists()
+    record_confirmed = fm_utrans.objects.filter(utranConfirmed='Y')
+    record_confirmed_Cr = record_confirmed.filter(utranReceiver=request.user.id)
+    record_confirmed_Dr = record_confirmed.filter(utranSender=request.user.id)
+    if record_confirmed_Cr.exists()==False and record_confirmed_Dr.exists()==False:
+        record_confirmed_message = False
+    else:
+        record_confirmed_message = True
+    return render(request,"financialAccount.html",{'record':record,'record_confirmed_Cr':record_confirmed_Cr,'record_confirmed_Dr':record_confirmed_Dr,'record_message':record_message,'record_confirmed_message':record_confirmed_message})
 def accept(request,pk):
     record = fm_utrans.objects.get(id=pk)
     record.utranConfirmed = 'Y'
