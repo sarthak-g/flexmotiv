@@ -3,6 +3,14 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 
 # Create your models here.
+
+class fm_user_extend(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    uopeningBalance = models.IntegerField(default=0)
+    uBalance = models.IntegerField(default=0)
+    uUnconfirmed = models.IntegerField(default=0)
+    uDeclined = models.IntegerField(default=0)
+
 class fm_txn(models.Model):
     txnID = models.CharField(max_length=20,primary_key=True)
     accID = models.IntegerField(default=0)
