@@ -3,6 +3,7 @@
 <button> <a href="/logout/">Logout</a> </button>
 {% if request.user.is_superuser %}
 <h1>Admin</h1>
+<button> <a href="{% url 'addproject' %}">Add Project</a> </button>
 {% endif %}
 
 {% ifequal user.groups.all.0.name "accountant" %}

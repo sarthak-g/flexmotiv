@@ -7,5 +7,6 @@ urlpatterns = [
     path("financialAccount/",views.financialAccount, name='financialAccount'),
     path("financialAccount/accept/<int:pk>/",views.accept, name='accept'),
     path("financialAccount/decline/<int:pk>/",views.decline, name='decline'),
-    # path("upload-csv/",views.csv_upload,name="csv_upload")
+    path("add-project/",views.addproject.as_view(), name='addproject'),
+
 ]

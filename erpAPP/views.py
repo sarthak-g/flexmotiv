@@ -1,9 +1,9 @@
 from django.shortcuts import render
 import csv, io
 from django.contrib import messages
-from .models import fm_txn,fm_utrans,fm_user_extend
+from .models import fm_txn,fm_utrans,fm_user_extend,fm_project
 from django.views.generic import TemplateView
-from .forms import AccountTypeForm,TransferMoneyForm
+from .forms import AccountTypeForm,TransferMoneyForm,AddProjectForm
 import os.path
 from django.conf import settings
 from django.db import IntegrityError
@@ -179,3 +179,17 @@ def decline(request,pk):
     record.utranConfirmed = 'D'
     record.save()
     return render(request,"decline.html")
+
+class addproject(TemplateView):
+    fields = '__all__'
+    template_name = "add_project.html"
+
+    def get(self,request):
+        form = AddProjectForm()
+        return render(request,self.template_name,{'form':form})
+    def post(self,request):
+        form = AddProjectForm(request.POST)
+        if form.is_valid():
+            form.save()
+            form = AddProjectForm()
+        return render(request,self.template_name,{'form':form})

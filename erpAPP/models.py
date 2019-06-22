@@ -47,3 +47,23 @@ class fm_utrans(models.Model):
     utranReceiver = models.ForeignKey(User, on_delete=models.CASCADE,verbose_name='Receiver')
     def get_absolute_url(self):
         return reverse('transferMoney')
+
+class fm_project(models.Model):
+    prTitle = models.CharField(max_length=50,verbose_name='Project Title')
+    prDesc = models.CharField(max_length=200,verbose_name = 'Project Description')
+    prManagers_1 = models.ForeignKey(User,on_delete=models.CASCADE,related_name='first_project_manager',verbose_name ='Project Manager 1')
+    prManagers_2 = models.ForeignKey(User,blank=True,null=True,on_delete=models.SET_NULL,related_name='second_project_manager',verbose_name ='Project Manager 2')
+    prManagers_3 = models.ForeignKey(User,blank=True,null=True,on_delete=models.SET_NULL,related_name='third_project_manager',verbose_name ='Project Manager 3')
+    prManagers_4 = models.ForeignKey(User,blank=True,null=True,on_delete=models.SET_NULL,related_name='fourth_project_manager',verbose_name ='Project Manager 4')
+    prManagers_5 = models.ForeignKey(User,blank=True,null=True,on_delete=models.SET_NULL,related_name='fifth_project_manager',verbose_name ='Project Manager 5')
+    prManagers_6 = models.ForeignKey(User,blank=True,null=True,on_delete=models.SET_NULL,related_name='sixth_project_manager',verbose_name ='Project Manager 6')
+    prBudget = models.IntegerField(default=0,verbose_name='Total Budget')
+    prBalance = models.IntegerField(default=0,verbose_name='Balance of budget')
+
+class fm_budgethead(models.Model):
+    prID = models.ForeignKey(fm_project,on_delete = models.CASCADE)
+    bhTitle = models.CharField(max_length=50)
+    bhLimit = models.IntegerField(default=0)
+    bhBalance = models.IntegerField(default=0)
+    bhBalanceDate = models.DateField(auto_now=True)
+    ##Add create option of budget_head table for adding another BUdget details
