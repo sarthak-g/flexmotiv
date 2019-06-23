@@ -13,7 +13,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic import CreateView,ListView
 from django.urls import reverse_lazy
 from django.http import HttpResponseRedirect
-
+from easy_pdf.views import PDFTemplateView
 # Create your views here.
 def account_type(request):
     return render(request,"account_type.html")
@@ -233,20 +233,29 @@ class addproject(TemplateView):
                                 else:
                                     new_req = fm_budgethead(prID=obj,bhTitle=request.POST['title'+str(i)],bhLimit=request.POST['Limit'+str(i)],bhBalance=request.POST['Balance'+str(i)])
                                     new_req.save()
-                    form = AddProjectForm()
-                    form2 = ProjectBudgetForm()
-                    form3 = ProjectBudgetForm2()
-                    form4 = ProjectBudgetForm3()
-                    form5 = ProjectBudgetForm4()
-                    form6 = ProjectBudgetForm5()
-                    form7 = ProjectBudgetForm6()
-                    form8 = ProjectBudgetForm7()
-                    form9 = ProjectBudgetForm8()
-                    form10 = ProjectBudgetForm9()
-                    form11 = ProjectBudgetForm10()
+
 
                 else:
                     error = 1
+
         except Exception as e:
             message = e
-        return render(request,self.template_name,{'form':form,'error':error,'message':message,'form2':form2,'form3':form3,'form4':form4,'form5':form5,'form6':form6,'form7':form7,'form8':form8,'form9':form9,'form10':form10,'form11':form11})
+        if error==1:
+            return render(request,self.template_name,{'error':error,'message':message})
+        else:
+            obj = fm_project.objects.latest('id')
+            budget = fm_budgethead.objects.filter(prID=obj)
+            return render(request,"add_project_success.html",{'obj':obj,'budget':budget})
+
+        return render(request,self.template_name)
+
+class ProjectSuccessPDFView(PDFTemplateView):
+    template_name = 'add_project_success_pdf.html'
+    # obj = fm_project.objects.latest('id')
+    # budget = fm_budgethead.objects.filter(prID=obj)
+    # context = {'obj':obj,'budget':budget}
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['obj'] = fm_project.objects.latest('id')
+        context['budget'] = fm_budgethead.objects.filter(prID=fm_project.objects.latest('id'))
+        return context

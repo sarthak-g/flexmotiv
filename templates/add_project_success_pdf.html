@@ -1,0 +1,17 @@
+<p>Title: {{obj.prTitle}}</p>
+<p>Desc: {{obj.prDesc}}</p>
+<br>
+<table border="1">
+  <tr>
+    <th> Budget Head </th>
+    <th> Budget Amount </th>
+    <th> Budget Balance </th>
+  </tr>
+  {% for i in budget %}
+  <tr>
+    <td> {{ i.bhTitle }} </td>
+    <td> {{ i.bhLimit }} </td>
+    <td> {{ i.bhBalance }} </td>
+  </tr>
+  {% endfor %}
+</table>
