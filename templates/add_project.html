@@ -1,7 +1,82 @@
+{% if message %}
+<script>
+alert("{{message}}");
+</script>
+{% endif %}
 <h1>Add Project</h1>
 <form method="POST">
   {% csrf_token %}
   {{ form.as_p }}
+  <table>
+    <tr>
+      <td>{{ form2.title }}</td>
+      <td>{{ form2.Limit }}</td>
+      <td>{{ form2.Balance }}</td>
+    </tr>
+
+
+    <tr>
+      <td>{{ form3.title2 }}</td>
+      <td>{{ form3.Limit2 }}</td>
+      <td>{{ form3.Balance2 }}</td>
+    </tr>
+
+
+    <tr>
+      <td>{{ form4.title3 }}</td>
+      <td>{{ form4.Limit3 }}</td>
+      <td>{{ form4.Balance3 }}</td>
+    </tr>
+
+
+    <tr>
+      <td>{{ form5.title4 }}</td>
+      <td>{{ form5.Limit4 }}</td>
+      <td>{{ form5.Balance4 }}</td>
+    </tr>
+
+
+    <tr>
+      <td>{{ form6.title5 }}</td>
+      <td>{{ form6.Limit5 }}</td>
+      <td>{{ form6.Balance5 }}</td>
+
+    </tr>
+
+    <tr>
+      <td>{{ form7.title6 }}</td>
+      <td>{{ form7.Limit6 }}</td>
+      <td>{{ form7.Balance6 }}</td>
+    </tr>
+
+
+    <tr>
+      <td>{{ form8.title7 }}</td>
+      <td>{{ form8.Limit7 }}</td>
+      <td>{{ form8.Balance7 }}</td>
+    </tr>
+
+
+    <tr>
+      <td>{{ form9.title8 }}</td>
+      <td>{{ form9.Limit8 }}</td>
+      <td>{{ form9.Balance8 }}</td>
+    </tr>
+
+
+    <tr>
+      <td>{{ form10.title9 }}</td>
+      <td>{{ form10.Limit9 }}</td>
+      <td>{{ form10.Balance9 }}</td>
+    </tr>
+
+
+    <tr>
+      <td>{{ form11.title10 }}</td>
+      <td>{{ form11.Limit10 }}</td>
+      <td>{{ form11.Balance10 }}</td>
+    </tr>
+  </table>
   <input type="checkbox"  id="tick" onchange="document.getElementById('terms').disabled = !this.checked;" /> I confirm that I have ensured the accuracy of the details I am typing <br><br>
   <input type="submit" class="btn btn1" name="terms" disabled id="terms">
 </form>

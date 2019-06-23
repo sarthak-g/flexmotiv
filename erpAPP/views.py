@@ -1,9 +1,9 @@
 from django.shortcuts import render
 import csv, io
 from django.contrib import messages
-from .models import fm_txn,fm_utrans,fm_user_extend,fm_project
+from .models import fm_txn,fm_utrans,fm_user_extend,fm_project,fm_budgethead
 from django.views.generic import TemplateView
-from .forms import AccountTypeForm,TransferMoneyForm,AddProjectForm
+from .forms import AccountTypeForm,TransferMoneyForm,AddProjectForm,ProjectBudgetForm,ProjectBudgetForm2,ProjectBudgetForm3,ProjectBudgetForm4,ProjectBudgetForm5,ProjectBudgetForm6,ProjectBudgetForm7,ProjectBudgetForm8,ProjectBudgetForm9,ProjectBudgetForm10
 import os.path
 from django.conf import settings
 from django.db import IntegrityError
@@ -181,15 +181,72 @@ def decline(request,pk):
     return render(request,"decline.html")
 
 class addproject(TemplateView):
-    fields = '__all__'
     template_name = "add_project.html"
 
     def get(self,request):
         form = AddProjectForm()
-        return render(request,self.template_name,{'form':form})
+        form2 = ProjectBudgetForm()
+        form3 = ProjectBudgetForm2()
+        form4 = ProjectBudgetForm3()
+        form5 = ProjectBudgetForm4()
+        form6 = ProjectBudgetForm5()
+        form7 = ProjectBudgetForm6()
+        form8 = ProjectBudgetForm7()
+        form9 = ProjectBudgetForm8()
+        form10 = ProjectBudgetForm9()
+        form11 = ProjectBudgetForm10()
+        return render(request,self.template_name,{'form':form,'form2':form2,'form3':form3,'form4':form4,'form5':form5,'form6':form6,'form7':form7,'form8':form8,'form9':form9,'form10':form10,'form11':form11})
     def post(self,request):
+        error = 0
         form = AddProjectForm(request.POST)
-        if form.is_valid():
-            form.save()
-            form = AddProjectForm()
-        return render(request,self.template_name,{'form':form})
+        form2 = ProjectBudgetForm(request.POST)
+        form3 = ProjectBudgetForm2(request.POST)
+        form4 = ProjectBudgetForm3(request.POST)
+        form5 = ProjectBudgetForm4(request.POST)
+        form6 = ProjectBudgetForm5(request.POST)
+        form7 = ProjectBudgetForm6(request.POST)
+        form8 = ProjectBudgetForm7(request.POST)
+        form9 = ProjectBudgetForm8(request.POST)
+        form10 = ProjectBudgetForm9(request.POST)
+        form11 = ProjectBudgetForm10(request.POST)
+        try:
+            if form.is_valid():
+                if form2.is_valid():
+                    form.save()
+                    obj = fm_project.objects.latest('id')
+                    new_req = fm_budgethead(prID=obj,bhTitle=request.POST['title'],bhLimit=request.POST['Limit'],bhBalance=request.POST['Balance'])
+                    new_req.save()
+                if (form3.is_valid() and form4.is_valid() and form5.is_valid() and form6.is_valid() and form7.is_valid() and form8.is_valid() and form9.is_valid() and form10.is_valid() and form11.is_valid()):
+                    for i in range(2,11):
+                            if not (request.POST['title'+str(i)]==""):
+                                if request.POST['Limit'+str(i)]=='':
+                                    if request.POST['Balance'+str(i)]=='':
+                                        new_req = fm_budgethead(prID=obj,bhTitle=request.POST['title'+str(i)],bhLimit=0,bhBalance=0)
+                                        new_req.save()
+                                    else:
+                                        new_req = fm_budgethead(prID=obj,bhTitle=request.POST['title'+str(i)],bhLimit=0,bhBalance=request.POST['Balance'+str(i)])
+                                        new_req.save()
+                                elif request.POST['Balance'+str(i)]=='':
+                                    if not (request.POST['Limit'+str(i)]==''):
+                                        new_req = fm_budgethead(prID=obj,bhTitle=request.POST['title'+str(i)],bhLimit=request.POST['Limit'+str(i)],bhBalance=0)
+                                        new_req.save()
+                                else:
+                                    new_req = fm_budgethead(prID=obj,bhTitle=request.POST['title'+str(i)],bhLimit=request.POST['Limit'+str(i)],bhBalance=request.POST['Balance'+str(i)])
+                                    new_req.save()
+                    form = AddProjectForm()
+                    form2 = ProjectBudgetForm()
+                    form3 = ProjectBudgetForm2()
+                    form4 = ProjectBudgetForm3()
+                    form5 = ProjectBudgetForm4()
+                    form6 = ProjectBudgetForm5()
+                    form7 = ProjectBudgetForm6()
+                    form8 = ProjectBudgetForm7()
+                    form9 = ProjectBudgetForm8()
+                    form10 = ProjectBudgetForm9()
+                    form11 = ProjectBudgetForm10()
+
+                else:
+                    error = 1
+        except Exception as e:
+            message = e
+        return render(request,self.template_name,{'form':form,'error':error,'message':message,'form2':form2,'form3':form3,'form4':form4,'form5':form5,'form6':form6,'form7':form7,'form8':form8,'form9':form9,'form10':form10,'form11':form11})
