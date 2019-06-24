@@ -3,7 +3,7 @@ import csv, io
 from django.contrib import messages
 from .models import fm_txn,fm_utrans,fm_user_extend,fm_project,fm_budgethead
 from django.views.generic import TemplateView
-from .forms import AccountTypeForm,TransferMoneyForm,AddProjectForm,ProjectBudgetForm,ProjectBudgetForm2,ProjectBudgetForm3,ProjectBudgetForm4,ProjectBudgetForm5,ProjectBudgetForm6,ProjectBudgetForm7,ProjectBudgetForm8,ProjectBudgetForm9,ProjectBudgetForm10
+from .forms import AccountTypeForm,TransferMoneyForm,AddProjectForm,ProjectBudgetForm,ProjectBudgetForm2,ProjectBudgetForm3,ProjectBudgetForm4,ProjectBudgetForm5,ProjectBudgetForm6,ProjectBudgetForm7,ProjectBudgetForm8,ProjectBudgetForm9,ProjectBudgetForm10,ptcprojectform
 import os.path
 from django.conf import settings
 from django.db import IntegrityError
@@ -14,6 +14,9 @@ from django.views.generic import CreateView,ListView
 from django.urls import reverse_lazy
 from django.http import HttpResponseRedirect
 from easy_pdf.views import PDFTemplateView
+
+
+
 # Create your views here.
 def account_type(request):
     return render(request,"account_type.html")
@@ -210,34 +213,38 @@ class addproject(TemplateView):
         form10 = ProjectBudgetForm9(request.POST)
         form11 = ProjectBudgetForm10(request.POST)
         try:
-            if form.is_valid():
-                if form2.is_valid():
-                    form.save()
-                    obj = fm_project.objects.latest('id')
-                    new_req = fm_budgethead(prID=obj,bhTitle=request.POST['title'],bhLimit=request.POST['Limit'],bhBalance=request.POST['Balance'])
-                    new_req.save()
-                if (form3.is_valid() and form4.is_valid() and form5.is_valid() and form6.is_valid() and form7.is_valid() and form8.is_valid() and form9.is_valid() and form10.is_valid() and form11.is_valid()):
-                    for i in range(2,11):
-                            if not (request.POST['title'+str(i)]==""):
-                                if request.POST['Limit'+str(i)]=='':
-                                    if request.POST['Balance'+str(i)]=='':
-                                        new_req = fm_budgethead(prID=obj,bhTitle=request.POST['title'+str(i)],bhLimit=0,bhBalance=0)
-                                        new_req.save()
+            title_check = fm_project.objects.filter(prTitle = request.POST.get("prTitle"))
+            if not title_check:
+                if form.is_valid():
+                    if form2.is_valid():
+                        form.save()
+                        obj = fm_project.objects.latest('id')
+                        new_req = fm_budgethead(prID=obj,bhTitle=request.POST['title'],bhLimit=request.POST['Limit'],bhBalance=request.POST['Balance'])
+                        new_req.save()
+                    if (form3.is_valid() and form4.is_valid() and form5.is_valid() and form6.is_valid() and form7.is_valid() and form8.is_valid() and form9.is_valid() and form10.is_valid() and form11.is_valid()):
+                        for i in range(2,11):
+                                if not (request.POST['title'+str(i)]==""):
+                                    if request.POST['Limit'+str(i)]=='':
+                                        if request.POST['Balance'+str(i)]=='':
+                                            new_req = fm_budgethead(prID=obj,bhTitle=request.POST['title'+str(i)],bhLimit=0,bhBalance=0)
+                                            new_req.save()
+                                        else:
+                                            new_req = fm_budgethead(prID=obj,bhTitle=request.POST['title'+str(i)],bhLimit=0,bhBalance=request.POST['Balance'+str(i)])
+                                            new_req.save()
+                                    elif request.POST['Balance'+str(i)]=='':
+                                        if not (request.POST['Limit'+str(i)]==''):
+                                            new_req = fm_budgethead(prID=obj,bhTitle=request.POST['title'+str(i)],bhLimit=request.POST['Limit'+str(i)],bhBalance=0)
+                                            new_req.save()
                                     else:
-                                        new_req = fm_budgethead(prID=obj,bhTitle=request.POST['title'+str(i)],bhLimit=0,bhBalance=request.POST['Balance'+str(i)])
+                                        new_req = fm_budgethead(prID=obj,bhTitle=request.POST['title'+str(i)],bhLimit=request.POST['Limit'+str(i)],bhBalance=request.POST['Balance'+str(i)])
                                         new_req.save()
-                                elif request.POST['Balance'+str(i)]=='':
-                                    if not (request.POST['Limit'+str(i)]==''):
-                                        new_req = fm_budgethead(prID=obj,bhTitle=request.POST['title'+str(i)],bhLimit=request.POST['Limit'+str(i)],bhBalance=0)
-                                        new_req.save()
-                                else:
-                                    new_req = fm_budgethead(prID=obj,bhTitle=request.POST['title'+str(i)],bhLimit=request.POST['Limit'+str(i)],bhBalance=request.POST['Balance'+str(i)])
-                                    new_req.save()
 
 
-                else:
-                    error = 1
-
+                    else:
+                        error = 1
+            else:
+                error=1
+                message="This project title already exists"
         except Exception as e:
             message = e
         if error==1:
@@ -251,11 +258,14 @@ class addproject(TemplateView):
 
 class ProjectSuccessPDFView(PDFTemplateView):
     template_name = 'add_project_success_pdf.html'
-    # obj = fm_project.objects.latest('id')
-    # budget = fm_budgethead.objects.filter(prID=obj)
-    # context = {'obj':obj,'budget':budget}
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['obj'] = fm_project.objects.latest('id')
         context['budget'] = fm_budgethead.objects.filter(prID=fm_project.objects.latest('id'))
         return context
+
+def ptcproject(request):
+    form = ptcprojectform()
+    if request.method == "POST":
+        print(request)
+    return render(request,"ptcproject.html",{'form':form})

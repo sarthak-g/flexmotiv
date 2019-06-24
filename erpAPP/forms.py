@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import ModelForm
-from .models import fm_utrans,fm_project,fm_budgethead
+from .models import fm_utrans,fm_project,fm_budgethead,fm_ptctrans
 from django.contrib.auth.models import User
 class AccountTypeForm(forms.Form):
     c  = [("1","Main"),("2","BIRAC")]
@@ -29,7 +29,7 @@ class AddProjectForm(forms.ModelForm):
         self.fields['prManagers_4'].queryset = User.objects.filter(groups__name='projectmanager')
         self.fields['prManagers_5'].queryset = User.objects.filter(groups__name='projectmanager')
         self.fields['prManagers_6'].queryset = User.objects.filter(groups__name='projectmanager')
-        
+
 class ProjectBudgetForm(forms.Form):
     title = forms.CharField(max_length=50)
     Limit = forms.IntegerField()
@@ -70,3 +70,7 @@ class ProjectBudgetForm10(forms.Form):
     title10 = forms.CharField(max_length=50,required=False)
     Limit10 = forms.IntegerField(required=False)
     Balance10 = forms.IntegerField(required=False)
+class ptcprojectform(forms.ModelForm):
+    class Meta:
+        model = fm_ptctrans
+        fields = ('prID',)

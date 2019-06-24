@@ -9,5 +9,6 @@ urlpatterns = [
     path("financialAccount/decline/<int:pk>/",views.decline, name='decline'),
     path("add-project/",views.addproject.as_view(), name='addproject'),
     path("add-project-print/",views.ProjectSuccessPDFView.as_view(), name='addprojectpdf'),
+    path("ptc-project/",views.ptcproject, name='ptc_project'),
 
 ]

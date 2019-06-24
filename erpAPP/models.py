@@ -59,11 +59,35 @@ class fm_project(models.Model):
     prManagers_6 = models.ForeignKey(User,blank=True,null=True,on_delete=models.SET_NULL,related_name='sixth_project_manager',verbose_name ='Project Manager 6')
     prBudget = models.IntegerField(default=0,verbose_name='Total Budget')
     prBalance = models.IntegerField(default=0,verbose_name='Balance of budget')
-
+    def __str__(self):
+        return self.prTitle
 class fm_budgethead(models.Model):
     prID = models.ForeignKey(fm_project,on_delete = models.CASCADE)
     bhTitle = models.CharField(max_length=50)
     bhLimit = models.IntegerField(default=0)
     bhBalance = models.IntegerField(default=0)
     bhBalanceDate = models.DateField(auto_now=True)
-    ##Add create option of budget_head table for adding another BUdget details
+
+
+class fm_ptcform(models.Model):
+    uID = models.ForeignKey(User,on_delete=models.CASCADE)
+    ptcValue = models.IntegerField()
+    ptcType = models.CharField(max_length=40)
+    prID = models.ForeignKey(fm_project,on_delete=models.CASCADE)
+    ptcDate = models.DateField(auto_now=True)
+    ptcApproved = models.BooleanField(default=0)
+    ptcApprovedBy = models.CharField(max_length=50,null=True)
+
+class fm_ptctrans(models.Model):
+    ptctransDate = models.DateField(auto_now=False,auto_now_add=False)
+    ptcID = models.ForeignKey(fm_ptcform,on_delete=models.CASCADE)
+    ptctransValue = models.IntegerField()
+    ptctransInvoiceStatus = models.CharField(max_length=1)
+    ptctransInvoiceFile = models.FileField(upload_to="InvoiceFile",max_length=100,unique=True)
+    ptctransHead = models.ForeignKey(fm_budgethead,on_delete=models.CASCADE)
+    prID = models.ForeignKey(fm_project,on_delete=models.CASCADE)
+    uID = models.ForeignKey(User,on_delete=models.CASCADE)
+    ptctransApproved = models.BooleanField(default=0)
+    ptctransApprovedBy = models.CharField(max_length=50,null=True)
+    ptcVendor = models.CharField(max_length=50)
+    ptcDesc = models.CharField(max_length=200)
