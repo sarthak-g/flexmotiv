@@ -3,8 +3,8 @@ import csv, io
 from django.contrib import messages
 from .models import fm_txn,fm_utrans,fm_user_extend,fm_project,fm_budgethead
 from django.views.generic import TemplateView
-from .forms import AccountTypeForm,TransferMoneyForm,AddProjectForm,ProjectBudgetForm,ProjectBudgetForm2,ProjectBudgetForm3,ProjectBudgetForm4,ProjectBudgetForm5,ProjectBudgetForm6,ProjectBudgetForm7,ProjectBudgetForm8,ProjectBudgetForm9,ProjectBudgetForm10,ptcprojectform
 import os.path
+from .forms import AccountTypeForm,TransferMoneyForm,AddProjectForm,ProjectBudgetForm,ProjectBudgetForm2,ProjectBudgetForm3,ProjectBudgetForm4,ProjectBudgetForm5,ProjectBudgetForm6,ProjectBudgetForm7,ProjectBudgetForm8,ProjectBudgetForm9,ProjectBudgetForm10,ptcprojectform,ptctransform
 from django.conf import settings
 from django.db import IntegrityError
 import uuid
@@ -265,7 +265,22 @@ class ProjectSuccessPDFView(PDFTemplateView):
         return context
 
 def ptcproject(request):
-    form = ptcprojectform()
+    if request.method=="GET":
+        form = ptcprojectform()
+        return render(request,"ptcproject.html",{'form':form})
+
     if request.method == "POST":
-        print(request)
-    return render(request,"ptcproject.html",{'form':form})
+        form = ptcprojectform(request.POST)
+        name = request.POST.get("ptcprojectform")
+        name2 = request.POST.get("ptctransform")
+        budget_id = request.POST.get("prID")
+        print(budget_id)
+        print(name," ",name2)
+        if (name == "Submit" and name2==None):
+            budget_queryset = fm_budgethead.objects.filter(prID = budget_id)
+            form_trans = ptctransform(budget_queryset)
+            return render(request,"ptcproject.html",{'form_trans':form_trans})
+        if (name2=="Submit" and name==None):
+            pass
+            ##process petty cash form after submitting ptctrans form
+    return render(request,"ptcproject.html")

@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import ModelForm
-from .models import fm_utrans,fm_project,fm_budgethead,fm_ptctrans
+from .models import fm_utrans,fm_project,fm_budgethead,fm_ptcform,fm_ptctrans
 from django.contrib.auth.models import User
 class AccountTypeForm(forms.Form):
     c  = [("1","Main"),("2","BIRAC")]
@@ -70,7 +70,15 @@ class ProjectBudgetForm10(forms.Form):
     title10 = forms.CharField(max_length=50,required=False)
     Limit10 = forms.IntegerField(required=False)
     Balance10 = forms.IntegerField(required=False)
-class ptcprojectform(forms.ModelForm):
-    class Meta:
-        model = fm_ptctrans
-        fields = ('prID',)
+
+class ptcprojectform(forms.Form):
+    prID = forms.ModelChoiceField(queryset=fm_project.objects.all(),label="Select project")
+class ptctransform(forms.Form):
+    Date = forms.DateField(widget = forms.SelectDateWidget())
+    Vendor = forms.CharField(max_length=50)
+    Description = forms.CharField(max_length=200)
+    Value = forms.IntegerField()
+    Budgets = forms.ModelChoiceField(queryset=fm_budgethead.objects.all())
+    def __init__(self,budget_queryset,*args,**kwargs):
+        super(ptctransform, self).__init__(*args,**kwargs)
+        self.fields["Budgets"].queryset = budget_queryset

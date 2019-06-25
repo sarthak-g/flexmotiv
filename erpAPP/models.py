@@ -67,6 +67,8 @@ class fm_budgethead(models.Model):
     bhLimit = models.IntegerField(default=0)
     bhBalance = models.IntegerField(default=0)
     bhBalanceDate = models.DateField(auto_now=True)
+    def __str__(self):
+        return self.bhTitle
 
 
 class fm_ptcform(models.Model):

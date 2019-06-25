@@ -1,5 +1,14 @@
-<form action="" method="POST">
+{% if form%}
+<form action="" method="POST" >
   {% csrf_token %}
   {{form.as_p}}
-  <input type="submit">
+  <input type="submit" name="ptcprojectform">
 </form>
+{% endif %}
+{% if form_trans %}
+<form method="POST">
+  {% csrf_token %}
+  {{ form_trans.as_p }}
+  <input type="submit" name="ptctransform">
+</form>
+{% endif %}
