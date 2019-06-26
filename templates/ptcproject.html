@@ -1,3 +1,4 @@
+<h1>Petty Cash Form</h1>
 {% if e %}
 <script>
   alert("{{e}}");
@@ -13,8 +14,59 @@
 {% if form_trans %}
 <form method="POST" enctype="multipart/form-data">
   {% csrf_token %}
-  {{ form_trans.as_p }}
-  <input type="file" name="file" onclick="myFunction()">
-  <input type="submit" name="ptctransform">
+  {{ form_trans.as_table }}
+  <input type="file" name="file"><br>
+  {{ form_trans2.as_table }}
+  <input type="file" name="file2"><br>
+  {{ form_trans3.as_table }}
+  <input type="file" name="file3"><br>
+  {{ form_trans4.as_table }}
+  <input type="file" name="file4"><br>
+  {{ form_trans5.as_table }}
+  <input type="file" name="file5"><br>
+  {{ form_trans6.as_table }}
+  <input type="file" name="file6"><br>
+  {{ form_trans7.as_table }}
+  <input type="file" name="file7"><br>
+  {{ form_trans8.as_table }}
+  <input type="file" name="file8"><br>
+  {{ form_trans9.as_table }}
+  <input type="file" name="file9"><br>
+  {{ form_trans10.as_table }}
+  <input type="file" name="file10"><br>
+  {{ form_trans11.as_table }}
+  <input type="file" name="file11"><br>
+  {{ form_trans12.as_table }}
+  <input type="file" name="file12"><br>
+  {{ form_trans13.as_table }}
+  <input type="file" name="file13"><br>
+  {{ form_trans14.as_table }}
+  <input type="file" name="file14"><br>
+  {{ form_trans15.as_table }}
+  <input type="file" name="file15"><br>
+
+  <br><input type="submit" name="ptctransform">
+
 </form>
+{% endif %}
+{% if show_result == 'Yes' %}
+<h2>Form Submitted Succesfully for the project manager to approve it.</h2>
+<table border="1">
+  <tr>
+    <th>Head</th>
+    <th>Head Total</th>
+  </tr>
+  {% for i in li %}
+  <tr>
+    <td>{{ i.0 }}</td>
+    <td>{{ i.1 }}</td>
+  </tr>
+  {% endfor %}
+  <tr>
+    <td>Grand Total</td>
+    <td>{{ sum }}</td>
+  </tr>
+</table>
+<br>
+<button>Submit</button>
 {% endif %}
