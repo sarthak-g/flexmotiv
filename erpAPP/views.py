@@ -1,7 +1,7 @@
 from django.shortcuts import render
 import csv, io
 from django.contrib import messages
-from .models import fm_txn,fm_utrans,fm_user_extend,fm_project,fm_budgethead
+from .models import fm_txn,fm_utrans,fm_user_extend,fm_project,fm_budgethead,fm_ptcform,fm_ptctrans
 from django.views.generic import TemplateView
 import os.path
 from .forms import AccountTypeForm,TransferMoneyForm,AddProjectForm,ProjectBudgetForm,ProjectBudgetForm2,ProjectBudgetForm3,ProjectBudgetForm4,ProjectBudgetForm5,ProjectBudgetForm6,ProjectBudgetForm7,ProjectBudgetForm8,ProjectBudgetForm9,ProjectBudgetForm10,ptcprojectform,ptctransform
@@ -14,7 +14,7 @@ from django.views.generic import CreateView,ListView
 from django.urls import reverse_lazy
 from django.http import HttpResponseRedirect
 from easy_pdf.views import PDFTemplateView
-
+from django.contrib.auth.models import User
 
 
 # Create your views here.
@@ -274,13 +274,40 @@ def ptcproject(request):
         name = request.POST.get("ptcprojectform")
         name2 = request.POST.get("ptctransform")
         budget_id = request.POST.get("prID")
-        print(budget_id)
-        print(name," ",name2)
         if (name == "Submit" and name2==None):
             budget_queryset = fm_budgethead.objects.filter(prID = budget_id)
             form_trans = ptctransform(budget_queryset)
             return render(request,"ptcproject.html",{'form_trans':form_trans})
         if (name2=="Submit" and name==None):
-            pass
+            budget_obj = fm_budgethead.objects.filter(id = request.POST['Budgets']).values('prID')
+
+            for i in budget_obj:
+                pr_id = i['prID']
+                break
+            pr_obj = fm_project.objects.filter(id=pr_id)
+            for i in pr_obj:
+                pr_obj = i
+                break
+            for j in User.objects.filter(id = request.user.id):
+                user_obj = j
+                break
+            budget_form_obj = fm_budgethead.objects.filter(id = request.POST['Budgets'])
+            for k in budget_form_obj:
+                budget_form_obj = k
+                break
+            try:
+                new_req = fm_ptctrans(ptctransDate = request.POST['Date_ptcform'],ptcVendor=request.POST['Vendor'],ptcDesc=request.POST['Description'],ptctransValue=request.POST['Value'],ptctransHead=budget_form_obj,ptctransInvoiceStatus =request.POST['choices'], ptctransInvoiceFile=request.FILES['file'])
+            except Exception as e :
+                return render(request,"ptcproject.html",{'e':e})
+            fm_ptcform.objects.create(uID=j,prID=pr_obj)
+            ptc_obj = fm_ptcform.objects.latest('id')
+            print(request.FILES['file'])
+            try:
+                new_req = fm_ptctrans(uID=j,prID=pr_obj,ptcID=ptc_obj,ptctransDate = request.POST['Date_ptcform'],ptcVendor=request.POST['Vendor'],ptcDesc=request.POST['Description'],ptctransValue=request.POST['Value'],ptctransHead=budget_form_obj,ptctransInvoiceStatus =request.POST['choices'], ptctransInvoiceFile=request.FILES['file'])
+                new_req.save()
+            except Exception as e:
+                print(e)
+                return render(request,"ptcproject.html",{'e':e})
+
             ##process petty cash form after submitting ptctrans form
     return render(request,"ptcproject.html")

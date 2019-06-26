@@ -74,11 +74,15 @@ class ProjectBudgetForm10(forms.Form):
 class ptcprojectform(forms.Form):
     prID = forms.ModelChoiceField(queryset=fm_project.objects.all(),label="Select project")
 class ptctransform(forms.Form):
-    Date = forms.DateField(widget = forms.SelectDateWidget())
+    Date_ptcform = forms.DateField(label="Date in (YYYY-MM-DD)")
     Vendor = forms.CharField(max_length=50)
     Description = forms.CharField(max_length=200)
     Value = forms.IntegerField()
     Budgets = forms.ModelChoiceField(queryset=fm_budgethead.objects.all())
+    c  = [("Y","Invoice Available"),("P","Invoice Pending"),("N","Invoice Not Available")]
+    choices = forms.ChoiceField(choices=c, label="Invoice Status")
+    # InvoiceFile = forms.FileField(label="Upload Invoice")
     def __init__(self,budget_queryset,*args,**kwargs):
         super(ptctransform, self).__init__(*args,**kwargs)
         self.fields["Budgets"].queryset = budget_queryset
+    ##Is there any particular file format for Invoice

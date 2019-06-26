@@ -1,3 +1,8 @@
+{% if e %}
+<script>
+  alert("{{e}}");
+</script>
+{% endif %}
 {% if form%}
 <form action="" method="POST" >
   {% csrf_token %}
@@ -6,9 +11,10 @@
 </form>
 {% endif %}
 {% if form_trans %}
-<form method="POST">
+<form method="POST" enctype="multipart/form-data">
   {% csrf_token %}
   {{ form_trans.as_p }}
+  <input type="file" name="file" onclick="myFunction()">
   <input type="submit" name="ptctransform">
 </form>
 {% endif %}

@@ -73,8 +73,8 @@ class fm_budgethead(models.Model):
 
 class fm_ptcform(models.Model):
     uID = models.ForeignKey(User,on_delete=models.CASCADE)
-    ptcValue = models.IntegerField()
-    ptcType = models.CharField(max_length=40)
+    ptcValue = models.IntegerField(default=0)
+    ptcType = models.CharField(max_length=40,null=True)
     prID = models.ForeignKey(fm_project,on_delete=models.CASCADE)
     ptcDate = models.DateField(auto_now=True)
     ptcApproved = models.BooleanField(default=0)
