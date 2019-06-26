@@ -346,7 +346,7 @@ def ptcproject(request):
             except Exception as e :
                 return render(request,"ptcproject.html",{'e':e})
             fm_ptcform.objects.create(uID=j,prID=pr_obj)
-            ptc_obj = fm_ptcform.objects.latest('id')
+            ptc_obj = fm_ptcform.objects.latest()
             try:
                 new_req = fm_ptctrans(uID=j,prID=pr_obj,ptcID=ptc_obj,ptctransDate = request.POST['Date_ptcform'],ptcVendor=request.POST['Vendor'],ptcDesc=request.POST['Description'],ptctransValue=request.POST['Value'],ptctransHead=budget_form_obj,ptctransInvoiceStatus =request.POST['choices'], ptctransInvoiceFile=request.FILES['file'])
                 new_req.save()

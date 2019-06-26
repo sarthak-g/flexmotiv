@@ -79,6 +79,8 @@ class fm_ptcform(models.Model):
     ptcDate = models.DateField(auto_now=True)
     ptcApproved = models.BooleanField(default=0)
     ptcApprovedBy = models.CharField(max_length=50,null=True)
+    class Meta:
+        get_latest_by = 'uID'
 
 class fm_ptctrans(models.Model):
     ptctransDate = models.DateField(auto_now=False,auto_now_add=False)
