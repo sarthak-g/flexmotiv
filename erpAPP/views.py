@@ -416,6 +416,7 @@ def ptcproject(request):
 def CheckStatement(request):
     if request.method=="GET":
         form = CheckStatementForm()
+        return render(request,"CheckStatement.html",{"form":form})
     if request.method=="POST":
         form = CheckStatementForm(request.POST)
         name = request.POST.get("checkstatementform")
@@ -427,8 +428,15 @@ def CheckStatement(request):
                     obj = fm_txn.objects.filter(accID=request.POST["choices"]).exclude(txnType = 'U').filter(txnDate__year=request.POST["choices2"]).filter(txnDate__month=request.POST["choices3"])
                 elif request.POST["choices4"] == "3": # All
                     obj = fm_txn.objects.filter(accID=request.POST["choices"]).filter(txnDate__year=request.POST["choices2"]).filter(txnDate__month=request.POST["choices3"])
-                return render(request,"CheckStatement.html",{'obj':obj})
-    return render(request,"CheckStatement.html",{'form':form})
+                if not obj:
+                    message = "No record found for this."
+                    return render(request,"CheckStatement.html",{"message":message})
+                else:
+                    return render(request,"CheckStatement.html",{'obj':obj})
+        else:
+            error = "Please check the details submitted"
+
+    return render(request,"CheckStatement.html",{"error":error})
 
 def Categorize(request,txnID):
     if request.method=="GET":

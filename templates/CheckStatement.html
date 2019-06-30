@@ -36,3 +36,9 @@
   {% endfor %}
 </table>
 {% endif %}
+{% if error %}
+<p>{{ error }}</p>
+{% endif %}
+{% if message %}
+<p>{{ message }}</p>
+{% endif %}
