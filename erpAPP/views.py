@@ -437,23 +437,45 @@ def Categorize(request,txnID):
         return render(request,"categorize.html",{"form":form,"obj":obj})
     if request.method=="POST":
         obj = fm_txn.objects.filter(txnID=txnID)
+        for i in obj:
+            obj = i
+            break
         if request.POST['categorize'] == "Uncategorized":
-            for i in obj:
-                obj = i
-                break
             obj.txnType = "U"
             obj.save()
             success = "Uncategorized is updated"
             return render(request,"categorize.html",{"success":success})
 
         if request.POST['categorize'] == "Salary":
-            for i in obj:
-                obj = i
-                break
             obj.txnType = "S"
             obj.save()
             success = "Salary is Updated"
             return render(request,"categorize.html",{"success":success})
+        if request.POST['categorize'] == "Expense":
+            txnid_null = fm_ptcform.objects.filter(txnID=None)
+            categorize = "expense"
+            return render(request,"categorize.html",{"txnid_null":txnid_null,"categorize":categorize,"txnID":txnID})
 
 
     return render(request,"categorize.html")
+
+def CategorizeExpense(request,txnID,pk):
+    e = None
+    try:
+
+        ptc_form_obj = fm_ptcform.objects.filter(id=pk)
+        txn_obj = fm_txn.objects.filter(txnID=txnID)
+        for i in ptc_form_obj:
+            ptc_form_obj = i
+            break
+        for i in txn_obj:
+            txn_obj = i
+            break
+        ptc_form_obj.txnID = txn_obj
+        ptc_form_obj.save()
+        txn_obj.ptcID = pk
+        txn_obj.txnType = "E"
+        txn_obj.save()
+    except Exception as e:
+        pass
+    return render(request,"categorizeExpense.html",{"e":e})

@@ -6,10 +6,35 @@
 {% endfor %}
 {% if success %}
 <p>{{ success }}</p>
-{% else %}
+{% endif %}
+{% if not success and not categorize %}
 <form method="POST">
   {% csrf_token %}
   {{ form.as_p}}
   <input type="submit" value="Save">
+</form>
+{% endif %}
+{% if categorize %}
+<form method="POST">
+  {% csrf_token %}
+<table border="1">
+  <tr>
+    <th>ptcID</th>
+    <th>Value</th>
+    <th>Project</th>
+    <th>Date</th>
+    <th>Select</th>
+  </tr>
+{% for j in txnid_null %}
+<tr>
+  <td>{{ j.id }}</td>
+  <td>{{ j.ptcValue }}</td>
+  <td>{{ j.prID }}</td>
+  <td>{{ j.ptcDate }}</td>
+  <td> <a href="{% url 'categorize' txnID j.pk %}">Select this</a> </td>
+</tr>
+{% endfor %}
+</table>
+
 </form>
 {% endif %}

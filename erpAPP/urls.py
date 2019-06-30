@@ -12,5 +12,6 @@ urlpatterns = [
     path("ptc-project/",views.ptcproject, name='ptc_project'),
     path("check-statement/",views.CheckStatement, name='check-statement'),
     path("check-statement/categorize/<str:txnID>/",views.Categorize, name='categorize'),
+    path("check-statement/categorize/<str:txnID>/<int:pk>/",views.CategorizeExpense, name='categorize'),
 
 ]
