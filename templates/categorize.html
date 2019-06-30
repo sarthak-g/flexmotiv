@@ -4,8 +4,12 @@
 <p>Desc:- {{ i.txnDesc}} </p>
 <p>Amount:- {{ i.txnValue }}</p>
 {% endfor %}
+{% if success %}
+<p>{{ success }}</p>
+{% else %}
 <form method="POST">
   {% csrf_token %}
   {{ form.as_p}}
   <input type="submit" value="Save">
 </form>
+{% endif %}

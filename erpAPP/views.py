@@ -437,11 +437,23 @@ def Categorize(request,txnID):
         return render(request,"categorize.html",{"form":form,"obj":obj})
     if request.method=="POST":
         obj = fm_txn.objects.filter(txnID=txnID)
+        if request.POST['categorize'] == "Uncategorized":
+            for i in obj:
+                obj = i
+                break
+            obj.txnType = "U"
+            obj.save()
+            success = "Uncategorized is updated"
+            return render(request,"categorize.html",{"success":success})
+
         if request.POST['categorize'] == "Salary":
             for i in obj:
                 obj = i
                 break
             obj.txnType = "S"
             obj.save()
+            success = "Salary is Updated"
+            return render(request,"categorize.html",{"success":success})
+
 
     return render(request,"categorize.html")
