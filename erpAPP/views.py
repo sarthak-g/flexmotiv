@@ -6,6 +6,7 @@ from django.views.generic import TemplateView
 import os.path
 from .forms import AccountTypeForm,TransferMoneyForm,AddProjectForm,ProjectBudgetForm,ProjectBudgetForm2,ProjectBudgetForm3,ProjectBudgetForm4,ProjectBudgetForm5,ProjectBudgetForm6,ProjectBudgetForm7,ProjectBudgetForm8,ProjectBudgetForm9,ProjectBudgetForm10,ptcprojectform,ptctransform
 from .forms import ptctransform2,ptctransform3,ptctransform4,ptctransform5,ptctransform6,ptctransform7,ptctransform8,ptctransform9,ptctransform10,ptctransform11,ptctransform12,ptctransform13,ptctransform14,ptctransform15
+from .forms import CheckStatementForm,CategorizeForm
 from django.conf import settings
 from django.db import IntegrityError
 import uuid
@@ -411,3 +412,36 @@ def ptcproject(request):
             show_result = 'Yes'
             ##process petty cash form after submitting ptctrans form
     return render(request,"ptcproject.html",{'li':li,'sum':sum,'show_result':show_result})
+
+def CheckStatement(request):
+    if request.method=="GET":
+        form = CheckStatementForm()
+    if request.method=="POST":
+        form = CheckStatementForm(request.POST)
+        name = request.POST.get("checkstatementform")
+        if form.is_valid():
+            if name=="Submit":
+                if request.POST["choices4"] == "1": # uncategorized
+                    obj = fm_txn.objects.filter(accID=request.POST["choices"]).filter(txnType = 'U').filter(txnDate__year=request.POST["choices2"]).filter(txnDate__month=request.POST["choices3"])
+                elif request.POST["choices4"] == "2": # categorized
+                    obj = fm_txn.objects.filter(accID=request.POST["choices"]).exclude(txnType = 'U').filter(txnDate__year=request.POST["choices2"]).filter(txnDate__month=request.POST["choices3"])
+                elif request.POST["choices4"] == "3": # All
+                    obj = fm_txn.objects.filter(accID=request.POST["choices"]).filter(txnDate__year=request.POST["choices2"]).filter(txnDate__month=request.POST["choices3"])
+                return render(request,"CheckStatement.html",{'obj':obj})
+    return render(request,"CheckStatement.html",{'form':form})
+
+def Categorize(request,txnID):
+    if request.method=="GET":
+        form = CategorizeForm()
+        obj = fm_txn.objects.filter(txnID=txnID)
+        return render(request,"categorize.html",{"form":form,"obj":obj})
+    if request.method=="POST":
+        obj = fm_txn.objects.filter(txnID=txnID)
+        if request.POST['categorize'] == "Salary":
+            for i in obj:
+                obj = i
+                break
+            obj.txnType = "S"
+            obj.save()
+
+    return render(request,"categorize.html")

@@ -2,6 +2,7 @@ from django import forms
 from django.forms import ModelForm
 from .models import fm_utrans,fm_project,fm_budgethead,fm_ptcform,fm_ptctrans
 from django.contrib.auth.models import User
+import datetime
 class AccountTypeForm(forms.Form):
     c  = [("1","Main"),("2","BIRAC")]
     choices = forms.ChoiceField(choices=c, label="Select Account Type")
@@ -255,3 +256,17 @@ class ptctransform15(forms.Form):
     def __init__(self,budget_queryset,*args,**kwargs):
         super(ptctransform15, self).__init__(*args,**kwargs)
         self.fields["Budgets15"].queryset = budget_queryset
+
+class CheckStatementForm(forms.Form):
+    c  = [("1","Main"),("2","BIRAC")]
+    choices = forms.ChoiceField(choices=c, label="Select Account Type")
+    year =[(str(i),str(i)) for i in range(2017,datetime.datetime.now().year + 1)]
+    choices2 = forms.ChoiceField(choices=year, label="Year")
+    month = [("01","Jan"),("02","Feb"),("03","Mar"),("04","Apr"),("05","May"),("06","June"),("07","July"),("08","August"),("09","Sept"),("10","Oct"),("11","Nov"),("12","Dec")]
+    choices3 = forms.ChoiceField(choices=month, label="Month")
+    c4  = [("1","Uncategorized"),("2","Categorized"),("3","All")]
+    choices4 = forms.ChoiceField(choices=c4, label="Type")
+
+class CategorizeForm(forms.Form):
+    categorize_choices = [("Uncategorized","Uncategorized"),("Expense","Expense"),("Employee Transfer","Employee Transfer"),("Salary","Salary"),("Sales","Sales"),("Refund","Refund"),("Sales Refund","Sales Refund"),("Other","Other")]
+    categorize = forms.ChoiceField(choices=categorize_choices, widget=forms.RadioSelect)

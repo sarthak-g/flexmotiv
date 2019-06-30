@@ -1,0 +1,38 @@
+{% if form %}
+<form method="POST">
+  {% csrf_token %}
+  {{form.as_table}}
+  <br><input type="Submit" name="checkstatementform">
+</form>
+{% endif %}
+{% if obj %}
+<table border="1">
+  <tr>
+    <th>ID</th>
+    <th>Value Date</th>
+    <th>Desc</th>
+    <th>Cr/Dr</th>
+    <th>Amount</th>
+    <th>Balance</th>
+    <th>Details</th>
+    <th>Categorized</th>
+  </tr>
+  {% for i in obj %}
+  <tr>
+    <td> {{ i.txnID }} </td>
+    <td> {{ i.txnDate }} </td>
+    <td> {{ i.txnDesc }} </td>
+    <td> {{ i.txnDir }} </td>
+    <td> {{ i.txnValue }} </td>
+    <td> {{ i.txnBalance }} </td>
+    {% if not i.txnType == 'U' %}
+    <td> <a href="">Details</a> </td>
+    <td>  - </td>
+    {% else %}
+    <td>  - </td>
+    <td> <a href="{% url 'categorize' i.txnID %}">Categorize</a> </td>
+    {% endif %}
+  </tr>
+  {% endfor %}
+</table>
+{% endif %}

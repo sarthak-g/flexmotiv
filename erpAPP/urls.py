@@ -10,5 +10,7 @@ urlpatterns = [
     path("add-project/",views.addproject.as_view(), name='addproject'),
     path("add-project-print/",views.ProjectSuccessPDFView.as_view(), name='addprojectpdf'),
     path("ptc-project/",views.ptcproject, name='ptc_project'),
+    path("check-statement/",views.CheckStatement, name='check-statement'),
+    path("check-statement/categorize/<str:txnID>/",views.Categorize, name='categorize'),
 
 ]
