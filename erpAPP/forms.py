@@ -270,3 +270,6 @@ class CheckStatementForm(forms.Form):
 class CategorizeForm(forms.Form):
     categorize_choices = [("Uncategorized","Uncategorized"),("Expense","Expense"),("Employee Transfer","Employee Transfer"),("Salary","Salary"),("Sales","Sales"),("Refund","Refund"),("Sales Refund","Sales Refund"),("Other","Other")]
     categorize = forms.ChoiceField(choices=categorize_choices, widget=forms.RadioSelect)
+
+class CategorizeEmployeeTransfer(forms.Form):
+    receiver = forms.ModelChoiceField(queryset=User.objects.all(),label="Receiver")

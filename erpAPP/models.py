@@ -37,9 +37,8 @@ class fm_txn(models.Model):
 
 
 class fm_utrans(models.Model):
-    utanDate = models.DateField(auto_now_add=True)
-    utranID = models.IntegerField(null=True)
-    txnID = models.IntegerField(null=True)
+    utranDate = models.DateField(auto_now_add=True)
+    txnID = models.CharField(max_length=20,null=True)
     utranDesc = models.CharField(max_length=50,verbose_name='Description')
     utranValue = models.IntegerField(verbose_name='Amount',null=True)
     utranConfirmed = models.CharField(max_length=1,default='N')

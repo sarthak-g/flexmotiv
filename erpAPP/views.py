@@ -6,7 +6,7 @@ from django.views.generic import TemplateView
 import os.path
 from .forms import AccountTypeForm,TransferMoneyForm,AddProjectForm,ProjectBudgetForm,ProjectBudgetForm2,ProjectBudgetForm3,ProjectBudgetForm4,ProjectBudgetForm5,ProjectBudgetForm6,ProjectBudgetForm7,ProjectBudgetForm8,ProjectBudgetForm9,ProjectBudgetForm10,ptcprojectform,ptctransform
 from .forms import ptctransform2,ptctransform3,ptctransform4,ptctransform5,ptctransform6,ptctransform7,ptctransform8,ptctransform9,ptctransform10,ptctransform11,ptctransform12,ptctransform13,ptctransform14,ptctransform15
-from .forms import CheckStatementForm,CategorizeForm
+from .forms import CheckStatementForm,CategorizeForm,CategorizeEmployeeTransfer
 from django.conf import settings
 from django.db import IntegrityError
 import uuid
@@ -444,28 +444,58 @@ def Categorize(request,txnID):
         obj = fm_txn.objects.filter(txnID=txnID)
         return render(request,"categorize.html",{"form":form,"obj":obj})
     if request.method=="POST":
-        obj = fm_txn.objects.filter(txnID=txnID)
-        for i in obj:
-            obj = i
-            break
-        if request.POST['categorize'] == "Uncategorized":
-            obj.txnType = "U"
-            obj.save()
-            success = "Uncategorized is updated"
-            return render(request,"categorize.html",{"success":success})
+        form = CategorizeForm(request.POST)
+        name = request.POST.get("EmployeeTransferForm")
+        if form.is_valid():
+            obj = fm_txn.objects.filter(txnID=txnID)
+            for i in obj:
+                obj = i
+                break
+            if request.POST['categorize'] == "Uncategorized":
+                obj.txnType = "U"
+                obj.save()
+                success = "Uncategorized is updated"
+                return render(request,"categorize.html",{"success":success})
 
-        if request.POST['categorize'] == "Salary":
-            obj.txnType = "S"
-            obj.save()
-            success = "Salary is Updated"
-            return render(request,"categorize.html",{"success":success})
-        if request.POST['categorize'] == "Expense":
-            txnid_null = fm_ptcform.objects.filter(txnID=None)
-            categorize = "expense"
-            return render(request,"categorize.html",{"txnid_null":txnid_null,"categorize":categorize,"txnID":txnID})
+            if request.POST['categorize'] == "Salary":
+                obj.txnType = "S"
+                obj.save()
+                success = "Salary is Updated"
+                return render(request,"categorize.html",{"success":success})
+            if request.POST['categorize'] == "Expense":
+                txnid_null = fm_ptcform.objects.filter(txnID=None)
+                categorize = "expense"
+                return render(request,"categorize.html",{"txnid_null":txnid_null,"categorize":categorize,"txnID":txnID})
+            if request.POST['categorize'] == "Employee Transfer":
+                txnid_null = fm_ptcform.objects.filter(txnID=None)
+                categorize = "employee transfer"
+                form = CategorizeEmployeeTransfer()
+                return render(request,"categorize.html",{"txnid_null":txnid_null,"categorize":categorize,"txnID":txnID,"form":form})
+        elif name == "Submit":
+            form = CategorizeEmployeeTransfer(request.POST)
+            obj = fm_txn.objects.filter(txnID=txnID)
+            for i in obj:
+                obj = i
+                break
+            try:
+                user_obj = User.objects.filter(id = request.POST["receiver"])
+                for i in user_obj:
+                    user_obj = i
+                    break
+                print(user_obj)
+                fm_utrans.objects.create(txnID=txnID,utranDesc=obj.txnDesc,utranValue=obj.txnValue,utranConfirmed='Y',utranSender=request.user.id,utranReceiver=user_obj)
+                obj.txnType = 'T'
+                obj.save()
+                success = "Successfully Done"
+                return render(request,"categorize.html",{"success":success})
+            except Exception as e:
+                error = e
+                return render(request,"categorize.html",{"error":error})
 
+        else:
+            error = "Invalid Details"
 
-    return render(request,"categorize.html")
+    return render(request,"categorize.html",{"error":error})
 
 def CategorizeExpense(request,txnID,pk):
     e = None

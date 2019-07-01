@@ -14,7 +14,7 @@
   <input type="submit" value="Save">
 </form>
 {% endif %}
-{% if categorize %}
+{% if categorize == "expense" %}
 <form method="POST">
   {% csrf_token %}
 <table border="1">
@@ -38,6 +38,14 @@
 
 </form>
 {% endif %}
-{% if no_record %}
-<p>No record found</p>
+{% if error %}
+<p>{{ error }}</p>
+{% endif %}
+
+{% if categorize == "employee transfer" %}
+<form method="POST">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <input type="submit" name="EmployeeTransferForm">
+</form>
 {% endif %}
