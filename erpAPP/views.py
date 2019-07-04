@@ -6,7 +6,7 @@ from django.views.generic import TemplateView
 import os.path
 from .forms import AccountTypeForm,TransferMoneyForm,AddProjectForm,ProjectBudgetForm,ProjectBudgetForm2,ProjectBudgetForm3,ProjectBudgetForm4,ProjectBudgetForm5,ProjectBudgetForm6,ProjectBudgetForm7,ProjectBudgetForm8,ProjectBudgetForm9,ProjectBudgetForm10,ptcprojectform,ptctransform
 from .forms import ptctransform2,ptctransform3,ptctransform4,ptctransform5,ptctransform6,ptctransform7,ptctransform8,ptctransform9,ptctransform10,ptctransform11,ptctransform12,ptctransform13,ptctransform14,ptctransform15
-from .forms import CheckStatementForm,CategorizeForm,CategorizeEmployeeTransfer
+from .forms import CheckStatementForm,CategorizeForm,CategorizeEmployeeTransfer,ViewStatementForm,MarkAccountForm
 from django.conf import settings
 from django.db import IntegrityError
 import uuid
@@ -517,3 +517,63 @@ def CategorizeExpense(request,txnID,pk):
     except Exception as e:
         pass
     return render(request,"categorizeExpense.html",{"e":e})
+
+def ViewStatement(request):
+    if request.method=="GET":
+        form = ViewStatementForm()
+        return render(request,"ViewStatement.html",{"form":form})
+    if request.method=="POST":
+        form = ViewStatementForm(request.POST)
+        name = request.POST.get("viewstatementform")
+        if form.is_valid():
+            if name=="Submit":
+                if request.POST["choices4"] == "1": # uncategorized
+                    obj = fm_txn.objects.filter(accID=request.POST["choices"]).filter(txnType = 'U').filter(txnDate__year=request.POST["choices2"]).filter(txnDate__month=request.POST["choices3"])
+                elif request.POST["choices4"] == "2": # categorized
+                    obj = fm_txn.objects.filter(accID=request.POST["choices"]).exclude(txnType = 'U').filter(txnDate__year=request.POST["choices2"]).filter(txnDate__month=request.POST["choices3"])
+                elif request.POST["choices4"] == "3": # All
+                    obj = fm_txn.objects.filter(accID=request.POST["choices"]).filter(txnDate__year=request.POST["choices2"]).filter(txnDate__month=request.POST["choices3"])
+                if not obj:
+                    message = "No record found for this."
+                    return render(request,"ViewStatement.html",{"message":message})
+                else:
+                    return render(request,"ViewStatement.html",{'obj':obj})
+        else:
+            error = "Please check the details submitted"
+
+    return render(request,"ViewStatement.html",{"error":error})
+
+def MarkAccount(request,txnID):
+    if request.method=="GET":
+        form = MarkAccountForm()
+        return render(request,"MarkAccount.html",{'form':form})
+    if request.method=="POST":
+        form = MarkAccountForm(request.POST)
+        if form.is_valid():
+            name = request.POST.get("markaccountform")
+            option = request.POST.get("choices")
+            if name == "Submit" and option == "1":
+                success = "Account Marked Succesfully"
+                obj = fm_txn.objects.filter(txnID=txnID)
+
+                for i in obj:
+                    obj = i
+                    break
+                obj.txnAccounted = 1
+                obj.save()
+                return render(request,"MarkAccount.html",{'success':success})
+            elif name == "Submit" and option == "2":
+                success = 'Marking the Account is cancelled'
+                obj = fm_txn.objects.filter(txnID=txnID)
+
+                for i in obj:
+                    obj = i
+                    break
+                obj.txnAccounted = 0
+                obj.save()
+                return render(request,"MarkAccount.html",{'success':success})
+            else:
+                error = "there is some error while processing input given."
+        else:
+            error = "Invalid Input Found"
+    return render(request,"MarkAccount.html",{'error':error})

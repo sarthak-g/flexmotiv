@@ -1,0 +1,15 @@
+{% if error %}
+<script>
+  alert("{{ error }}");
+</script>
+{% endif %}
+{% if form %}
+<form method="POST">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <input type="submit" name="markaccountform">
+</form>
+{% endif %}
+{% if success %}
+<h2>{{ success }}</h2>
+{% endif %}

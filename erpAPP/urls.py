@@ -13,5 +13,6 @@ urlpatterns = [
     path("check-statement/",views.CheckStatement, name='check-statement'),
     path("check-statement/categorize/<str:txnID>/",views.Categorize, name='categorize'),
     path("check-statement/categorize/<str:txnID>/<int:pk>/",views.CategorizeExpense, name='categorize'),
-
+    path("view-statement/",views.ViewStatement, name='view-statement'),
+    path("view-statement/mark-account/<str:txnID>/",views.MarkAccount, name='mark-account'),
 ]

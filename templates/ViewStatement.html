@@ -1,0 +1,49 @@
+{% if form %}
+<form method="POST">
+  {% csrf_token %}
+  {{form.as_table}}
+  <br><input type="Submit" name="viewstatementform">
+</form>
+{% endif %}
+{% if obj %}
+<table border="1">
+  <tr>
+    <th>ID</th>
+    <th>Value Date</th>
+    <th>Desc</th>
+    <th>Cr/Dr</th>
+    <th>Amount</th>
+    <th>Type</th>
+    <th>Detail</th>
+    <th>Accounted</th>
+    <th>Audited</th>
+  </tr>
+  {% for i in obj %}
+  <tr>
+    <td> {{ i.txnID }} </td>
+    <td> {{ i.txnDate }} </td>
+    <td> {{ i.txnDesc }} </td>
+    <td> {{ i.txnDir }} </td>
+    <td> {{ i.txnValue }} </td>
+    <td> {{ i.txnType }} </td>
+    <td> <a href="">Details</a> </td>
+    {% if i.txnAccounted == 1 %}
+    <td>Yes</td>
+    {% else %}
+    <td> <a href="{% url 'mark-account' i.txnID %}">Mark Account</a> </td>
+    {% endif %}
+    {% if i.txnAudited == 1 %}
+    <td> Yes</td>
+    {% else %}
+    <td> No</td>
+    {% endif %}
+  </tr>
+  {% endfor %}
+</table>
+{% endif %}
+{% if error %}
+<p>{{ error }}</p>
+{% endif %}
+{% if message %}
+<p>{{ message }}</p>
+{% endif %}

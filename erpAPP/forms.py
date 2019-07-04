@@ -273,3 +273,18 @@ class CategorizeForm(forms.Form):
 
 class CategorizeEmployeeTransfer(forms.Form):
     receiver = forms.ModelChoiceField(queryset=User.objects.all(),label="Receiver")
+
+
+class ViewStatementForm(forms.Form):
+    c  = [("1","Main"),("2","BIRAC")]
+    choices = forms.ChoiceField(choices=c, label="Select Account Type")
+    year =[(str(i),str(i)) for i in range(2017,datetime.datetime.now().year + 1)]
+    choices2 = forms.ChoiceField(choices=year, label="Year")
+    month = [("01","Jan"),("02","Feb"),("03","Mar"),("04","Apr"),("05","May"),("06","June"),("07","July"),("08","August"),("09","Sept"),("10","Oct"),("11","Nov"),("12","Dec")]
+    choices3 = forms.ChoiceField(choices=month, label="Month")
+    c4  = [("1","Uncategorized"),("2","Categorized"),("3","All")]
+    choices4 = forms.ChoiceField(choices=c4, label="Type")
+
+class MarkAccountForm(forms.Form):
+    c  = [("1","Yes"),("2","No")]
+    choices = forms.ChoiceField(choices=c, label="Are you Sure you want to mark Account?",widget=forms.RadioSelect)
