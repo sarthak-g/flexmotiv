@@ -1,5 +1,7 @@
 {% load static %}
-
+{% if e %}
+alert("{{ e }}");
+{% endif %}
 {% if balance_check == False %}
   <h2>Balance Integrity fails</h2>
 {% endif %}

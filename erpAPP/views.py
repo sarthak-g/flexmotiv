@@ -68,83 +68,85 @@ class AccountType(TemplateView):
                 # if error is True then selected file is not csv
 
             else:
-                name_diff_csv = uuid.uuid4().hex + '.csv'
-                complete_name = os.path.join("erpAPP/media/file_link/",name_diff_csv)
+                try:
+                    name_diff_csv = uuid.uuid4().hex + '.csv'
+                    complete_name = os.path.join("erpAPP/media/file_link/",name_diff_csv)
 
-                result = ''
-                duplicate = 0
-                imported = 0
-                balance_check = ''
-                field_object = 0.0
-
-
-                #Taking the dataset from csv file come through post request
-                data_set = csv_file.read().decode('UTF-8')
-
-                #loop through all data using streams
-                io_string = io.StringIO(data_set)
-
-                #Skipping first line of csv  as it contain headers
-                next(io_string)
+                    result = ''
+                    duplicate = 0
+                    imported = 0
+                    balance_check = ''
+                    field_object = 0.0
 
 
-                    #last used to check database integrity
-                last = fm_txn.objects.all()
-                last = last.order_by('transc_time').reverse()
-                balance_temp = 1
-                balance_check = 'unsuccess,file is not imported'
-                if last.exists():
-                    last = last.first()
-                    field_object = fm_txn.objects.filter(txnID=last).values('txnBalance').get()
-                    field_object = field_object['txnBalance']
+                    #Taking the dataset from csv file come through post request
+                    data_set = csv_file.read().decode('UTF-8')
+
+                    #loop through all data using streams
+                    io_string = io.StringIO(data_set)
+
+                    #Skipping first line of csv  as it contain headers
+                    next(io_string)
 
 
-                for column in csv.reader(io_string, delimiter=',',quotechar="|"):
-                    if balance_temp == 1:
-                        if column[8] == str(field_object) or field_object == 0.0:
-                            # checking integrity check of balance
-                            balance_check = True
-                            balance_temp = 0
-                        else:
-                            balance_check = False
-                            balance_temp = 0
+                        #last used to check database integrity
+                    last = fm_txn.objects.all()
+                    last = last.order_by('transc_time').reverse()
+                    balance_temp = 1
+                    balance_check = 'unsuccess,file is not imported'
+                    if last.exists():
+                        last = last.first()
+                        field_object = fm_txn.objects.filter(txnID=last).values('txnBalance').get()
+                        field_object = field_object['txnBalance']
 
 
-
-                    if balance_check == True:
-                        try:
-                            dash, created = fm_txn.objects.update_or_create(
-                            txnID = column[0],
-                            accID = accountID,
-                            txnDate = column[2],
-                            txnPostedDate = column[3],
-                            txnCheque = column[4],
-                            txnDir = column[5],
-                            txnDesc = column[6],
-                            txnValue = column[7],
-                            txnBalance = column[8],
-                            txnAuditFile = name_diff_csv,
-
-                            )
-                            imported = imported + 1
-                        except IntegrityError :      #IntegrityError - Error for primary key
-                            result = 'unsuccess,file is not imported as same transaction exists already'
-                            duplicate = duplicate + 1
-
-                                # total transaction = imported + duplicate
+                    for column in csv.reader(io_string, delimiter=',',quotechar="|"):
+                        if balance_temp == 1:
+                            if column[8] == str(field_object) or field_object == 0.0:
+                                # checking integrity check of balance
+                                balance_check = True
+                                balance_temp = 0
+                            else:
+                                balance_check = False
+                                balance_temp = 0
 
 
 
-                if imported>0:
-                    result = 'success,file is imported'
-                    file = open(complete_name,"w")
-                    file.writelines(data_set)
-                    file.close()
-                # path_csv = "/media/file_link/" + name_diff_csv
-                total_trnsactions = imported + duplicate
+                        if balance_check == True:
+                            try:
+                                dash, created = fm_txn.objects.update_or_create(
+                                txnID = column[0],
+                                accID = accountID,
+                                txnDate = column[2],
+                                txnPostedDate = column[3],
+                                txnCheque = column[4],
+                                txnDir = column[5],
+                                txnDesc = column[6],
+                                txnValue = column[7],
+                                txnBalance = column[8],
+                                txnAuditFile = name_diff_csv,
 
-                return render(request, "pmTransactionResult.html",{'balance_check':balance_check,'result':result,'imported':imported,'duplicate':duplicate,'total_trnsactions':total_trnsactions})
+                                )
+                                imported = imported + 1
+                            except IntegrityError :      #IntegrityError - Error for primary key
+                                result = 'unsuccess,file is not imported as same transaction exists already'
+                                duplicate = duplicate + 1
 
+                                    # total transaction = imported + duplicate
+
+
+
+                    if imported>0:
+                        result = 'success,file is imported'
+                        file = open(complete_name,"w")
+                        file.writelines(data_set)
+                        file.close()
+                    # path_csv = "/media/file_link/" + name_diff_csv
+                    total_trnsactions = imported + duplicate
+
+                    return render(request, "pmTransactionResult.html",{'balance_check':balance_check,'result':result,'imported':imported,'duplicate':duplicate,'total_trnsactions':total_trnsactions})
+                except Exception as e:
+                    return render(request, "pmTransactionResult.html",{'e':e})
             return render(request, "pmTransactionResult.html",{'error':error})
         return render(request,self.template_name)
 def CompleteTransaction(request):
@@ -165,7 +167,6 @@ def financialAccount(request):
     record = record.filter(utranConfirmed='N')
     record_message = record.exists()
     overview = fm_user_extend.objects.filter(user=request.user.id)
-    print(overview)
     record_confirmed = fm_utrans.objects.filter(utranConfirmed='Y')
     record_confirmed_Cr = record_confirmed.filter(utranReceiver=request.user.id)
     record_confirmed_Dr = record_confirmed.filter(utranSender=request.user.id)
@@ -585,7 +586,7 @@ def ExpenseList(request,ptcID):
         return render(request,"ExpenseList.html",{'obj':obj})
     except:
         error = 'No petty cash form corresponding to this ID'
-    return render(request,"ExpenseList.html",{'error':error})        
+    return render(request,"ExpenseList.html",{'error':error})
 
 def ViewMarkAccount(request,id):
     if request.method=="GET":
