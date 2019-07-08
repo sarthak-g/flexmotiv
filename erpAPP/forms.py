@@ -288,3 +288,10 @@ class ViewStatementForm(forms.Form):
 class MarkAccountForm(forms.Form):
     c  = [("1","Yes"),("2","No")]
     choices = forms.ChoiceField(choices=c, label="Are you Sure you want to mark Account?",widget=forms.RadioSelect)
+
+class ViewMarkAccountForm(forms.Form):
+    c_account  = [("1","Yes"),("2","No")]
+    choices = forms.ChoiceField(choices=c_account, label="Are you Sure you want to mark Account?",widget=forms.RadioSelect)
+class ViewMarkAuditForm(forms.Form):
+    c_audit  = [("1","Yes"),("2","No")]
+    choices = forms.ChoiceField(choices=c_audit, label="Are you Sure you want to mark Audited?",widget=forms.RadioSelect)

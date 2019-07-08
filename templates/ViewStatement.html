@@ -1,3 +1,4 @@
+<h1>View Statement for Accountant</h1>
 {% if form %}
 <form method="POST">
   {% csrf_token %}
@@ -26,7 +27,11 @@
     <td> {{ i.txnDir }} </td>
     <td> {{ i.txnValue }} </td>
     <td> {{ i.txnType }} </td>
+    {% if i.txnType == "E" %}
+    <td> <a href="{% url 'expense-list' i.ptcID %}">Details</a> </td>
+    {% else %}
     <td> <a href="">Details</a> </td>
+    {% endif %}
     {% if i.txnAccounted == 1 %}
     <td>Yes</td>
     {% else %}

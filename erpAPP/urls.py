@@ -14,5 +14,8 @@ urlpatterns = [
     path("check-statement/categorize/<str:txnID>/",views.Categorize, name='categorize'),
     path("check-statement/categorize/<str:txnID>/<int:pk>/",views.CategorizeExpense, name='categorize'),
     path("view-statement/",views.ViewStatement, name='view-statement'),
+    path("view-statement/<int:id>/mark-audit/",views.ViewMarkAudit, name='mark-audit-statement'),
+    path("view-statement/<int:id>/mark-account/",views.ViewMarkAccount, name='view-mark-statement'),
+    path("view-statement/<int:ptcID>/expense-list/",views.ExpenseList, name='expense-list'),
     path("view-statement/mark-account/<str:txnID>/",views.MarkAccount, name='mark-account'),
 ]

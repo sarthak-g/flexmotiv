@@ -6,7 +6,7 @@ from django.views.generic import TemplateView
 import os.path
 from .forms import AccountTypeForm,TransferMoneyForm,AddProjectForm,ProjectBudgetForm,ProjectBudgetForm2,ProjectBudgetForm3,ProjectBudgetForm4,ProjectBudgetForm5,ProjectBudgetForm6,ProjectBudgetForm7,ProjectBudgetForm8,ProjectBudgetForm9,ProjectBudgetForm10,ptcprojectform,ptctransform
 from .forms import ptctransform2,ptctransform3,ptctransform4,ptctransform5,ptctransform6,ptctransform7,ptctransform8,ptctransform9,ptctransform10,ptctransform11,ptctransform12,ptctransform13,ptctransform14,ptctransform15
-from .forms import CheckStatementForm,CategorizeForm,CategorizeEmployeeTransfer,ViewStatementForm,MarkAccountForm
+from .forms import CheckStatementForm,CategorizeForm,CategorizeEmployeeTransfer,ViewStatementForm,MarkAccountForm,ViewMarkAccountForm,ViewMarkAuditForm
 from django.conf import settings
 from django.db import IntegrityError
 import uuid
@@ -577,3 +577,82 @@ def MarkAccount(request,txnID):
         else:
             error = "Invalid Input Found"
     return render(request,"MarkAccount.html",{'error':error})
+
+def ExpenseList(request,ptcID):
+    try:
+        ptc_obj = fm_ptcform.objects.filter(id=ptcID)
+        obj = fm_ptctrans.objects.filter(ptcID = ptc_obj[0])
+        return render(request,"ExpenseList.html",{'obj':obj})
+    except:
+        error = 'No petty cash form corresponding to this ID'
+    return render(request,"ExpenseList.html",{'error':error})        
+
+def ViewMarkAccount(request,id):
+    if request.method=="GET":
+        form = ViewMarkAccountForm()
+        return render(request,"ViewMarkAccount.html",{'form':form})
+    if request.method=="POST":
+        form = ViewMarkAccountForm(request.POST)
+        if form.is_valid():
+            name = request.POST.get("viewmarkaccountform")
+            option = request.POST.get("choices")
+            if name == "Submit" and option == "1":
+                success = "Account Marked Succesfully"
+                obj = fm_ptctrans.objects.filter(id=id)
+
+                for i in obj:
+                    obj = i
+                    break
+                obj.ptcAccounted = 1
+                obj.save()
+                return render(request,"ViewMarkAccount.html",{'success':success})
+            elif name == "Submit" and option == "2":
+                success = 'Marking the Account is cancelled'
+                obj = fm_ptctrans.objects.filter(id=id)
+
+                for i in obj:
+                    obj = i
+                    break
+                obj.ptcAccounted = 0
+                obj.save()
+                return render(request,"ViewMarkAccount.html",{'success':success})
+            else:
+                error = "there is some error while processing input given."
+        else:
+            error = "Invalid Input Found"
+    return render(request,"ViewMarkAccount.html",{'error':error})
+
+def ViewMarkAudit(request,id):
+    if request.method=="GET":
+        form = ViewMarkAuditForm()
+        return render(request,"ViewMarkAudit.html",{'form':form})
+    if request.method=="POST":
+        form = ViewMarkAuditForm(request.POST)
+        if form.is_valid():
+            name = request.POST.get("viewmarkauditform")
+            option = request.POST.get("choices")
+            if name == "Submit" and option == "1":
+                success = "Audit Marked Succesfully"
+                obj = fm_ptctrans.objects.filter(id=id)
+
+                for i in obj:
+                    obj = i
+                    break
+                obj.ptcAudited = 1
+                obj.save()
+                return render(request,"ViewMarkAudit.html",{'success':success})
+            elif name == "Submit" and option == "2":
+                success = 'Marking the Audit is cancelled'
+                obj = fm_ptctrans.objects.filter(id=id)
+
+                for i in obj:
+                    obj = i
+                    break
+                obj.ptcAudited = 0
+                obj.save()
+                return render(request,"ViewMarkAudit.html",{'success':success})
+            else:
+                error = "there is some error while processing input given."
+        else:
+            error = "Invalid Input Found"
+    return render(request,"ViewMarkAudit.html",{'error':error})

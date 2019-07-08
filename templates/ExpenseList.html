@@ -1,0 +1,38 @@
+<h2> Expense form List (Petty Cash Form)</h2>
+{% if error %}
+<script>
+alert("{{ error }}");
+</script>
+{% endif %}
+{% if obj %}
+<table border=1>
+  <tr>
+    <th>Date</th>
+    <th>Vendor</th>
+    <th>Value</th>
+    <th>Accounted</th>
+    <th>Audited</th>
+    <th>Invoice</th>
+  </tr>
+  {% for i in obj %}
+  <tr>
+    <td>{{ i.ptctransDate }}</td>
+    <td>{{ i.ptcVendor }}</td>
+    <td>{{ i.ptctransValue }}</td>
+    {% if i.ptcAccounted == 1 %}
+    <td>Yes</td>
+    {% else %}
+    <td> <a href="{% url 'view-mark-statement' i.id %}">Mark Accounted</a> </td>
+    {% endif %}
+    {% if i.ptcAudited == 1 %}
+    <td>Yes</td>
+    {% else %}
+    <td> <a href="{% url 'mark-audit-statement' i.id %}">Mark Audited</a> </td>
+    {% endif %}
+    {% if i.ptctransInvoiceStatus == "Y" %}
+    <td> <a href="/media/{{ i.ptctransInvoiceFile }}/">Invoice Link</a></td>
+    {% endif %}
+  </tr>
+  {% endfor %}
+</table>
+{% endif %}

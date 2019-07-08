@@ -95,3 +95,5 @@ class fm_ptctrans(models.Model):
     ptctransApprovedBy = models.CharField(max_length=50,null=True)
     ptcVendor = models.CharField(max_length=50)
     ptcDesc = models.CharField(max_length=200)
+    ptcAccounted = models.BooleanField(default=0)
+    ptcAudited = models.BooleanField(default=0)
