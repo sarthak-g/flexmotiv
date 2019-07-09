@@ -17,7 +17,7 @@ class fm_txn(models.Model):
     txnDate = models.DateField(auto_now=False,auto_now_add=False,null=False,blank=False)
     txnPostedDate = models.DateField(auto_now=False,auto_now_add=False,null=False,blank=False)
     txnCheque = models.IntegerField()
-    txnDir = models.CharField(max_length=1)
+    txnDir = models.CharField(max_length=2)
     txnDesc = models.CharField(max_length=100)
     txnValue = models.FloatField()
     txnBalance = models.FloatField()

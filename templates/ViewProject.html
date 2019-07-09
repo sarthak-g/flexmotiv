@@ -1,0 +1,8 @@
+<h2>View Project Status</h2>
+{% if form %}
+<form method="POST">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <input type="submit">
+</form>
+{% endif %}

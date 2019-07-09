@@ -297,7 +297,6 @@ def ptcproject(request):
             return render(request,"ptcproject.html",{'form_trans':form_trans,'form_trans2':form_trans2,'form_trans3':form_trans3,'form_trans4':form_trans4,'form_trans5':form_trans5,'form_trans6':form_trans6,'form_trans7':form_trans7,'form_trans8':form_trans8,'form_trans9':form_trans9,'form_trans10':form_trans10,'form_trans11':form_trans11,'form_trans12':form_trans12,'form_trans13':form_trans13,'form_trans14':form_trans14,'form_trans15':form_trans15})
         if (name2=="Submit" and name==None):
             budget_obj = fm_budgethead.objects.filter(id = request.POST['Budgets']).values('prID')
-
             for i in budget_obj:
                 pr_id = i['prID']
                 break
@@ -312,36 +311,116 @@ def ptcproject(request):
             for k in budget_form_obj:
                 budget_form_obj = k
                 break
+            if request.POST['Budgets']:
+                budget_form_obj = fm_budgethead.objects.filter(id = request.POST['Budgets'])
+                for k in budget_form_obj:
+                    budget_form_obj = k
+                    break
+            if request.POST['Budgets2']:
+                budget_form_obj2 = fm_budgethead.objects.filter(id = request.POST['Budgets2'])
+                for k in budget_form_obj2:
+                    budget_form_obj2 = k
+                    break
+            if request.POST['Budgets3']:
+                budget_form_obj3 = fm_budgethead.objects.filter(id = request.POST['Budgets3'])
+                for k in budget_form_obj3:
+                    budget_form_obj3 = k
+                    break
+            if request.POST['Budgets3']:
+                budget_form_obj3 = fm_budgethead.objects.filter(id = request.POST['Budgets3'])
+                for k in budget_form_obj3:
+                    budget_form_obj3 = k
+                    break
+            if request.POST['Budgets4']:
+                budget_form_obj4 = fm_budgethead.objects.filter(id = request.POST['Budgets4'])
+                for k in budget_form_obj4:
+                    budget_form_obj4 = k
+                    break
+            if request.POST['Budgets5']:
+                budget_form_obj5 = fm_budgethead.objects.filter(id = request.POST['Budgets5'])
+                for k in budget_form_obj5:
+                    budget_form_obj5 = k
+                    break
+            if request.POST['Budgets6']:
+                budget_form_obj6 = fm_budgethead.objects.filter(id = request.POST['Budgets6'])
+                for k in budget_form_obj6:
+                    budget_form_obj6 = k
+                    break
+            if request.POST['Budgets7']:
+                budget_form_obj7 = fm_budgethead.objects.filter(id = request.POST['Budgets7'])
+                for k in budget_form_obj7:
+                    budget_form_obj7 = k
+                    break
+            if request.POST['Budgets8']:
+                budget_form_obj8 = fm_budgethead.objects.filter(id = request.POST['Budgets8'])
+                for k in budget_form_obj8:
+                    budget_form_obj8 = k
+                    break
+            if request.POST['Budgets9']:
+                budget_form_obj9 = fm_budgethead.objects.filter(id = request.POST['Budgets9'])
+                for k in budget_form_obj9:
+                    budget_form_obj9 = k
+                    break
+            if request.POST['Budgets10']:
+                budget_form_obj10 = fm_budgethead.objects.filter(id = request.POST['Budgets10'])
+                for k in budget_form_obj10:
+                    budget_form_obj10 = k
+                    break
+            if request.POST['Budgets11']:
+                budget_form_obj11 = fm_budgethead.objects.filter(id = request.POST['Budgets11'])
+                for k in budget_form_obj11:
+                    budget_form_obj11 = k
+                    break
+            if request.POST['Budgets12']:
+                budget_form_obj12 = fm_budgethead.objects.filter(id = request.POST['Budgets12'])
+                for k in budget_form_obj12:
+                    budget_form_obj12 = k
+                    break
+            if request.POST['Budgets13']:
+                budget_form_obj13 = fm_budgethead.objects.filter(id = request.POST['Budgets13'])
+                for k in budget_form_obj13:
+                    budget_form_obj13 = k
+                    break
+            if request.POST['Budgets14']:
+                budget_form_obj14 = fm_budgethead.objects.filter(id = request.POST['Budgets14'])
+                for k in budget_form_obj14:
+                    budget_form_obj14 = k
+                    break
+            if request.POST['Budgets15']:
+                budget_form_obj15 = fm_budgethead.objects.filter(id = request.POST['Budgets15'])
+                for k in budget_form_obj15:
+                    budget_form_obj15 = k
+                    break
             try:
                 new_req = fm_ptctrans(ptctransDate = request.POST['Date_ptcform'],ptcVendor=request.POST['Vendor'],ptcDesc=request.POST['Description'],ptctransValue=request.POST['Value'],ptctransHead=budget_form_obj,ptctransInvoiceStatus =request.POST['choices'], ptctransInvoiceFile=request.FILES['file'])
-                if not (request.POST['Date_ptcform2']== "" or request.POST['Vendor2']=="" or request.POST['Description2']=="" or request.POST['Value2']=="" or request.POST['choices2']=="" or request.FILES['file2']==""):
-                    new_req2 = fm_ptctrans(ptctransDate = request.POST['Date_ptcform2'],ptcVendor=request.POST['Vendor2'],ptcDesc=request.POST['Description2'],ptctransValue=request.POST['Value2'],ptctransHead=budget_form_obj,ptctransInvoiceStatus =request.POST['choices2'], ptctransInvoiceFile=request.FILES['file2'])
-                if not (request.POST['Date_ptcform3']== "" or request.POST['Vendor3']=="" or request.POST['Description3']=="" or request.POST['Value3']=="" or request.POST['choices3']=="" or request.FILES['file3']==""):
-                    new_req3 = fm_ptctrans(ptctransDate = request.POST['Date_ptcform3'],ptcVendor=request.POST['Vendor3'],ptcDesc=request.POST['Description3'],ptctransValue=request.POST['Value3'],ptctransHead=budget_form_obj,ptctransInvoiceStatus =request.POST['choices3'], ptctransInvoiceFile=request.FILES['file3'])
-                if not (request.POST['Date_ptcform4']== "" or request.POST['Vendor4']=="" or request.POST['Description4']=="" or request.POST['Value4']=="" or request.POST['choices4']=="" or request.FILES['file4']==""):
-                    new_req4 = fm_ptctrans(ptctransDate = request.POST['Date_ptcform4'],ptcVendor=request.POST['Vendor4'],ptcDesc=request.POST['Description4'],ptctransValue=request.POST['Value4'],ptctransHead=budget_form_obj,ptctransInvoiceStatus =request.POST['choices4'], ptctransInvoiceFile=request.FILES['file4'])
-                if not (request.POST['Date_ptcform5']== "" or request.POST['Vendor5']=="" or request.POST['Description5']=="" or request.POST['Value5']=="" or request.POST['choices5']=="" or request.FILES['file5']==""):
-                    new_req5 = fm_ptctrans(ptctransDate = request.POST['Date_ptcform5'],ptcVendor=request.POST['Vendor5'],ptcDesc=request.POST['Description5'],ptctransValue=request.POST['Value5'],ptctransHead=budget_form_obj,ptctransInvoiceStatus =request.POST['choices5'], ptctransInvoiceFile=request.FILES['file5'])
-                if not (request.POST['Date_ptcform6']== "" or request.POST['Vendor6']=="" or request.POST['Description6']=="" or request.POST['Value6']=="" or request.POST['choices6']=="" or request.FILES['file6']==""):
-                    new_req6 = fm_ptctrans(ptctransDate = request.POST['Date_ptcform6'],ptcVendor=request.POST['Vendor6'],ptcDesc=request.POST['Description6'],ptctransValue=request.POST['Value6'],ptctransHead=budget_form_obj,ptctransInvoiceStatus =request.POST['choices6'], ptctransInvoiceFile=request.FILES['file6'])
-                if not (request.POST['Date_ptcform7']== "" or request.POST['Vendor7']=="" or request.POST['Description7']=="" or request.POST['Value7']=="" or request.POST['choices7']=="" or request.FILES['file7']==""):
-                    new_req7 = fm_ptctrans(ptctransDate = request.POST['Date_ptcform7'],ptcVendor=request.POST['Vendor7'],ptcDesc=request.POST['Description7'],ptctransValue=request.POST['Value7'],ptctransHead=budget_form_obj,ptctransInvoiceStatus =request.POST['choices7'], ptctransInvoiceFile=request.FILES['file7'])
-                if not (request.POST['Date_ptcform8']== "" or request.POST['Vendor8']=="" or request.POST['Description8']=="" or request.POST['Value8']=="" or request.POST['choices8']=="" or request.FILES['file8']==""):
-                    new_req8 = fm_ptctrans(ptctransDate = request.POST['Date_ptcform8'],ptcVendor=request.POST['Vendor8'],ptcDesc=request.POST['Description8'],ptctransValue=request.POST['Value8'],ptctransHead=budget_form_obj,ptctransInvoiceStatus =request.POST['choices8'], ptctransInvoiceFile=request.FILES['file8'])
-                if not (request.POST['Date_ptcform9']== "" or request.POST['Vendor9']=="" or request.POST['Description9']=="" or request.POST['Value9']=="" or request.POST['choices9']=="" or request.FILES['file9']==""):
-                    new_req9 = fm_ptctrans(ptctransDate = request.POST['Date_ptcform9'],ptcVendor=request.POST['Vendor9'],ptcDesc=request.POST['Description9'],ptctransValue=request.POST['Value9'],ptctransHead=budget_form_obj,ptctransInvoiceStatus =request.POST['choices9'], ptctransInvoiceFile=request.FILES['file9'])
-                if not (request.POST['Date_ptcform10']== "" or request.POST['Vendor10']=="" or request.POST['Description10']=="" or request.POST['Value10']=="" or request.POST['choices10']=="" or request.FILES['file10']==""):
-                    new_req10 = fm_ptctrans(ptctransDate = request.POST['Date_ptcform10'],ptcVendor=request.POST['Vendor10'],ptcDesc=request.POST['Description10'],ptctransValue=request.POST['Value10'],ptctransHead=budget_form_obj,ptctransInvoiceStatus =request.POST['choices10'], ptctransInvoiceFile=request.FILES['file10'])
-                if not (request.POST['Date_ptcform11']== "" or request.POST['Vendor11']=="" or request.POST['Description11']=="" or request.POST['Value11']=="" or request.POST['choices11']=="" or request.FILES['file11']==""):
-                    new_req11 = fm_ptctrans(ptctransDate = request.POST['Date_ptcform11'],ptcVendor=request.POST['Vendor11'],ptcDesc=request.POST['Description11'],ptctransValue=request.POST['Value11'],ptctransHead=budget_form_obj,ptctransInvoiceStatus =request.POST['choices11'], ptctransInvoiceFile=request.FILES['file11'])
-                if not (request.POST['Date_ptcform12']== "" or request.POST['Vendor12']=="" or request.POST['Description12']=="" or request.POST['Value12']=="" or request.POST['choices12']=="" or request.FILES['file12']==""):
-                    new_req12 = fm_ptctrans(ptctransDate = request.POST['Date_ptcform12'],ptcVendor=request.POST['Vendor12'],ptcDesc=request.POST['Description12'],ptctransValue=request.POST['Value12'],ptctransHead=budget_form_obj,ptctransInvoiceStatus =request.POST['choices12'], ptctransInvoiceFile=request.FILES['file12'])
-                if not (request.POST['Date_ptcform13']== "" or request.POST['Vendor13']=="" or request.POST['Description13']=="" or request.POST['Value13']=="" or request.POST['choices13']=="" or request.FILES['file13']==""):
-                    new_req13 = fm_ptctrans(ptctransDate = request.POST['Date_ptcform13'],ptcVendor=request.POST['Vendor13'],ptcDesc=request.POST['Description13'],ptctransValue=request.POST['Value13'],ptctransHead=budget_form_obj,ptctransInvoiceStatus =request.POST['choices13'], ptctransInvoiceFile=request.FILES['file13'])
-                if not (request.POST['Date_ptcform14']== "" or request.POST['Vendor14']=="" or request.POST['Description14']=="" or request.POST['Value14']=="" or request.POST['choices14']=="" or request.FILES['file14']==""):
-                    new_req14 = fm_ptctrans(ptctransDate = request.POST['Date_ptcform14'],ptcVendor=request.POST['Vendor14'],ptcDesc=request.POST['Description14'],ptctransValue=request.POST['Value14'],ptctransHead=budget_form_obj,ptctransInvoiceStatus =request.POST['choices14'], ptctransInvoiceFile=request.FILES['file14'])
-                if not (request.POST['Date_ptcform15']== "" or request.POST['Vendor15']=="" or request.POST['Description15']=="" or request.POST['Value15']=="" or request.POST['choices15']=="" or request.FILES['file15']==""):
-                    new_req15 = fm_ptctrans(ptctransDate = request.POST['Date_ptcform15'],ptcVendor=request.POST['Vendor15'],ptcDesc=request.POST['Description15'],ptctransValue=request.POST['Value15'],ptctransHead=budget_form_obj,ptctransInvoiceStatus =request.POST['choices15'], ptctransInvoiceFile=request.FILES['file15'])
+                if not (request.POST['Date_ptcform2']== "" or request.POST['Vendor2']=="" or request.POST['Description2']=="" or request.POST['Value2']=="" or request.POST['choices2']=="" or request.FILES['file2']=="" or request.POST['Budgets2']==""):
+                    new_req2 = fm_ptctrans(ptctransDate = request.POST['Date_ptcform2'],ptcVendor=request.POST['Vendor2'],ptcDesc=request.POST['Description2'],ptctransValue=request.POST['Value2'],ptctransHead=budget_form_obj2,ptctransInvoiceStatus =request.POST['choices2'], ptctransInvoiceFile=request.FILES['file2'])
+                if not (request.POST['Date_ptcform3']== "" or request.POST['Vendor3']=="" or request.POST['Description3']=="" or request.POST['Value3']=="" or request.POST['choices3']=="" or request.FILES['file3']=="" or request.POST['Budgets3']==""):
+                    new_req3 = fm_ptctrans(ptctransDate = request.POST['Date_ptcform3'],ptcVendor=request.POST['Vendor3'],ptcDesc=request.POST['Description3'],ptctransValue=request.POST['Value3'],ptctransHead=budget_form_obj3,ptctransInvoiceStatus =request.POST['choices3'], ptctransInvoiceFile=request.FILES['file3'])
+                if not (request.POST['Date_ptcform4']== "" or request.POST['Vendor4']=="" or request.POST['Description4']=="" or request.POST['Value4']=="" or request.POST['choices4']=="" or request.FILES['file4']=="" or request.POST['Budgets4']==""):
+                    new_req4 = fm_ptctrans(ptctransDate = request.POST['Date_ptcform4'],ptcVendor=request.POST['Vendor4'],ptcDesc=request.POST['Description4'],ptctransValue=request.POST['Value4'],ptctransHead=budget_form_obj4,ptctransInvoiceStatus =request.POST['choices4'], ptctransInvoiceFile=request.FILES['file4'])
+                if not (request.POST['Date_ptcform5']== "" or request.POST['Vendor5']=="" or request.POST['Description5']=="" or request.POST['Value5']=="" or request.POST['choices5']=="" or request.FILES['file5']=="" or request.POST['Budgets5']==""):
+                    new_req5 = fm_ptctrans(ptctransDate = request.POST['Date_ptcform5'],ptcVendor=request.POST['Vendor5'],ptcDesc=request.POST['Description5'],ptctransValue=request.POST['Value5'],ptctransHead=budget_form_obj5,ptctransInvoiceStatus =request.POST['choices5'], ptctransInvoiceFile=request.FILES['file5'])
+                if not (request.POST['Date_ptcform6']== "" or request.POST['Vendor6']=="" or request.POST['Description6']=="" or request.POST['Value6']=="" or request.POST['choices6']=="" or request.FILES['file6']=="" or request.POST['Budgets6']==""):
+                    new_req6 = fm_ptctrans(ptctransDate = request.POST['Date_ptcform6'],ptcVendor=request.POST['Vendor6'],ptcDesc=request.POST['Description6'],ptctransValue=request.POST['Value6'],ptctransHead=budget_form_obj6,ptctransInvoiceStatus =request.POST['choices6'], ptctransInvoiceFile=request.FILES['file6'])
+                if not (request.POST['Date_ptcform7']== "" or request.POST['Vendor7']=="" or request.POST['Description7']=="" or request.POST['Value7']=="" or request.POST['choices7']=="" or request.FILES['file7']=="" or request.POST['Budgets7']==""):
+                    new_req7 = fm_ptctrans(ptctransDate = request.POST['Date_ptcform7'],ptcVendor=request.POST['Vendor7'],ptcDesc=request.POST['Description7'],ptctransValue=request.POST['Value7'],ptctransHead=budget_form_obj7,ptctransInvoiceStatus =request.POST['choices7'], ptctransInvoiceFile=request.FILES['file7'])
+                if not (request.POST['Date_ptcform8']== "" or request.POST['Vendor8']=="" or request.POST['Description8']=="" or request.POST['Value8']=="" or request.POST['choices8']=="" or request.FILES['file8']=="" or request.POST['Budgets8']==""):
+                    new_req8 = fm_ptctrans(ptctransDate = request.POST['Date_ptcform8'],ptcVendor=request.POST['Vendor8'],ptcDesc=request.POST['Description8'],ptctransValue=request.POST['Value8'],ptctransHead=budget_form_obj8,ptctransInvoiceStatus =request.POST['choices8'], ptctransInvoiceFile=request.FILES['file8'])
+                if not (request.POST['Date_ptcform9']== "" or request.POST['Vendor9']=="" or request.POST['Description9']=="" or request.POST['Value9']=="" or request.POST['choices9']=="" or request.FILES['file9']=="" or request.POST['Budgets9']==""):
+                    new_req9 = fm_ptctrans(ptctransDate = request.POST['Date_ptcform9'],ptcVendor=request.POST['Vendor9'],ptcDesc=request.POST['Description9'],ptctransValue=request.POST['Value9'],ptctransHead=budget_form_obj9,ptctransInvoiceStatus =request.POST['choices9'], ptctransInvoiceFile=request.FILES['file9'])
+                if not (request.POST['Date_ptcform10']== "" or request.POST['Vendor10']=="" or request.POST['Description10']=="" or request.POST['Value10']=="" or request.POST['choices10']=="" or request.FILES['file10']=="" or request.POST['Budgets10']==""):
+                    new_req10 = fm_ptctrans(ptctransDate = request.POST['Date_ptcform10'],ptcVendor=request.POST['Vendor10'],ptcDesc=request.POST['Description10'],ptctransValue=request.POST['Value10'],ptctransHead=budget_form_obj10,ptctransInvoiceStatus =request.POST['choices10'], ptctransInvoiceFile=request.FILES['file10'])
+                if not (request.POST['Date_ptcform11']== "" or request.POST['Vendor11']=="" or request.POST['Description11']=="" or request.POST['Value11']=="" or request.POST['choices11']=="" or request.FILES['file11']=="" or request.POST['Budgets11']==""):
+                    new_req11 = fm_ptctrans(ptctransDate = request.POST['Date_ptcform11'],ptcVendor=request.POST['Vendor11'],ptcDesc=request.POST['Description11'],ptctransValue=request.POST['Value11'],ptctransHead=budget_form_obj11,ptctransInvoiceStatus =request.POST['choices11'], ptctransInvoiceFile=request.FILES['file11'])
+                if not (request.POST['Date_ptcform12']== "" or request.POST['Vendor12']=="" or request.POST['Description12']=="" or request.POST['Value12']=="" or request.POST['choices12']=="" or request.FILES['file12']=="" or request.POST['Budgets12']==""):
+                    new_req12 = fm_ptctrans(ptctransDate = request.POST['Date_ptcform12'],ptcVendor=request.POST['Vendor12'],ptcDesc=request.POST['Description12'],ptctransValue=request.POST['Value12'],ptctransHead=budget_form_obj12,ptctransInvoiceStatus =request.POST['choices12'], ptctransInvoiceFile=request.FILES['file12'])
+                if not (request.POST['Date_ptcform13']== "" or request.POST['Vendor13']=="" or request.POST['Description13']=="" or request.POST['Value13']=="" or request.POST['choices13']=="" or request.FILES['file13']=="" or request.POST['Budgets13']==""):
+                    new_req13 = fm_ptctrans(ptctransDate = request.POST['Date_ptcform13'],ptcVendor=request.POST['Vendor13'],ptcDesc=request.POST['Description13'],ptctransValue=request.POST['Value13'],ptctransHead=budget_form_obj13,ptctransInvoiceStatus =request.POST['choices13'], ptctransInvoiceFile=request.FILES['file13'])
+                if not (request.POST['Date_ptcform14']== "" or request.POST['Vendor14']=="" or request.POST['Description14']=="" or request.POST['Value14']=="" or request.POST['choices14']=="" or request.FILES['file14']=="" or request.POST['Budgets14']==""):
+                    new_req14 = fm_ptctrans(ptctransDate = request.POST['Date_ptcform14'],ptcVendor=request.POST['Vendor14'],ptcDesc=request.POST['Description14'],ptctransValue=request.POST['Value14'],ptctransHead=budget_form_obj14,ptctransInvoiceStatus =request.POST['choices14'], ptctransInvoiceFile=request.FILES['file14'])
+                if not (request.POST['Date_ptcform15']== "" or request.POST['Vendor15']=="" or request.POST['Description15']=="" or request.POST['Value15']=="" or request.POST['choices15']=="" or request.FILES['file15']=="" or request.POST['Budgets15']==""):
+                    new_req15 = fm_ptctrans(ptctransDate = request.POST['Date_ptcform15'],ptcVendor=request.POST['Vendor15'],ptcDesc=request.POST['Description15'],ptctransValue=request.POST['Value15'],ptctransHead=budget_form_obj15,ptctransInvoiceStatus =request.POST['choices15'], ptctransInvoiceFile=request.FILES['file15'])
 
 
 
@@ -352,47 +431,47 @@ def ptcproject(request):
             try:
                 new_req = fm_ptctrans(uID=j,prID=pr_obj,ptcID=ptc_obj,ptctransDate = request.POST['Date_ptcform'],ptcVendor=request.POST['Vendor'],ptcDesc=request.POST['Description'],ptctransValue=request.POST['Value'],ptctransHead=budget_form_obj,ptctransInvoiceStatus =request.POST['choices'], ptctransInvoiceFile=request.FILES['file'])
                 new_req.save()
-                if not (request.POST['Date_ptcform2']== "" or request.POST['Vendor2']=="" or request.POST['Description2']=="" or request.POST['Value2']=="" or request.POST['choices2']=="" or request.FILES['file2']==""):
-                    new_req2 = fm_ptctrans(uID=j,prID=pr_obj,ptcID=ptc_obj,ptctransDate = request.POST['Date_ptcform2'],ptcVendor=request.POST['Vendor2'],ptcDesc=request.POST['Description2'],ptctransValue=request.POST['Value2'],ptctransHead=budget_form_obj,ptctransInvoiceStatus =request.POST['choices2'], ptctransInvoiceFile=request.FILES['file2'])
+                if not (request.POST['Date_ptcform2']== "" or request.POST['Vendor2']=="" or request.POST['Description2']=="" or request.POST['Value2']=="" or request.POST['choices2']=="" or request.FILES['file2']=="" or request.POST['Budgets2']=="=="""):
+                    new_req2 = fm_ptctrans(uID=j,prID=pr_obj,ptcID=ptc_obj,ptctransDate = request.POST['Date_ptcform2'],ptcVendor=request.POST['Vendor2'],ptcDesc=request.POST['Description2'],ptctransValue=request.POST['Value2'],ptctransHead=budget_form_obj2,ptctransInvoiceStatus =request.POST['choices2'], ptctransInvoiceFile=request.FILES['file2'])
                     new_req2.save()
-                if not (request.POST['Date_ptcform3']== "" or request.POST['Vendor3']=="" or request.POST['Description3']=="" or request.POST['Value3']=="" or request.POST['choices3']=="" or request.FILES['file3']==""):
-                    new_req3 = fm_ptctrans(uID=j,prID=pr_obj,ptcID=ptc_obj,ptctransDate = request.POST['Date_ptcform3'],ptcVendor=request.POST['Vendor3'],ptcDesc=request.POST['Description3'],ptctransValue=request.POST['Value3'],ptctransHead=budget_form_obj,ptctransInvoiceStatus =request.POST['choices3'], ptctransInvoiceFile=request.FILES['file3'])
+                if not (request.POST['Date_ptcform3']== "" or request.POST['Vendor3']=="" or request.POST['Description3']=="" or request.POST['Value3']=="" or request.POST['choices3']=="" or request.FILES['file3']=="" or request.POST['Budgets3']==""):
+                    new_req3 = fm_ptctrans(uID=j,prID=pr_obj,ptcID=ptc_obj,ptctransDate = request.POST['Date_ptcform3'],ptcVendor=request.POST['Vendor3'],ptcDesc=request.POST['Description3'],ptctransValue=request.POST['Value3'],ptctransHead=budget_form_obj3,ptctransInvoiceStatus =request.POST['choices3'], ptctransInvoiceFile=request.FILES['file3'])
                     new_req3.save()
-                if not (request.POST['Date_ptcform4']== "" or request.POST['Vendor4']=="" or request.POST['Description4']=="" or request.POST['Value4']=="" or request.POST['choices4']=="" or request.FILES['file4']==""):
-                    new_req4 = fm_ptctrans(uID=j,prID=pr_obj,ptcID=ptc_obj,ptctransDate = request.POST['Date_ptcform4'],ptcVendor=request.POST['Vendor4'],ptcDesc=request.POST['Description4'],ptctransValue=request.POST['Value4'],ptctransHead=budget_form_obj,ptctransInvoiceStatus =request.POST['choices4'], ptctransInvoiceFile=request.FILES['file4'])
+                if not (request.POST['Date_ptcform4']== "" or request.POST['Vendor4']=="" or request.POST['Description4']=="" or request.POST['Value4']=="" or request.POST['choices4']=="" or request.FILES['file4']=="" or request.POST['Budgets4']==""):
+                    new_req4 = fm_ptctrans(uID=j,prID=pr_obj,ptcID=ptc_obj,ptctransDate = request.POST['Date_ptcform4'],ptcVendor=request.POST['Vendor4'],ptcDesc=request.POST['Description4'],ptctransValue=request.POST['Value4'],ptctransHead=budget_form_obj4,ptctransInvoiceStatus =request.POST['choices4'], ptctransInvoiceFile=request.FILES['file4'])
                     new_req4.save()
-                if not (request.POST['Date_ptcform5']== "" or request.POST['Vendor5']=="" or request.POST['Description5']=="" or request.POST['Value5']=="" or request.POST['choices5']=="" or request.FILES['file5']==""):
-                    new_req5 = fm_ptctrans(uID=j,prID=pr_obj,ptcID=ptc_obj,ptctransDate = request.POST['Date_ptcform5'],ptcVendor=request.POST['Vendor5'],ptcDesc=request.POST['Description5'],ptctransValue=request.POST['Value5'],ptctransHead=budget_form_obj,ptctransInvoiceStatus =request.POST['choices5'], ptctransInvoiceFile=request.FILES['file5'])
+                if not (request.POST['Date_ptcform5']== "" or request.POST['Vendor5']=="" or request.POST['Description5']=="" or request.POST['Value5']=="" or request.POST['choices5']=="" or request.FILES['file5']=="" or request.POST['Budgets5']==""):
+                    new_req5 = fm_ptctrans(uID=j,prID=pr_obj,ptcID=ptc_obj,ptctransDate = request.POST['Date_ptcform5'],ptcVendor=request.POST['Vendor5'],ptcDesc=request.POST['Description5'],ptctransValue=request.POST['Value5'],ptctransHead=budget_form_obj5,ptctransInvoiceStatus =request.POST['choices5'], ptctransInvoiceFile=request.FILES['file5'])
                     new_req5.save()
-                if not (request.POST['Date_ptcform6']== "" or request.POST['Vendor6']=="" or request.POST['Description6']=="" or request.POST['Value6']=="" or request.POST['choices6']=="" or request.FILES['file6']==""):
-                    new_req6 = fm_ptctrans(uID=j,prID=pr_obj,ptcID=ptc_obj,ptctransDate = request.POST['Date_ptcform6'],ptcVendor=request.POST['Vendor6'],ptcDesc=request.POST['Description6'],ptctransValue=request.POST['Value6'],ptctransHead=budget_form_obj,ptctransInvoiceStatus =request.POST['choices6'], ptctransInvoiceFile=request.FILES['file6'])
+                if not (request.POST['Date_ptcform6']== "" or request.POST['Vendor6']=="" or request.POST['Description6']=="" or request.POST['Value6']=="" or request.POST['choices6']=="" or request.FILES['file6']=="" or request.POST['Budgets6']==""):
+                    new_req6 = fm_ptctrans(uID=j,prID=pr_obj,ptcID=ptc_obj,ptctransDate = request.POST['Date_ptcform6'],ptcVendor=request.POST['Vendor6'],ptcDesc=request.POST['Description6'],ptctransValue=request.POST['Value6'],ptctransHead=budget_form_obj6,ptctransInvoiceStatus =request.POST['choices6'], ptctransInvoiceFile=request.FILES['file6'])
                     new_req6.save()
-                if not (request.POST['Date_ptcform7']== "" or request.POST['Vendor7']=="" or request.POST['Description7']=="" or request.POST['Value7']=="" or request.POST['choices7']=="" or request.FILES['file7']==""):
-                    new_req7 = fm_ptctrans(uID=j,prID=pr_obj,ptcID=ptc_obj,ptctransDate = request.POST['Date_ptcform7'],ptcVendor=request.POST['Vendor7'],ptcDesc=request.POST['Description7'],ptctransValue=request.POST['Value7'],ptctransHead=budget_form_obj,ptctransInvoiceStatus =request.POST['choices7'], ptctransInvoiceFile=request.FILES['file7'])
+                if not (request.POST['Date_ptcform7']== "" or request.POST['Vendor7']=="" or request.POST['Description7']=="" or request.POST['Value7']=="" or request.POST['choices7']=="" or request.FILES['file7']=="" or request.POST['Budgets7']==""):
+                    new_req7 = fm_ptctrans(uID=j,prID=pr_obj,ptcID=ptc_obj,ptctransDate = request.POST['Date_ptcform7'],ptcVendor=request.POST['Vendor7'],ptcDesc=request.POST['Description7'],ptctransValue=request.POST['Value7'],ptctransHead=budget_form_obj7,ptctransInvoiceStatus =request.POST['choices7'], ptctransInvoiceFile=request.FILES['file7'])
                     new_req7.save()
-                if not (request.POST['Date_ptcform8']== "" or request.POST['Vendor8']=="" or request.POST['Description8']=="" or request.POST['Value8']=="" or request.POST['choices8']=="" or request.FILES['file8']==""):
-                    new_req8 = fm_ptctrans(uID=j,prID=pr_obj,ptcID=ptc_obj,ptctransDate = request.POST['Date_ptcform8'],ptcVendor=request.POST['Vendor8'],ptcDesc=request.POST['Description8'],ptctransValue=request.POST['Value8'],ptctransHead=budget_form_obj,ptctransInvoiceStatus =request.POST['choices8'], ptctransInvoiceFile=request.FILES['file8'])
+                if not (request.POST['Date_ptcform8']== "" or request.POST['Vendor8']=="" or request.POST['Description8']=="" or request.POST['Value8']=="" or request.POST['choices8']=="" or request.FILES['file8']=="" or request.POST['Budgets8']==""):
+                    new_req8 = fm_ptctrans(uID=j,prID=pr_obj,ptcID=ptc_obj,ptctransDate = request.POST['Date_ptcform8'],ptcVendor=request.POST['Vendor8'],ptcDesc=request.POST['Description8'],ptctransValue=request.POST['Value8'],ptctransHead=budget_form_obj8,ptctransInvoiceStatus =request.POST['choices8'], ptctransInvoiceFile=request.FILES['file8'])
                     new_req8.save()
-                if not (request.POST['Date_ptcform9']== "" or request.POST['Vendor9']=="" or request.POST['Description9']=="" or request.POST['Value9']=="" or request.POST['choices9']=="" or request.FILES['file9']==""):
-                    new_req9 = fm_ptctrans(uID=j,prID=pr_obj,ptcID=ptc_obj,ptctransDate = request.POST['Date_ptcform9'],ptcVendor=request.POST['Vendor9'],ptcDesc=request.POST['Description9'],ptctransValue=request.POST['Value9'],ptctransHead=budget_form_obj,ptctransInvoiceStatus =request.POST['choices9'], ptctransInvoiceFile=request.FILES['file9'])
+                if not (request.POST['Date_ptcform9']== "" or request.POST['Vendor9']=="" or request.POST['Description9']=="" or request.POST['Value9']=="" or request.POST['choices9']=="" or request.FILES['file9']=="" or request.POST['Budgets9']==""):
+                    new_req9 = fm_ptctrans(uID=j,prID=pr_obj,ptcID=ptc_obj,ptctransDate = request.POST['Date_ptcform9'],ptcVendor=request.POST['Vendor9'],ptcDesc=request.POST['Description9'],ptctransValue=request.POST['Value9'],ptctransHead=budget_form_obj9,ptctransInvoiceStatus =request.POST['choices9'], ptctransInvoiceFile=request.FILES['file9'])
                     new_req9.save()
-                if not (request.POST['Date_ptcform10']== "" or request.POST['Vendor10']=="" or request.POST['Description10']=="" or request.POST['Value10']=="" or request.POST['choices10']=="" or request.FILES['file10']==""):
-                    new_req10 = fm_ptctrans(uID=j,prID=pr_obj,ptcID=ptc_obj,ptctransDate = request.POST['Date_ptcform10'],ptcVendor=request.POST['Vendor10'],ptcDesc=request.POST['Description10'],ptctransValue=request.POST['Value10'],ptctransHead=budget_form_obj,ptctransInvoiceStatus =request.POST['choices10'], ptctransInvoiceFile=request.FILES['file10'])
+                if not (request.POST['Date_ptcform10']== "" or request.POST['Vendor10']=="" or request.POST['Description10']=="" or request.POST['Value10']=="" or request.POST['choices10']=="" or request.FILES['file10']=="" or request.POST['Budgets10']==""):
+                    new_req10 = fm_ptctrans(uID=j,prID=pr_obj,ptcID=ptc_obj,ptctransDate = request.POST['Date_ptcform10'],ptcVendor=request.POST['Vendor10'],ptcDesc=request.POST['Description10'],ptctransValue=request.POST['Value10'],ptctransHead=budget_form_obj10,ptctransInvoiceStatus =request.POST['choices10'], ptctransInvoiceFile=request.FILES['file10'])
                     new_req10.save()
-                if not (request.POST['Date_ptcform11']== "" or request.POST['Vendor11']=="" or request.POST['Description11']=="" or request.POST['Value11']=="" or request.POST['choices11']=="" or request.FILES['file11']==""):
-                    new_req11 = fm_ptctrans(uID=j,prID=pr_obj,ptcID=ptc_obj,ptctransDate = request.POST['Date_ptcform11'],ptcVendor=request.POST['Vendor11'],ptcDesc=request.POST['Description11'],ptctransValue=request.POST['Value11'],ptctransHead=budget_form_obj,ptctransInvoiceStatus =request.POST['choices11'], ptctransInvoiceFile=request.FILES['file11'])
+                if not (request.POST['Date_ptcform11']== "" or request.POST['Vendor11']=="" or request.POST['Description11']=="" or request.POST['Value11']=="" or request.POST['choices11']=="" or request.FILES['file11']=="" or request.POST['Budgets11']==""):
+                    new_req11 = fm_ptctrans(uID=j,prID=pr_obj,ptcID=ptc_obj,ptctransDate = request.POST['Date_ptcform11'],ptcVendor=request.POST['Vendor11'],ptcDesc=request.POST['Description11'],ptctransValue=request.POST['Value11'],ptctransHead=budget_form_obj11,ptctransInvoiceStatus =request.POST['choices11'], ptctransInvoiceFile=request.FILES['file11'])
                     new_req11.save()
-                if not (request.POST['Date_ptcform12']== "" or request.POST['Vendor12']=="" or request.POST['Description12']=="" or request.POST['Value12']=="" or request.POST['choices12']=="" or request.FILES['file12']==""):
-                    new_req12 = fm_ptctrans(uID=j,prID=pr_obj,ptcID=ptc_obj,ptctransDate = request.POST['Date_ptcform12'],ptcVendor=request.POST['Vendor12'],ptcDesc=request.POST['Description12'],ptctransValue=request.POST['Value12'],ptctransHead=budget_form_obj,ptctransInvoiceStatus =request.POST['choices12'], ptctransInvoiceFile=request.FILES['file12'])
+                if not (request.POST['Date_ptcform12']== "" or request.POST['Vendor12']=="" or request.POST['Description12']=="" or request.POST['Value12']=="" or request.POST['choices12']=="" or request.FILES['file12']=="" or request.POST['Budgets12']==""):
+                    new_req12 = fm_ptctrans(uID=j,prID=pr_obj,ptcID=ptc_obj,ptctransDate = request.POST['Date_ptcform12'],ptcVendor=request.POST['Vendor12'],ptcDesc=request.POST['Description12'],ptctransValue=request.POST['Value12'],ptctransHead=budget_form_obj12,ptctransInvoiceStatus =request.POST['choices12'], ptctransInvoiceFile=request.FILES['file12'])
                     new_req12.save()
-                if not (request.POST['Date_ptcform13']== "" or request.POST['Vendor13']=="" or request.POST['Description13']=="" or request.POST['Value13']=="" or request.POST['choices13']=="" or request.FILES['file13']==""):
-                    new_req13 = fm_ptctrans(uID=j,prID=pr_obj,ptcID=ptc_obj,ptctransDate = request.POST['Date_ptcform13'],ptcVendor=request.POST['Vendor13'],ptcDesc=request.POST['Description13'],ptctransValue=request.POST['Value13'],ptctransHead=budget_form_obj,ptctransInvoiceStatus =request.POST['choices13'], ptctransInvoiceFile=request.FILES['file13'])
+                if not (request.POST['Date_ptcform13']== "" or request.POST['Vendor13']=="" or request.POST['Description13']=="" or request.POST['Value13']=="" or request.POST['choices13']=="" or request.FILES['file13']=="" or request.POST['Budgets13']==""):
+                    new_req13 = fm_ptctrans(uID=j,prID=pr_obj,ptcID=ptc_obj,ptctransDate = request.POST['Date_ptcform13'],ptcVendor=request.POST['Vendor13'],ptcDesc=request.POST['Description13'],ptctransValue=request.POST['Value13'],ptctransHead=budget_form_obj13,ptctransInvoiceStatus =request.POST['choices13'], ptctransInvoiceFile=request.FILES['file13'])
                     new_req13.save()
-                if not (request.POST['Date_ptcform14']== "" or request.POST['Vendor14']=="" or request.POST['Description14']=="" or request.POST['Value14']=="" or request.POST['choices14']=="" or request.FILES['file14']==""):
-                    new_req14 = fm_ptctrans(uID=j,prID=pr_obj,ptcID=ptc_obj,ptctransDate = request.POST['Date_ptcform14'],ptcVendor=request.POST['Vendor14'],ptcDesc=request.POST['Description14'],ptctransValue=request.POST['Value14'],ptctransHead=budget_form_obj,ptctransInvoiceStatus =request.POST['choices14'], ptctransInvoiceFile=request.FILES['file14'])
+                if not (request.POST['Date_ptcform14']== "" or request.POST['Vendor14']=="" or request.POST['Description14']=="" or request.POST['Value14']=="" or request.POST['choices14']=="" or request.FILES['file14']=="" or request.POST['Budgets14']==""):
+                    new_req14 = fm_ptctrans(uID=j,prID=pr_obj,ptcID=ptc_obj,ptctransDate = request.POST['Date_ptcform14'],ptcVendor=request.POST['Vendor14'],ptcDesc=request.POST['Description14'],ptctransValue=request.POST['Value14'],ptctransHead=budget_form_obj14,ptctransInvoiceStatus =request.POST['choices14'], ptctransInvoiceFile=request.FILES['file14'])
                     new_req14.save()
-                if not (request.POST['Date_ptcform15']== "" or request.POST['Vendor15']=="" or request.POST['Description15']=="" or request.POST['Value15']=="" or request.POST['choices15']=="" or request.FILES['file15']==""):
-                    new_req15 = fm_ptctrans(uID=j,prID=pr_obj,ptcID=ptc_obj,ptctransDate = request.POST['Date_ptcform15'],ptcVendor=request.POST['Vendor15'],ptcDesc=request.POST['Description15'],ptctransValue=request.POST['Value15'],ptctransHead=budget_form_obj,ptctransInvoiceStatus =request.POST['choices15'], ptctransInvoiceFile=request.FILES['file15'])
+                if not (request.POST['Date_ptcform15']== "" or request.POST['Vendor15']=="" or request.POST['Description15']=="" or request.POST['Value15']=="" or request.POST['choices15']=="" or request.FILES['file15']=="" or request.POST['Budgets15']==""):
+                    new_req15 = fm_ptctrans(uID=j,prID=pr_obj,ptcID=ptc_obj,ptctransDate = request.POST['Date_ptcform15'],ptcVendor=request.POST['Vendor15'],ptcDesc=request.POST['Description15'],ptctransValue=request.POST['Value15'],ptctransHead=budget_form_obj15,ptctransInvoiceStatus =request.POST['choices15'], ptctransInvoiceFile=request.FILES['file15'])
                     new_req15.save()
 
             except Exception as e:
@@ -657,3 +736,13 @@ def ViewMarkAudit(request,id):
         else:
             error = "Invalid Input Found"
     return render(request,"ViewMarkAudit.html",{'error':error})
+
+def ViewProject(request):
+    if request.method == "GET":
+        form = ptcprojectform()
+        return render(request, "ViewProject.html",{'form':form})
+    if request.method == "POST":
+        form = ptcprojectform(request.POST)
+        project_obj = fm_project.objects.filter(id = request.POST["prID"])
+        # budget_obj = fm_budgethead.objects.filter(prID = project_obj)
+    return render(request, "ViewProject.html")

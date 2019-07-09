@@ -18,4 +18,5 @@ urlpatterns = [
     path("view-statement/<int:id>/mark-account/",views.ViewMarkAccount, name='view-mark-statement'),
     path("view-statement/<int:ptcID>/expense-list/",views.ExpenseList, name='expense-list'),
     path("view-statement/mark-account/<str:txnID>/",views.MarkAccount, name='mark-account'),
+    path("view-project/",views.ViewProject, name='view-project'),
 ]
