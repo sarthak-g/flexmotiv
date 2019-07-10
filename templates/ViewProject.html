@@ -1,3 +1,6 @@
+{% if error %}
+<p> {{ error }} </p>
+{% endif %}
 <h2>View Project Status</h2>
 {% if form %}
 <form method="POST">
@@ -5,4 +8,20 @@
   {{ form.as_p }}
   <input type="submit">
 </form>
+{% endif %}
+{% if project_status %}
+<table border=1>
+  <tr>
+    <th>Budget Head</th>
+    <th>Budget Amount</th>
+    <th>Budget Balance</th>
+  </tr>
+{% for key, value in project_status.items %}
+<tr>
+<td>{{key}}</td>
+<td>{{ value.0 }}</td>
+<td>{{ value.1 }}</td>
+</tr>
+{% endfor %}
+</table>
 {% endif %}

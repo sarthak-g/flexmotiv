@@ -743,6 +743,23 @@ def ViewProject(request):
         return render(request, "ViewProject.html",{'form':form})
     if request.method == "POST":
         form = ptcprojectform(request.POST)
-        project_obj = fm_project.objects.filter(id = request.POST["prID"])
-        # budget_obj = fm_budgethead.objects.filter(prID = project_obj)
+        if form.is_valid():
+            try:
+                project_obj = fm_project.objects.filter(id = request.POST["prID"])
+                budget_obj = fm_budgethead.objects.filter(prID = project_obj[0])
+                project_status = {}
+                for i in budget_obj:
+                    value_sum = i.bhBalance
+                    ptctrans_obj = fm_ptctrans.objects.filter(ptctransHead = i)
+                    for j in ptctrans_obj:
+                        value_sum = value_sum + j.ptctransValue
+                    # print(i, "-", value_sum, "-", i.bhLimit)
+                    project_status[i] = [i.bhLimit,value_sum]
+                print(project_status)
+                return render(request, "ViewProject.html",{'project_status':project_status})
+            except Exception as e:
+                error = e
+        else:
+            error = 'There is some error in input given'
+        return render(request, "ViewProject.html", {'error' : error})
     return render(request, "ViewProject.html")
