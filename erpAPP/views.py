@@ -515,8 +515,8 @@ def CheckStatement(request):
                     return render(request,"CheckStatement.html",{'obj':obj})
         else:
             error = "Please check the details submitted"
-
-    return render(request,"CheckStatement.html",{"error":error})
+            return render(request,"CheckStatement.html",{"error":error})
+    return render(request,"CheckStatement.html")        
 
 def Categorize(request,txnID):
     if request.method=="GET":
