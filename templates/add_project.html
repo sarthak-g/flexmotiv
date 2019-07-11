@@ -79,6 +79,6 @@ alert("{{message}}");
   </table>
   {% if not request.method == "POST" %}
   <input type="checkbox"  id="tick" onchange="document.getElementById('terms').disabled = !this.checked;" /> I confirm that I have ensured the accuracy of the details I am typing <br><br>
-  <input type="submit" class="btn btn1" name="terms" disabled id="terms">
+  <input type="submit" class="btn btn1" name="terms" disabled id="terms" value="Submit">
   {% endif %}
 </form>
