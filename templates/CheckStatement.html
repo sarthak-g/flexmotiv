@@ -2,7 +2,7 @@
 <form method="POST">
   {% csrf_token %}
   {{form.as_table}}
-  <br><input type="Submit" name="checkstatementform">
+  <br><input type="Submit" name="checkstatementform" value="Submit">
 </form>
 {% endif %}
 {% if obj %}

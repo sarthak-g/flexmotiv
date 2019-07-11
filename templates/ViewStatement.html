@@ -3,7 +3,7 @@
 <form method="POST">
   {% csrf_token %}
   {{form.as_table}}
-  <br><input type="Submit" name="viewstatementform">
+  <br><input type="Submit" name="viewstatementform" value="Submit">
 </form>
 {% endif %}
 {% if obj %}

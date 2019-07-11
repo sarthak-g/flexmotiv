@@ -8,7 +8,7 @@
 <form action="" method="POST" >
   {% csrf_token %}
   {{form.as_p}}
-  <input type="submit" name="ptcprojectform">
+  <input type="submit" name="ptcprojectform" value="Submit">
 </form>
 {% endif %}
 {% if form_trans %}
@@ -45,7 +45,7 @@
   {{ form_trans15.as_table }}
   <input type="file" name="file15"><br>
 
-  <br><input type="submit" name="ptctransform">
+  <br><input type="submit" name="ptctransform" value="Submit">
 
 </form>
 {% endif %}
