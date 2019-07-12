@@ -1,3 +1,5 @@
+{% extends 'template_base.html' %}
+{% block content %}
 <h2>Categorize Payment</h2>
 {% for i in obj %}
 <p>Date:- {{ i.txnDate }}</p>
@@ -49,3 +51,4 @@
   <input type="submit" name="EmployeeTransferForm" value="Submit">
 </form>
 {% endif %}
+{% endblock %}

@@ -1,3 +1,5 @@
+{% extends 'template_base.html' %}
+{% block content %}
 {% if error %}
 <p> {{ error }} </p>
 {% endif %}
@@ -25,3 +27,4 @@
 {% endfor %}
 </table>
 {% endif %}
+{% endblock %}

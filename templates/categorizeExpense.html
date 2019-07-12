@@ -1,3 +1,5 @@
+{% extends 'template_base.html' %}
+{% block content %}
 {% if e %}
 <script>
   alert("{{ e }}");
@@ -5,3 +7,4 @@
 {% else %}
 <p>Expense is successfully updated as category</p>
 {% endif %}
+{% endblock %}
