@@ -1,3 +1,5 @@
+{% extends 'template_base.html' %}
+{% block content %}
 <h1>Add Project</h1>
 <p>Success!! Project has been added with following details</p>
 <p>Title: {{obj.prTitle}}</p>
@@ -19,3 +21,4 @@
 </table>
 <br>
  <button> <a href="{% url 'addprojectpdf' %}">Print Details</a> </button>
+{% endblock %}

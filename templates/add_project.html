@@ -1,3 +1,5 @@
+{% extends 'template_base.html' %}
+{% block content %}
 {% if message %}
 <script>
 alert("{{message}}");
@@ -82,3 +84,4 @@ alert("{{message}}");
   <input type="submit" class="btn btn1" name="terms" disabled id="terms" value="Submit">
   {% endif %}
 </form>
+{% endblock %}

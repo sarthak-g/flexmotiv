@@ -17,7 +17,7 @@ from django.urls import reverse_lazy
 from django.http import HttpResponseRedirect
 from easy_pdf.views import PDFTemplateView
 from django.contrib.auth.models import User
-
+from django.contrib.messages.views import SuccessMessageMixin
 
 # Create your views here.
 def account_type(request):
@@ -158,10 +158,15 @@ class transferMoney(CreateView):
     model = fm_utrans
     template_name = 'transferMoney.html'
     fields = ['utranValue','utranDesc','utranReceiver']
-
     def form_valid(self, form):
         form.instance.utranSender = self.request.user.id
         return super(transferMoney, self).form_valid(form)
+    def get_success_url(self):
+        return reverse_lazy('transferMoneysuccess')
+
+def transferMoneysuccess(request):
+    return render(request, "transferMoneysuccess.html")
+
 def financialAccount(request):
     record = fm_utrans.objects.filter(utranReceiver=request.user.id)
     record = record.filter(utranConfirmed='N')
@@ -516,7 +521,7 @@ def CheckStatement(request):
         else:
             error = "Please check the details submitted"
             return render(request,"CheckStatement.html",{"error":error})
-    return render(request,"CheckStatement.html")        
+    return render(request,"CheckStatement.html")
 
 def Categorize(request,txnID):
     if request.method=="GET":

@@ -1,6 +1,15 @@
+{% extends 'template_base.html' %}
+{% block content %}
 <h1>Transfer Money</h1>
+{% if form %}
 <form method="POST">
   {% csrf_token %}
   {{ form.as_p }}
   <button type="submit">Submit</button>
 </form>
+{% endif %}
+{% if success %}
+<p>Hello</p>
+{% endif %}
+
+{% endblock %}

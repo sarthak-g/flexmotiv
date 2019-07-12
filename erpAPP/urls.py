@@ -4,6 +4,7 @@ urlpatterns = [
     path("account-type/",views.AccountType.as_view(),name="account_type"),
     path("complete-transaction/",views.CompleteTransaction,name="transaction_complete"),
     path("transferMoney/",views.transferMoney.as_view(), name='transferMoney'),
+    path("transferMoney/success/",views.transferMoneysuccess, name='transferMoneysuccess'),
     path("financialAccount/",views.financialAccount, name='financialAccount'),
     path("financialAccount/accept/<int:pk>/",views.accept, name='accept'),
     path("financialAccount/decline/<int:pk>/",views.decline, name='decline'),
