@@ -1,3 +1,5 @@
+{% extends 'template_base.html' %}
+{% block content %}
 <h2>Overview</h2>
 <table>
   <tr>
@@ -74,3 +76,4 @@
 {% if not record_confirmed_message %}
 <p>No Transaction Credited or Debited</p>
 {% endif %}
+{% endblock %}
