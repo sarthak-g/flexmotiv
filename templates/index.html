@@ -1,4 +1,7 @@
 {% extends 'template_base.html' %}
 {% block content %}
-<button> <a href="/login/">Login</a> </button>
+
+{% if authenticated == 'Yes' %}
+    <p>Welcome</p>
+{% endif %}
 {% endblock %}

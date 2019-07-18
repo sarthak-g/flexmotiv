@@ -5,7 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>AdminLTE 3 | Dashboard</title>
   <!-- Tell the browser to be responsive to screen width -->
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="{% static "plugins/fontawesome-free/css/all.min.css" %}">
   <!-- Ionicons -->
@@ -45,11 +45,11 @@
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
 
+      {% if user.is_authenticated %}
       <li class="nav-item">
-        <a class="nav-link" href="/login/">
-          <i class="fas fa-user"></i>
-        </a>
+            <a href="/logout/"><button type="button" class="btn btn-dark">Log Out</button></a>
       </li>
+      {% endif %}
 
       <li class="nav-item">
         <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#">
