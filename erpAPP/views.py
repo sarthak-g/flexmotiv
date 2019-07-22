@@ -1,4 +1,5 @@
 from django.shortcuts import render,redirect
+from django.http import HttpResponse
 import csv, io
 from django.contrib import messages
 from .models import fm_txn,fm_utrans,fm_user_extend,fm_project,fm_budgethead,fm_ptcform,fm_ptctrans
@@ -164,15 +165,27 @@ def CompleteTransaction(request):
     return render(request,'CompleteTransaction.html',{'untagged_objects':untagged_objects})
 
 
-class transferMoney(CreateView):
+class transferMoney(AccessMixin, CreateView):
     model = fm_utrans
     template_name = 'transferMoney.html'
     fields = ['utranValue','utranDesc','utranReceiver']
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            # This will redirect to the login view
+            return redirect("/login/")
+        if not (("director" in [str(i) for i in request.user.groups.all()]) == True or (request.user.is_superuser == True) or ("projectmanager" in [str(i) for i in request.user.groups.all()]) == True):
+            # Redirect the user to somewhere else - add your URL here
+            user_access = 'No'
+            return render(request,"transferMoney.html",{"user_access":user_access})
+
+        # Checks pass, let http method handlers process the request
+        return super().dispatch(request, *args, **kwargs)
     def form_valid(self, form):
         form.instance.utranSender = self.request.user.id
         return super(transferMoney, self).form_valid(form)
     def get_success_url(self):
         return reverse_lazy('transferMoneysuccess')
+
 
 def transferMoneysuccess(request):
     return render(request, "transferMoneysuccess.html")
