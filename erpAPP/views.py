@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 import csv, io
 from django.contrib import messages
 from .models import fm_txn,fm_utrans,fm_user_extend,fm_project,fm_budgethead,fm_ptcform,fm_ptctrans
@@ -11,28 +11,37 @@ from django.conf import settings
 from django.db import IntegrityError
 import uuid
 import os.path
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required,user_passes_test
 from django.views.generic import CreateView,ListView
 from django.urls import reverse_lazy
 from django.http import HttpResponseRedirect
 from easy_pdf.views import PDFTemplateView
 from django.contrib.auth.models import User
 from django.contrib.messages.views import SuccessMessageMixin
-
+from django.contrib.auth.mixins import AccessMixin
 # Create your views here.
 def account_type(request):
     return render(request,"account_type.html")
 
-
-class AccountType(TemplateView):
+class AccountType(AccessMixin, TemplateView):
     template_name = "account_type.html"
     option_selected = ''
     accountID = 0
     # accountID = 0
     show_csv = 'No'
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            # This will redirect to the login view
+            return redirect("/login/")
+        # Checks pass, let http method handlers process the request
+        return super().dispatch(request, *args, **kwargs)
     def get(self,request):
-        form = AccountTypeForm()
-        return render(request, self.template_name, {'form':form})
+        if (("director" in [str(i) for i in request.user.groups.all()]) == True or (request.user.is_superuser == True)):
+            form = AccountTypeForm()
+            return render(request, self.template_name, {'form':form})
+        else:
+            user_access = 'No'
+            return render(request, self.template_name, {'user_access':user_access})
     def post(self, request):
         show_csv = 'Yes'
 
@@ -149,6 +158,7 @@ class AccountType(TemplateView):
                     return render(request, "pmTransactionResult.html",{'e':e})
             return render(request, "pmTransactionResult.html",{'error':error})
         return render(request,self.template_name)
+
 def CompleteTransaction(request):
     untagged_objects = fm_txn.objects.filter(txnType='U')
     return render(request,'CompleteTransaction.html',{'untagged_objects':untagged_objects})
