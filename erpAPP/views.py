@@ -539,11 +539,16 @@ def ptcproject(request):
             show_result = 'Yes'
             ##process petty cash form after submitting ptctrans form
     return render(request,"ptcproject.html",{'li':li,'sum':sum,'show_result':show_result})
-
+@login_required(login_url = '/login/')
 def CheckStatement(request):
     if request.method=="GET":
-        form = CheckStatementForm()
-        return render(request,"CheckStatement.html",{"form":form})
+        user_groups = [str(i) for i in request.user.groups.all()]
+        if (("projectmanager" in user_groups) == True or (request.user.is_superuser == True)):
+            form = CheckStatementForm()
+            return render(request,"CheckStatement.html",{"form":form})
+        else:
+            user_access = 'No'
+            return render(request,"CheckStatement.html",{"user_access":user_access})
     if request.method=="POST":
         form = CheckStatementForm(request.POST)
         name = request.POST.get("checkstatementform")
@@ -564,12 +569,17 @@ def CheckStatement(request):
             error = "Please check the details submitted"
             return render(request,"CheckStatement.html",{"error":error})
     return render(request,"CheckStatement.html")
-
+@login_required(login_url = '/login/')
 def Categorize(request,txnID):
     if request.method=="GET":
-        form = CategorizeForm()
-        obj = fm_txn.objects.filter(txnID=txnID)
-        return render(request,"categorize.html",{"form":form,"obj":obj})
+        user_groups = [str(i) for i in request.user.groups.all()]
+        if (("projectmanager" in user_groups) == True or (request.user.is_superuser == True) or ("director" in user_groups) == True):
+            form = CategorizeForm()
+            obj = fm_txn.objects.filter(txnID=txnID)
+            return render(request,"categorize.html",{"form":form,"obj":obj})
+        else:
+            user_access = 'No'
+            return render(request,"categorize.html",{"user_access":user_access})
     if request.method=="POST":
         form = CategorizeForm(request.POST)
         name = request.POST.get("EmployeeTransferForm")
@@ -623,32 +633,42 @@ def Categorize(request,txnID):
             error = "Invalid Details"
 
     return render(request,"categorize.html",{"error":error})
-
+@login_required(login_url = '/login/')
 def CategorizeExpense(request,txnID,pk):
-    e = None
-    try:
+    user_groups = [str(i) for i in request.user.groups.all()]
+    if (("projectmanager" in user_groups) == True or (request.user.is_superuser == True) or ("director" in user_groups) == True):
+        e = None
+        try:
 
-        ptc_form_obj = fm_ptcform.objects.filter(id=pk)
-        txn_obj = fm_txn.objects.filter(txnID=txnID)
-        for i in ptc_form_obj:
-            ptc_form_obj = i
-            break
-        for i in txn_obj:
-            txn_obj = i
-            break
-        ptc_form_obj.txnID = txn_obj
-        ptc_form_obj.save()
-        txn_obj.ptcID = pk
-        txn_obj.txnType = "E"
-        txn_obj.save()
-    except Exception as e:
-        pass
-    return render(request,"categorizeExpense.html",{"e":e})
-
+            ptc_form_obj = fm_ptcform.objects.filter(id=pk)
+            txn_obj = fm_txn.objects.filter(txnID=txnID)
+            for i in ptc_form_obj:
+                ptc_form_obj = i
+                break
+            for i in txn_obj:
+                txn_obj = i
+                break
+            ptc_form_obj.txnID = txn_obj
+            ptc_form_obj.save()
+            txn_obj.ptcID = pk
+            txn_obj.txnType = "E"
+            txn_obj.save()
+        except Exception as e:
+            pass
+        return render(request,"categorizeExpense.html",{"e":e})
+    else:
+        user_access = 'No'
+        return render(request,"categorizeExpense.html",{"user_access":user_access})
+@login_required(login_url = '/login/')
 def ViewStatement(request):
     if request.method=="GET":
-        form = ViewStatementForm()
-        return render(request,"ViewStatement.html",{"form":form})
+        user_groups = [str(i) for i in request.user.groups.all()]
+        if (("projectmanager" in user_groups) == True or (request.user.is_superuser == True) or ("auditor" in user_groups) == True or ("director" in user_groups) == True or ("accountant" in user_groups) == True):
+            form = ViewStatementForm()
+            return render(request,"ViewStatement.html",{"form":form})
+        else:
+            user_access = 'No'
+            return render(request,"ViewStatement.html",{"user_access":user_access})
     if request.method=="POST":
         form = ViewStatementForm(request.POST)
         name = request.POST.get("viewstatementform")
@@ -704,20 +724,31 @@ def MarkAccount(request,txnID):
         else:
             error = "Invalid Input Found"
     return render(request,"MarkAccount.html",{'error':error})
-
+@login_required(login_url = "/login/")
 def ExpenseList(request,ptcID):
-    try:
-        ptc_obj = fm_ptcform.objects.filter(id=ptcID)
-        obj = fm_ptctrans.objects.filter(ptcID = ptc_obj[0])
-        return render(request,"ExpenseList.html",{'obj':obj})
-    except:
-        error = 'No petty cash form corresponding to this ID'
-    return render(request,"ExpenseList.html",{'error':error})
-
+    user_groups = [str(i) for i in request.user.groups.all()]
+    if (("projectmanager" in user_groups) == True or (request.user.is_superuser == True) or ("auditor" in user_groups) == True or ("director" in user_groups) == True or ("accountant" in user_groups) == True):
+        try:
+            ptc_obj = fm_ptcform.objects.filter(id=ptcID)
+            obj = fm_ptctrans.objects.filter(ptcID = ptc_obj[0])
+            return render(request,"ExpenseList.html",{'obj':obj})
+        except:
+            error = 'No petty cash form corresponding to this ID'
+        return render(request,"ExpenseList.html",{'error':error})
+    else:
+        user_access = 'No'
+        return render(request,"ExpenseList.html",{'user_access':user_access})
+@login_required(login_url = "/login/")
 def ViewMarkAccount(request,id):
     if request.method=="GET":
-        form = ViewMarkAccountForm()
-        return render(request,"ViewMarkAccount.html",{'form':form})
+        user_groups = [str(i) for i in request.user.groups.all()]
+        if (("projectmanager" in user_groups) == True or (request.user.is_superuser == True) or ("auditor" in user_groups) == True or ("director" in user_groups) == True or ("accountant" in user_groups) == True):
+            form = ViewMarkAccountForm()
+            return render(request,"ViewMarkAccount.html",{'form':form})
+        else:
+            user_access = 'No'
+            return render(request,"ViewMarkAccount.html",{"user_access":user_access})
+
     if request.method=="POST":
         form = ViewMarkAccountForm(request.POST)
         if form.is_valid():
@@ -748,11 +779,16 @@ def ViewMarkAccount(request,id):
         else:
             error = "Invalid Input Found"
     return render(request,"ViewMarkAccount.html",{'error':error})
-
+@login_required(login_url = '/login/')
 def ViewMarkAudit(request,id):
     if request.method=="GET":
-        form = ViewMarkAuditForm()
-        return render(request,"ViewMarkAudit.html",{'form':form})
+        user_groups = [str(i) for i in request.user.groups.all()]
+        if (("projectmanager" in user_groups) == True or (request.user.is_superuser == True) or ("auditor" in user_groups) == True or ("director" in user_groups) == True or ("accountant" in user_groups) == True):
+            form = ViewMarkAuditForm()
+            return render(request,"ViewMarkAudit.html",{'form':form})
+        else:
+            user_access = 'No'
+            return render(request,"ViewMarkAudit.html",{"user_access":user_access})    
     if request.method=="POST":
         form = ViewMarkAuditForm(request.POST)
         if form.is_valid():
@@ -783,11 +819,17 @@ def ViewMarkAudit(request,id):
         else:
             error = "Invalid Input Found"
     return render(request,"ViewMarkAudit.html",{'error':error})
-
+@login_required(login_url = '/login/')
 def ViewProject(request):
     if request.method == "GET":
-        form = ptcprojectform()
-        return render(request, "ViewProject.html",{'form':form})
+        user_groups = [str(i) for i in request.user.groups.all()]
+        if (("projectmanager" in user_groups) == True or (request.user.is_superuser == True) or ("employee" in user_groups) == True or ("director" in user_groups) == True):
+            form = ptcprojectform()
+            return render(request, "ViewProject.html",{'form':form})
+        else:
+            user_access = 'No'
+            return render(request, "ViewProject.html",{'user_access':user_access})
+
     if request.method == "POST":
         form = ptcprojectform(request.POST)
         if form.is_valid():

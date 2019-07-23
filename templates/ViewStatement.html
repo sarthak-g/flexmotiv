@@ -1,5 +1,8 @@
 {% extends 'template_base.html' %}
 {% block content %}
+{% if user_access == 'No' %}
+<h2>You cannot access this feature</h2>
+{% else %}
 <h1>View Statement for Accountant</h1>
 {% if form %}
 <form method="POST">
@@ -53,5 +56,6 @@
 {% endif %}
 {% if message %}
 <p>{{ message }}</p>
+{% endif %}
 {% endif %}
 {% endblock %}

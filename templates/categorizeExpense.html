@@ -1,10 +1,14 @@
 {% extends 'template_base.html' %}
 {% block content %}
+{% if user_access == 'No' %}
+<h2>You cannot access this feature</h2>
+{% else %}
 {% if e %}
 <script>
   alert("{{ e }}");
 </script>
 {% else %}
 <p>Expense is successfully updated as category</p>
+{% endif %}
 {% endif %}
 {% endblock %}

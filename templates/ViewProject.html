@@ -1,5 +1,8 @@
 {% extends 'template_base.html' %}
 {% block content %}
+{% if user_access == 'No' %}
+<h2>You cannot access this feature</h2>
+{% else %}
 {% if error %}
 <p> {{ error }} </p>
 {% endif %}
@@ -26,5 +29,6 @@
 </tr>
 {% endfor %}
 </table>
+{% endif %}
 {% endif %}
 {% endblock %}

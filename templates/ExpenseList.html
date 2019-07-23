@@ -1,5 +1,8 @@
 {% extends 'template_base.html' %}
 {% block content %}
+{% if user_access == 'No' %}
+<h2>You cannot access this feature</h2>
+{% else %}
 <h2> Expense form List (Petty Cash Form)</h2>
 {% if error %}
 <script>
@@ -37,5 +40,6 @@ alert("{{ error }}");
   </tr>
   {% endfor %}
 </table>
+{% endif %}
 {% endif %}
 {% endblock %}

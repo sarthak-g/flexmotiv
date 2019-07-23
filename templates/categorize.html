@@ -1,5 +1,8 @@
 {% extends 'template_base.html' %}
 {% block content %}
+{% if user_access == 'No' %}
+<h2>You cannot access this feature</h2>
+{% else %}
 <h2>Categorize Payment</h2>
 {% for i in obj %}
 <p>Date:- {{ i.txnDate }}</p>
@@ -50,5 +53,6 @@
   {{ form.as_p }}
   <input type="submit" name="EmployeeTransferForm" value="Submit">
 </form>
+{% endif %}
 {% endif %}
 {% endblock %}

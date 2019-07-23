@@ -13,7 +13,7 @@ class fm_user_extend(models.Model):
 
 class fm_txn(models.Model):
     txnID = models.CharField(max_length=20,primary_key=True)
-    accID = models.FloatField(default=0)
+    accID = models.IntegerField(default=0)
     txnDate = models.DateField(auto_now=False,auto_now_add=False,null=False,blank=False)
     txnPostedDate = models.DateField(auto_now=False,auto_now_add=False,null=False,blank=False)
     txnCheque = models.FloatField()
@@ -25,9 +25,9 @@ class fm_txn(models.Model):
     txnType = models.CharField(max_length=1,default='U')
     txnAccounted = models.BooleanField(default=0)
     txnAudited = models.BooleanField(default=0)
-    prID = models.FloatField(null=True)
-    ptcID = models.FloatField(null=True)
-    bhlID = models.FloatField(null=True)
+    prID = models.IntegerField(null=True)
+    ptcID = models.IntegerField(null=True)
+    bhlID = models.IntegerField(null=True)
     transc_time = models.DateTimeField(auto_now_add=True)
     def __str__(self):
         return self.txnID
