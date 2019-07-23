@@ -1,5 +1,8 @@
 {% extends 'template_base.html' %}
 {% block content %}
+{% if user_access == 'No' %}
+<h2>You cannot access this feature</h2>
+{% else %}
 {% if error %}
 <script>
   alert("{{ error }}");
@@ -14,5 +17,6 @@
 {% endif %}
 {% if success %}
 <h2>{{ success }}</h2>
+{% endif %}
 {% endif %}
 {% endblock %}

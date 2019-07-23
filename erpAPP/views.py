@@ -689,11 +689,17 @@ def ViewStatement(request):
             error = "Please check the details submitted"
 
     return render(request,"ViewStatement.html",{"error":error})
-
+@login_required(login_url = '/login/')
 def MarkAccount(request,txnID):
     if request.method=="GET":
-        form = MarkAccountForm()
-        return render(request,"MarkAccount.html",{'form':form})
+        user_groups = [str(i) for i in request.user.groups.all()]
+        if (("projectmanager" in user_groups) == True or (request.user.is_superuser == True) or ("auditor" in user_groups) == True or ("director" in user_groups) == True or ("accountant" in user_groups) == True):
+            form = MarkAccountForm()
+            return render(request,"MarkAccount.html",{'form':form})
+        else:
+            user_access = 'No'
+            return render(request,"MarkAccount.html",{"user_access":user_access})
+
     if request.method=="POST":
         form = MarkAccountForm(request.POST)
         if form.is_valid():
@@ -788,7 +794,7 @@ def ViewMarkAudit(request,id):
             return render(request,"ViewMarkAudit.html",{'form':form})
         else:
             user_access = 'No'
-            return render(request,"ViewMarkAudit.html",{"user_access":user_access})    
+            return render(request,"ViewMarkAudit.html",{"user_access":user_access})
     if request.method=="POST":
         form = ViewMarkAuditForm(request.POST)
         if form.is_valid():
