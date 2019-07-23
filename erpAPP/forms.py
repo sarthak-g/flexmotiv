@@ -257,6 +257,12 @@ class ptctransform15(forms.Form):
         super(ptctransform15, self).__init__(*args,**kwargs)
         self.fields["Budgets15"].queryset = budget_queryset
 
+class ptcDorEform(forms.Form):
+    c_e_or_d  = [("E","Expense"),("D","Direct")]
+    choices_ptc_e_or_d = forms.ChoiceField(choices=c_e_or_d, label="Select Type")
+
+
+
 class CheckStatementForm(forms.Form):
     c  = [("1","Main"),("2","BIRAC")]
     choices = forms.ChoiceField(choices=c, label="Select Account Type")

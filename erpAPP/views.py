@@ -7,7 +7,7 @@ from django.views.generic import TemplateView
 import os.path
 from .forms import AccountTypeForm,TransferMoneyForm,AddProjectForm,ProjectBudgetForm,ProjectBudgetForm2,ProjectBudgetForm3,ProjectBudgetForm4,ProjectBudgetForm5,ProjectBudgetForm6,ProjectBudgetForm7,ProjectBudgetForm8,ProjectBudgetForm9,ProjectBudgetForm10,ptcprojectform,ptctransform
 from .forms import ptctransform2,ptctransform3,ptctransform4,ptctransform5,ptctransform6,ptctransform7,ptctransform8,ptctransform9,ptctransform10,ptctransform11,ptctransform12,ptctransform13,ptctransform14,ptctransform15
-from .forms import CheckStatementForm,CategorizeForm,CategorizeEmployeeTransfer,ViewStatementForm,MarkAccountForm,ViewMarkAccountForm,ViewMarkAuditForm
+from .forms import CheckStatementForm,CategorizeForm,CategorizeEmployeeTransfer,ViewStatementForm,MarkAccountForm,ViewMarkAccountForm,ViewMarkAuditForm,ptcDorEform
 from django.conf import settings
 from django.db import IntegrityError
 import uuid
@@ -326,6 +326,7 @@ def ptcproject(request):
         budget_id = request.POST.get("prID")
         if (name == "Submit" and name2==None):
             budget_queryset = fm_budgethead.objects.filter(prID = budget_id)
+            ptc_D_OR_E = ptcDorEform()
             form_trans = ptctransform(budget_queryset)
             form_trans2 = ptctransform2(budget_queryset)
             form_trans3 = ptctransform3(budget_queryset)
@@ -341,7 +342,7 @@ def ptcproject(request):
             form_trans13 = ptctransform13(budget_queryset)
             form_trans14 = ptctransform14(budget_queryset)
             form_trans15 = ptctransform15(budget_queryset)
-            return render(request,"ptcproject.html",{'form_trans':form_trans,'form_trans2':form_trans2,'form_trans3':form_trans3,'form_trans4':form_trans4,'form_trans5':form_trans5,'form_trans6':form_trans6,'form_trans7':form_trans7,'form_trans8':form_trans8,'form_trans9':form_trans9,'form_trans10':form_trans10,'form_trans11':form_trans11,'form_trans12':form_trans12,'form_trans13':form_trans13,'form_trans14':form_trans14,'form_trans15':form_trans15})
+            return render(request,"ptcproject.html",{'ptc_D_OR_E':ptc_D_OR_E,'form_trans':form_trans,'form_trans2':form_trans2,'form_trans3':form_trans3,'form_trans4':form_trans4,'form_trans5':form_trans5,'form_trans6':form_trans6,'form_trans7':form_trans7,'form_trans8':form_trans8,'form_trans9':form_trans9,'form_trans10':form_trans10,'form_trans11':form_trans11,'form_trans12':form_trans12,'form_trans13':form_trans13,'form_trans14':form_trans14,'form_trans15':form_trans15})
         if (name2=="Submit" and name==None):
             budget_obj = fm_budgethead.objects.filter(id = request.POST['Budgets']).values('prID')
             for i in budget_obj:
@@ -473,7 +474,7 @@ def ptcproject(request):
 
             except Exception as e :
                 return render(request,"ptcproject.html",{'e':e})
-            fm_ptcform.objects.create(uID=j,prID=pr_obj)
+            fm_ptcform.objects.create(uID=j,prID=pr_obj,ptcType_D_E=request.POST["choices_ptc_e_or_d"])
             ptc_obj = fm_ptcform.objects.latest()
             try:
                 new_req = fm_ptctrans(uID=j,prID=pr_obj,ptcID=ptc_obj,ptctransDate = request.POST['Date_ptcform'],ptcVendor=request.POST['Vendor'],ptcDesc=request.POST['Description'],ptctransValue=request.POST['Value'],ptctransHead=budget_form_obj,ptctransInvoiceStatus =request.POST['choices'], ptctransInvoiceFile=request.FILES['file'])
@@ -600,7 +601,7 @@ def Categorize(request,txnID):
                 success = "Salary is Updated"
                 return render(request,"categorize.html",{"success":success})
             if request.POST['categorize'] == "Expense":
-                txnid_null = fm_ptcform.objects.filter(txnID=None)
+                txnid_null = fm_ptcform.objects.filter(txnID=None).filter(ptcType_D_E="E")
                 categorize = "expense"
                 return render(request,"categorize.html",{"txnid_null":txnid_null,"categorize":categorize,"txnID":txnID})
             if request.POST['categorize'] == "Employee Transfer":

@@ -19,6 +19,9 @@
 {% if form_trans %}
 <form method="POST" enctype="multipart/form-data">
   {% csrf_token %}
+  <br>
+  {{ ptc_D_OR_E.as_p }}
+  <br>
   {{ form_trans.as_table }}
   <input type="file" name="file"><br>
   {{ form_trans2.as_table }}
