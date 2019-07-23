@@ -79,6 +79,7 @@ class fm_ptcform(models.Model):
     ptcApproved = models.BooleanField(default=0)
     ptcApprovedBy = models.CharField(max_length=50,null=True)
     txnID = models.ForeignKey(fm_txn,null=True,on_delete=models.SET_NULL)
+    ptcType_D_E = models.CharField(max_length=1,null=True)
     class Meta:
         get_latest_by = 'uID'
 

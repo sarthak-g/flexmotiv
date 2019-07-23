@@ -693,7 +693,7 @@ def ViewStatement(request):
 def MarkAccount(request,txnID):
     if request.method=="GET":
         user_groups = [str(i) for i in request.user.groups.all()]
-        if (("projectmanager" in user_groups) == True or (request.user.is_superuser == True) or ("auditor" in user_groups) == True or ("director" in user_groups) == True or ("accountant" in user_groups) == True):
+        if (("accountant" in user_groups) == True):
             form = MarkAccountForm()
             return render(request,"MarkAccount.html",{'form':form})
         else:
@@ -748,7 +748,7 @@ def ExpenseList(request,ptcID):
 def ViewMarkAccount(request,id):
     if request.method=="GET":
         user_groups = [str(i) for i in request.user.groups.all()]
-        if (("projectmanager" in user_groups) == True or (request.user.is_superuser == True) or ("auditor" in user_groups) == True or ("director" in user_groups) == True or ("accountant" in user_groups) == True):
+        if (("accountant" in user_groups) == True):
             form = ViewMarkAccountForm()
             return render(request,"ViewMarkAccount.html",{'form':form})
         else:
@@ -789,7 +789,7 @@ def ViewMarkAccount(request,id):
 def ViewMarkAudit(request,id):
     if request.method=="GET":
         user_groups = [str(i) for i in request.user.groups.all()]
-        if (("projectmanager" in user_groups) == True or (request.user.is_superuser == True) or ("auditor" in user_groups) == True or ("director" in user_groups) == True or ("accountant" in user_groups) == True):
+        if ((request.user.is_superuser == True) or ("auditor" in user_groups) == True):
             form = ViewMarkAuditForm()
             return render(request,"ViewMarkAudit.html",{'form':form})
         else:
