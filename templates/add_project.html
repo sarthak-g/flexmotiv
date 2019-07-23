@@ -1,5 +1,8 @@
 {% extends 'template_base.html' %}
 {% block content %}
+{% if user_access == 'No' %}
+<h1>You cannot access this feature</h1>
+{% else %}
 {% if message %}
 <script>
 alert("{{message}}");
@@ -89,4 +92,5 @@ alert("{{message}}");
   <input type="submit" class="btn btn1" name="terms" disabled id="terms" value="Submit">
   {% endif %}
 </form>
+{% endif %}
 {% endblock %}

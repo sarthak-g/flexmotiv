@@ -186,10 +186,10 @@ class transferMoney(AccessMixin, CreateView):
     def get_success_url(self):
         return reverse_lazy('transferMoneysuccess')
 
-
+@login_required(login_url = "/login/")
 def transferMoneysuccess(request):
     return render(request, "transferMoneysuccess.html")
-
+@login_required(login_url = "/login/")
 def financialAccount(request):
     record = fm_utrans.objects.filter(utranReceiver=request.user.id)
     record = record.filter(utranConfirmed='N')
@@ -203,20 +203,32 @@ def financialAccount(request):
     else:
         record_confirmed_message = True
     return render(request,"financialAccount.html",{'record':record,'record_confirmed_Cr':record_confirmed_Cr,'record_confirmed_Dr':record_confirmed_Dr,'record_message':record_message,'record_confirmed_message':record_confirmed_message,'overview':overview})
+@login_required(login_url = "/login/")
 def accept(request,pk):
     record = fm_utrans.objects.get(id=pk)
     record.utranConfirmed = 'Y'
     record.save()
     return render(request,"accept.html")
+@login_required(login_url = "/login/")
 def decline(request,pk):
     record = fm_utrans.objects.get(id=pk)
     record.utranConfirmed = 'D'
     record.save()
     return render(request,"decline.html")
 
-class addproject(TemplateView):
+class addproject(AccessMixin, TemplateView):
     template_name = "add_project.html"
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            # This will redirect to the login view
+            return redirect("/login/")
+        if not (request.user.is_superuser == True):
+            # Redirect the user to somewhere else - add your URL here
+            user_access = 'No'
+            return render(request,"add_project.html",{"user_access":user_access})
 
+        # Checks pass, let http method handlers process the request
+        return super().dispatch(request, *args, **kwargs)
     def get(self,request):
         form = AddProjectForm()
         form2 = ProjectBudgetForm()
