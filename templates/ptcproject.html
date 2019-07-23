@@ -1,5 +1,8 @@
 {% extends 'template_base.html' %}
 {% block content %}
+{% if user_access == 'No' %}
+<h1>You cannot access this feature</h1>
+{% else %}
 <h1>Petty Cash Form</h1>
 {% if e %}
 <script>
@@ -70,5 +73,6 @@
   </tr>
 </table>
 <br>
+{% endif %}
 {% endif %}
 {% endblock %}

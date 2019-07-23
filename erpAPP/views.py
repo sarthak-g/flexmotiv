@@ -173,7 +173,8 @@ class transferMoney(AccessMixin, CreateView):
         if not request.user.is_authenticated:
             # This will redirect to the login view
             return redirect("/login/")
-        if not (("director" in [str(i) for i in request.user.groups.all()]) == True or (request.user.is_superuser == True) or ("projectmanager" in [str(i) for i in request.user.groups.all()]) == True):
+        user_groups = [str(i) for i in request.user.groups.all()]
+        if not (("director" in user_groups) == True or (request.user.is_superuser == True) or ("projectmanager" in user_groups) == True):
             # Redirect the user to somewhere else - add your URL here
             user_access = 'No'
             return render(request,"transferMoney.html",{"user_access":user_access})
@@ -307,10 +308,16 @@ class ProjectSuccessPDFView(PDFTemplateView):
         context['budget'] = fm_budgethead.objects.filter(prID=fm_project.objects.latest('id'))
         return context
 
+@login_required(login_url = "/login/")
 def ptcproject(request):
     if request.method=="GET":
-        form = ptcprojectform()
-        return render(request,"ptcproject.html",{'form':form})
+        user_groups = [str(i) for i in request.user.groups.all()]
+        if (("director" in user_groups) == True or (request.user.is_superuser == True) or ("employee" in user_groups) == True or ("projectmanager" in user_groups) == True):
+            form = ptcprojectform()
+            return render(request,"ptcproject.html",{'form':form})
+        else:
+            user_access = 'No'
+            return render(request,"ptcproject.html",{'user_access':user_access})
 
     if request.method == "POST":
         form = ptcprojectform(request.POST)
