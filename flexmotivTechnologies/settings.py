@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'erpAPP',
     'easy_pdf',
+    "crispy_forms"
+
 ]
 
 MIDDLEWARE = [
