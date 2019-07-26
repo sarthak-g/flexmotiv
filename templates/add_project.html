@@ -1,5 +1,7 @@
 {% extends 'template_base.html' %}
+{% load crispy_forms_tags %}
 {% block content %}
+<div>
 {% if user_access == 'No' %}
 <h1>You cannot access this feature</h1>
 {% else %}
@@ -8,18 +10,58 @@
 alert("{{message}}");
 </script>
 {% endif %}
-<h1>Add Project</h1>
+{% block extra_head %}
+    <style>
+      label{
+        font-size:25px;
+      }
+      #id_prTitle{
+        width:450px;
+        height:40px;
+      }
+      #id_prDesc{
+        width:450px;
+        height:40px;
+      }
+      .note-toolbar{
+        display:none;
+      }
+      .card{
+        width:450px;
+        height:200px;
+      }
+      .note-statusbar{
+        display:none;
+      }
+      .control-sidebar{
+        display:none;
+      }
+      select{
+        width:450px;
+      }
+      th{
+        font-weight: bold;
+        font-size:30px;
+      }
+      #tick{
+        width:30px;
+      }
+    </style>
+{% endblock %}
+<h1 style="text-align:center;font-size:70px;"><b>Add Project</b></h1>
 <form method="POST">
   {% csrf_token %}
-  {{ form.as_p }}
-  <table>
+  {{ form|crispy }}
+  <br>
+  <div class="container" style="margin-left:0px;">
+  <table class="table table-bordered">
     <tr>
-      <th>Budget Head Title</th>
-      <th>Budget Limit</th>
-      <th>Budget Opening Balance</th>
+      <th scope="col">Budget Head Title</th>
+      <th scope="col">Budget Limit</th>
+      <th scope="col">Budget Opening Balance</th>
     </tr>
     <tr>
-      <td>{{ form2.title }}</td>
+      <td scope="row">{{ form2.title }}</td>
       <td>{{ form2.Limit }}</td>
       <td>{{ form2.Balance }}</td>
     </tr>
@@ -87,10 +129,12 @@ alert("{{message}}");
       <td>{{ form11.Balance10 }}</td>
     </tr>
   </table>
+  </div>
   {% if not request.method == "POST" %}
-  <input type="checkbox"  id="tick" onchange="document.getElementById('terms').disabled = !this.checked;" /> I confirm that I have ensured the accuracy of the details I am typing <br><br>
-  <input type="submit" class="btn btn1" name="terms" disabled id="terms" value="Submit">
+  <input type="checkbox"  id="tick" onchange="document.getElementById('terms').disabled = !this.checked;" />  <b>I confirm that I have ensured the accuracy of the details I am typing.</b> <br><br>
+  <button type="button" style="background:#343a40;border-radius:10px;" > <input type="submit" class="btn btn1" name="terms" disabled id="terms" value="Submit" style="color:white;"> </button>
   {% endif %}
 </form>
 {% endif %}
+</div>
 {% endblock %}
