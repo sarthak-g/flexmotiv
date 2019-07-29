@@ -20,9 +20,6 @@ class TransferMoneyForm(forms.ModelForm):
 class AddProjectForm(forms.ModelForm):
     class Meta:
         model = fm_project
-        widgets = {
-            'prDesc': forms.Textarea(attrs={'width':"10%", 'cols' : "80", 'rows': "20", }),
-        }
         exclude = ('prBudget','prBalance')
 
     def __init__(self, *args,**kwargs):

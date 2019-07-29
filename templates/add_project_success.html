@@ -1,11 +1,11 @@
 {% extends 'template_base.html' %}
 {% block content %}
-<h1>Add Project</h1>
-<p>Success!! Project has been added with following details</p>
-<p>Title: {{obj.prTitle}}</p>
-<p>Desc: {{obj.prDesc}}</p>
+<h1 style="text-align:center;font-size:70px;border:1px solid black;"><b>Add Project</b></h1>
+<h2><b>Success!! Project has been added with following details.</b></h2>
+<p><b><span style="font-size:30px;"> Title:</span></b> <span style="font-size:30px;"> {{obj.prTitle}}</span></p>
+<p><b><span style="font-size:30px;"> Desc:</span></b> <span style="font-size:30px;">{{obj.prDesc}}</span></p>
 <br>
-<table>
+<table class="table table-striped table-bordered" style="width:50%;">
   <tr>
     <th>Budget Head</th>
     <th>Budget Amount</th>
@@ -20,5 +20,5 @@
   {% endfor %}
 </table>
 <br>
- <button> <a href="{% url 'addprojectpdf' %}">Print Details</a> </button>
+ <button style="background:#343a40;border-radius:10px;color:white;width:150px;"> <a href="{% url 'addprojectpdf' %}" style="text-decoration:None;color:white;">Print Details</a> </button>
 {% endblock %}
