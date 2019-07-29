@@ -4,7 +4,6 @@
 {% if user_access == 'No' %}
 <h2>You cannot access this feature</h2>
 {% else %}
-<button style="float:right;"> <a href="{% url 'transaction_complete' %}">Complete Transactions</a> </button>
 <form method="POST">
   {% csrf_token %}
   {{ form.as_p }}

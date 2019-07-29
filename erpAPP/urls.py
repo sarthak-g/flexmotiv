@@ -2,7 +2,7 @@ from django.urls import path
 from . import views
 urlpatterns = [
     path("account-type/",views.AccountType.as_view(),name="account_type"),
-    path("complete-transaction/",views.CompleteTransaction,name="transaction_complete"),
+    # path("complete-transaction/",views.CompleteTransaction,name="transaction_complete"),
     path("transferMoney/",views.transferMoney.as_view(), name='transferMoney'),
     path("transferMoney/success/",views.transferMoneysuccess, name='transferMoneysuccess'),
     path("financialAccount/",views.financialAccount, name='financialAccount'),

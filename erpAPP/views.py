@@ -37,7 +37,8 @@ class AccountType(AccessMixin, TemplateView):
         # Checks pass, let http method handlers process the request
         return super().dispatch(request, *args, **kwargs)
     def get(self,request):
-        if (("director" in [str(i) for i in request.user.groups.all()]) == True or (request.user.is_superuser == True)):
+        user_groups = [str(i) for i in request.user.groups.all()]
+        if (("director" in user_groups) == True or (request.user.is_superuser == True) or ("admin" in user_groups) == True):
             form = AccountTypeForm()
             return render(request, self.template_name, {'form':form})
         else:
@@ -174,7 +175,7 @@ class transferMoney(AccessMixin, CreateView):
             # This will redirect to the login view
             return redirect("/login/")
         user_groups = [str(i) for i in request.user.groups.all()]
-        if not (("director" in user_groups) == True or (request.user.is_superuser == True) or ("projectmanager" in user_groups) == True):
+        if not (("director" in user_groups) == True or (request.user.is_superuser == True) or ("projectmanager" in user_groups) == True or ("admin" in user_groups) == True):
             # Redirect the user to somewhere else - add your URL here
             user_access = 'No'
             return render(request,"transferMoney.html",{"user_access":user_access})
@@ -223,7 +224,8 @@ class addproject(AccessMixin, TemplateView):
         if not request.user.is_authenticated:
             # This will redirect to the login view
             return redirect("/login/")
-        if not (request.user.is_superuser == True):
+        user_groups = [str(i) for i in request.user.groups.all()]
+        if not (request.user.is_superuser == True or ("director" in user_groups) == True or ("admin" in user_groups) == True or ("projectmanager" in user_groups) == True):
             # Redirect the user to somewhere else - add your URL here
             user_access = 'No'
             return render(request,"add_project.html",{"user_access":user_access})
