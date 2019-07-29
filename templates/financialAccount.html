@@ -1,24 +1,38 @@
 {% extends 'template_base.html' %}
 {% block content %}
-<h2>Overview</h2>
-<table>
+{% block extra_head %}
+<style>
+th{
+  font-size:20px;
+}
+</style>
+{% endblock %}
+<h1 style="text-align:center;font-size:70px;border:1px solid black;"><b>Financial Accounts</b></h1>
+<h1><b>Overview</b></h1>
+<table class="table table-striped table-bordered">
   <tr>
     <th>Balance</th>
     <th>Unconfirmed</th>
     <th>Declined</th>
   </tr>
   <tr>
+    {% if overview == "empty" %}
+    <td>No records available</td>
+    <td></td>
+    <td></td>
+    {% else %}
     {% for j in overview %}
     <td>{{j.uBalance}}</td>
     <td>{{j.uUnconfirmed}}</td>
     <td>{{j.uDeclined}}</td>
     {% endfor %}
+    {% endif %}
   </tr>
 </table>
-<h2>Transaction for you to confirm</h2>
+<h1><b>Transaction for you to confirm</b></h1>
 <form method="POST">
   {% csrf_token %}
-  <table>
+  <table class="table table-striped table-bordered">
     <tr>
       <th>Date</th>
       <th>Description</th>
@@ -27,6 +41,7 @@
       <th>Accept</th>
       <th>Decline</th>
     </tr>
+
   {% for i in record %}
   <tr>
   <td>{{i.utanDate}}</td>
@@ -37,15 +52,21 @@
   <td> <a href="{% url 'decline' i.pk %}">Decline</a> </td>
   </tr>
   {% endfor %}
+  {% if not record_message %}
+  <td>  No Unconfirmed Transactions  </td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  {% endif %}
   </table>
 </form>
-{% if not record_message %}
-<p>  No Unconfirmed Transactions  </p>
-{% endif %}
 
-<h2>Statements</h2>
+
+<h1><b>Statements</b></h1>
 <form method="POST">
-  <table>
+  <table class="table table-striped table-bordered">
     <tr>
       <th>Date</th>
       <th>Description</th>
@@ -71,9 +92,14 @@
       <td>Confirmed</td>
     </tr>
     {% endfor %}
+    {% if not record_confirmed_message %}
+    <td>No Transaction Credited or Debited</td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    {% endif %}
+
   </table>
 </form>
-{% if not record_confirmed_message %}
-<p>No Transaction Credited or Debited</p>
-{% endif %}
 {% endblock %}

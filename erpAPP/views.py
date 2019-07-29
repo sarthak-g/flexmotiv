@@ -197,6 +197,8 @@ def financialAccount(request):
     record = record.filter(utranConfirmed='N')
     record_message = record.exists()
     overview = fm_user_extend.objects.filter(user=request.user.id)
+    if not overview:
+        overview = "empty"    
     record_confirmed = fm_utrans.objects.filter(utranConfirmed='Y')
     record_confirmed_Cr = record_confirmed.filter(utranReceiver=request.user.id)
     record_confirmed_Dr = record_confirmed.filter(utranSender=request.user.id)
