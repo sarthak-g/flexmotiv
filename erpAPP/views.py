@@ -314,7 +314,7 @@ class ProjectSuccessPDFView(PDFTemplateView):
 def ptcproject(request):
     if request.method=="GET":
         user_groups = [str(i) for i in request.user.groups.all()]
-        if (("director" in user_groups) == True or (request.user.is_superuser == True) or ("employee" in user_groups) == True or ("projectmanager" in user_groups) == True):
+        if (("director" in user_groups) == True or (request.user.is_superuser == True) or ("employee" in user_groups) == True or ("projectmanager" in user_groups) == True or ("admin" in user_groups) == True):
             form = ptcprojectform()
             return render(request,"ptcproject.html",{'form':form})
         else:
@@ -546,7 +546,7 @@ def ptcproject(request):
 def CheckStatement(request):
     if request.method=="GET":
         user_groups = [str(i) for i in request.user.groups.all()]
-        if (("projectmanager" in user_groups) == True or (request.user.is_superuser == True)):
+        if (("projectmanager" in user_groups) == True or (request.user.is_superuser == True) or ("admin" in user_groups) == True):
             form = CheckStatementForm()
             return render(request,"CheckStatement.html",{"form":form})
         else:
@@ -576,7 +576,7 @@ def CheckStatement(request):
 def Categorize(request,txnID):
     if request.method=="GET":
         user_groups = [str(i) for i in request.user.groups.all()]
-        if (("projectmanager" in user_groups) == True or (request.user.is_superuser == True) or ("director" in user_groups) == True):
+        if (("projectmanager" in user_groups) == True or (request.user.is_superuser == True) or ("director" in user_groups) == True or ("admin" in user_groups) == True):
             form = CategorizeForm()
             obj = fm_txn.objects.filter(txnID=txnID)
             return render(request,"categorize.html",{"form":form,"obj":obj})
@@ -639,7 +639,7 @@ def Categorize(request,txnID):
 @login_required(login_url = '/login/')
 def CategorizeExpense(request,txnID,pk):
     user_groups = [str(i) for i in request.user.groups.all()]
-    if (("projectmanager" in user_groups) == True or (request.user.is_superuser == True) or ("director" in user_groups) == True):
+    if (("projectmanager" in user_groups) == True or (request.user.is_superuser == True) or ("director" in user_groups) == True or ("admin" in user_groups) == True):
         e = None
         try:
 
@@ -666,7 +666,7 @@ def CategorizeExpense(request,txnID,pk):
 def ViewStatement(request):
     if request.method=="GET":
         user_groups = [str(i) for i in request.user.groups.all()]
-        if (("projectmanager" in user_groups) == True or (request.user.is_superuser == True) or ("auditor" in user_groups) == True or ("director" in user_groups) == True or ("accountant" in user_groups) == True):
+        if (("projectmanager" in user_groups) == True or (request.user.is_superuser == True) or ("auditor" in user_groups) == True or ("director" in user_groups) == True or ("accountant" in user_groups) == True or ("admin" in user_groups) == True or ("admin" in user_groups) == True):
             form = ViewStatementForm()
             return render(request,"ViewStatement.html",{"form":form})
         else:
@@ -736,7 +736,7 @@ def MarkAccount(request,txnID):
 @login_required(login_url = "/login/")
 def ExpenseList(request,ptcID):
     user_groups = [str(i) for i in request.user.groups.all()]
-    if (("projectmanager" in user_groups) == True or (request.user.is_superuser == True) or ("auditor" in user_groups) == True or ("director" in user_groups) == True or ("accountant" in user_groups) == True):
+    if (("projectmanager" in user_groups) == True or ("admin" in user_groups) == True or (request.user.is_superuser == True) or ("auditor" in user_groups) == True or ("director" in user_groups) == True or ("accountant" in user_groups) == True):
         try:
             ptc_obj = fm_ptcform.objects.filter(id=ptcID)
             obj = fm_ptctrans.objects.filter(ptcID = ptc_obj[0])
@@ -792,7 +792,7 @@ def ViewMarkAccount(request,id):
 def ViewMarkAudit(request,id):
     if request.method=="GET":
         user_groups = [str(i) for i in request.user.groups.all()]
-        if ((request.user.is_superuser == True) or ("auditor" in user_groups) == True):
+        if ((request.user.is_superuser == True) or ("auditor" in user_groups) == True or ("admin" in user_groups) == True):
             form = ViewMarkAuditForm()
             return render(request,"ViewMarkAudit.html",{'form':form})
         else:
@@ -832,7 +832,7 @@ def ViewMarkAudit(request,id):
 def ViewProject(request):
     if request.method == "GET":
         user_groups = [str(i) for i in request.user.groups.all()]
-        if (("projectmanager" in user_groups) == True or (request.user.is_superuser == True) or ("employee" in user_groups) == True or ("director" in user_groups) == True):
+        if (("projectmanager" in user_groups) == True or (request.user.is_superuser == True) or ("employee" in user_groups) == True or ("director" in user_groups) == True or ("admin" in user_groups) == True):
             form = ptcprojectform()
             return render(request, "ViewProject.html",{'form':form})
         else:
