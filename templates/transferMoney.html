@@ -1,14 +1,34 @@
 {% extends 'template_base.html' %}
+{% load crispy_forms_tags %}
 {% block content %}
+{% block extra_head %}
+<style>
+label{
+  font-size:25px;
+}
+#id_utranValue{
+  width:300px;
+}
+#id_utranDesc{
+  width:300px;
+}
+select{
+  width:300px;
+}
+</style>
+{% endblock %}
+<h1 style="text-align:center;font-size:70px;border:1px solid black;"><b>Transfer Money</b></h1>
 {% if user_access == 'No' %}
 <h1>You cannot access this feature</h1>
 {% else %}
-<h1>Transfer Money</h1>
 {% if form %}
 <form method="POST">
+  <br>
   {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit">Submit</button>
+  {{ form|crispy }}
+  <br>
+
+  <button type="submit" style="background:#343a40;border-radius:10px;color:white;width:100px;">Submit</button>
 </form>
 {% endif %}
 {% if success %}
