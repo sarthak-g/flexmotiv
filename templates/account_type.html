@@ -11,7 +11,7 @@ label{
 }
 </style>
 {% endblock %}
-<h1 style="text-align:center;font-size:70px;"><b>Upload Statement</b></h1>
+<h1 style="text-align:center;font-size:70px;border:1px solid black;"><b>Upload Statement</b></h1>
 {% if user_access == 'No' %}
 <h2>You cannot access this feature</h2>
 {% else %}
@@ -30,7 +30,7 @@ label{
 {% if obj == 0 %}
   <h2>No previous record present corresponding to this account type</h2>
 {% else %}
-  <table class="table table-striped">
+  <table class="table table-striped table-bordered">
     <tr>
     <th>Trans ID</th>
     <th>Trans Date</th>

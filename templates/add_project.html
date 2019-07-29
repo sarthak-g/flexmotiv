@@ -48,7 +48,7 @@ alert("{{message}}");
       }
     </style>
 {% endblock %}
-<h1 style="text-align:center;font-size:70px;"><b>Add Project</b></h1>
+<h1 style="text-align:center;font-size:70px;border:1px solid black;"><b>Add Project</b></h1>
 <form method="POST">
   {% csrf_token %}
   {{ form|crispy }}
