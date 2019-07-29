@@ -1,15 +1,19 @@
 {% extends 'template_base.html' %}
 {% block content %}
+<h1 style="text-align:center;font-size:70px;"><b>Upload Statement</b></h1>
+<br>
 {% if e %}
 alert("{{ e }}");
 {% endif %}
 {% if balance_check == False %}
   <h2>Balance Integrity fails</h2>
 {% endif %}
-<p>Result - {{ result }}</p>
-<p>Total Transactions - {{ total_trnsactions }}</p>
-<p>Imported - {{ imported }}</p>
-<p>Duplicate - {{ duplicate }}</p>
+<table class="table table-striped table-bordered" style="width:50%">
+<tr><td><b>Result</b> </td> <td>{{ result }}</td></tr>
+<tr><td><b>Total Transactions</b></td> <td>{{ total_trnsactions }}</td></tr>
+<tr><td><b>Imported</b></td> <td>{{ imported }}</td></tr>
+<tr><td><b>Duplicate</b></td> <td>{{ duplicate }}</td></tr>
+</table>
 <script>
   {% if error == True %}
     alert("File Uploaded is not csv file");
