@@ -198,7 +198,7 @@ def financialAccount(request):
     record_message = record.exists()
     overview = fm_user_extend.objects.filter(user=request.user.id)
     if not overview:
-        overview = "empty"    
+        overview = "empty"
     record_confirmed = fm_utrans.objects.filter(utranConfirmed='Y')
     record_confirmed_Cr = record_confirmed.filter(utranReceiver=request.user.id)
     record_confirmed_Dr = record_confirmed.filter(utranSender=request.user.id)
@@ -766,7 +766,7 @@ def ViewMarkAccount(request,id):
             name = request.POST.get("viewmarkaccountform")
             option = request.POST.get("choices")
             if name == "Submit" and option == "1":
-                success = "Account Marked Succesfully"
+                success = "Account Marked Succesfully!!"
                 obj = fm_ptctrans.objects.filter(id=id)
 
                 for i in obj:

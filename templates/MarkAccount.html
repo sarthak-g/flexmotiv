@@ -1,5 +1,13 @@
 {% extends 'template_base.html' %}
 {% block content %}
+{% block extra_head %}
+<style>
+  label{
+    font-size:30px;
+  }
+</style>
+{% endblock %}
+<h1 style="text-align:center;font-size:70px;border:1px solid black;"><b>View Statement(Accountant)</b></h1>
 {% if user_access == 'No' %}
 <h2>You cannot access this feature</h2>
 {% else %}
@@ -10,9 +18,10 @@
 {% endif %}
 {% if form %}
 <form method="POST">
+  <br>
   {% csrf_token %}
   {{ form.as_p }}
-  <input type="submit" name="markaccountform" value="Submit">
+  <input type="submit" name="markaccountform" value="Submit" style="background:#343a40;border-radius:10px;color:white;width:200px;"">
 </form>
 {% endif %}
 {% if success %}
