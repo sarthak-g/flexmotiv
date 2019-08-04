@@ -101,13 +101,15 @@ class AccountType(AccessMixin, TemplateView):
 
 
                         #last used to check database integrity
-                    last = fm_txn.objects.all()
+                    last = fm_txn.objects.filter(accID = accountID)
+
                     last = last.order_by('transc_time').reverse()
                     balance_temp = 1
                     balance_check = 'unsuccess,file is not imported'
                     if last.exists():
                         last = last.first()
                         field_object = fm_txn.objects.filter(txnID=last).values('txnBalance').get()
+
                         field_object = field_object['txnBalance']
 
 
