@@ -7,11 +7,11 @@
   width:200px;
 }
 label{
-  font-size:30px;
+  font-size:20px;
 }
 </style>
 {% endblock %}
-<h1 style="text-align:center;font-size:70px;border:1px solid black;"><b>Upload Statement</b></h1>
+<h1 style="text-align:center;font-size:50px;border:1px solid black;"><b>Upload Statement</b></h1><br>
 {% if user_access == 'No' %}
 <h2>You cannot access this feature</h2>
 {% else %}
@@ -55,7 +55,7 @@ label{
     {% csrf_token %}
     <label>Upload a file</label>
     <br>
-    <button style="color:white;background:#343a40;"><input type="file" name="file" onclick="myFunction()"></button>
+    <input type="file" name="file" onclick="myFunction()" style="color:white;background:#343a40;">
     <p>Only accepts CSV files</p>
     <button type="submit" style="background:#343a40;border-radius:10px;color:white;width:100px;">Upload</button>
     <!-- {{form}} -->

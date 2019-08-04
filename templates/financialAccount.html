@@ -3,12 +3,20 @@
 {% block extra_head %}
 <style>
 th{
-  font-size:20px;
+  font-size:18px;
 }
+
 </style>
 {% endblock %}
-<h1 style="text-align:center;font-size:70px;border:1px solid black;"><b>Financial Accounts</b></h1>
-<h1><b>Overview</b></h1>
+<h1 style="text-align:center;font-size:50px;border:1px solid black;"><b>Financial Accounts</b></h1>
+<br>
+
+<div class="col-md-12">
+<div class="card">
+  <div class="card-header with-border">
+<h2><b>Overview</b></h2>
+  </div>
+  <div class="card-body">
 <table class="table table-striped table-bordered">
   <tr>
     <th>Balance</th>
@@ -29,9 +37,19 @@ th{
     {% endif %}
   </tr>
 </table>
-<h1><b>Transaction for you to confirm</b></h1>
+</div>
+</div></div>
+
+
+<div class="col-sm-12">
+<div class="card">
+  <div class="card-header with-border">
+    <h2><b>Transaction for you to confirm</b></h2>
+  </div>
+  <div class="card-body">
 <form method="POST">
   {% csrf_token %}
+  <div>
   <table class="table table-striped table-bordered">
     <tr>
       <th>Date</th>
@@ -61,10 +79,19 @@ th{
   <td></td>
   {% endif %}
   </table>
+  </div>
 </form>
+</div>
+</div>
+</div>
 
 
-<h1><b>Statements</b></h1>
+<div class="col-md-12">
+<div class="card">
+  <div class="card-header with-border">
+<h2><b>Statements</b></h2>
+  </div>
+  <div class="card-body">
 <form method="POST">
   <table class="table table-striped table-bordered">
     <tr>
@@ -102,4 +129,6 @@ th{
 
   </table>
 </form>
+</div>
+</div></div>
 {% endblock %}

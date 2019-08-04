@@ -27,8 +27,17 @@
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
   <link rel="shortcut icon" href="{% static "img/flexmotivREDlogo.png" %}" />
+
+  <style>
+  #items{
+overflow-x: scroll;
+width: auto;
+    white-space: nowrap;
+}
+  </style>
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
+
 <div class="wrapper">
 <div class="wrapper">
 
@@ -58,6 +67,7 @@
   <!-- /.navbar -->
 
   <!-- Main Sidebar Container -->
+  <div id="items">
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="#" class="brand-link">
@@ -89,7 +99,7 @@
   </div>
   <!-- /.content-wrapper -->
   {% include "template_footer.html" %}
-
+  </div>
   <!-- Control Sidebar -->
   <aside class="control-sidebar control-sidebar-dark">
     <!-- Control sidebar content goes here -->
@@ -134,5 +144,6 @@
 <script src="{% static "js/pages/dashboard.js" %}"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="{% static "js/demo.js" %}"></script>
+
 </body>
 </html>

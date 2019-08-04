@@ -13,7 +13,7 @@ alert("{{message}}");
 {% block extra_head %}
     <style>
       label{
-        font-size:25px;
+        font-size:20px;
       }
       #id_prTitle{
         width:450px;
@@ -41,17 +41,21 @@ alert("{{message}}");
       }
       th{
         font-weight: bold;
-        font-size:30px;
+        font-size:20px;
       }
       #tick{
         width:30px;
       }
     </style>
 {% endblock %}
-<h1 style="text-align:center;font-size:70px;border:1px solid black;"><b>Add Project</b></h1>
+<h1 style="text-align:center;font-size:50px;border:1px solid black;"><b>Add Project</b></h1>
+
+<br>
 <form method="POST">
+
   {% csrf_token %}
   {{ form|crispy }}
+
   <br>
   <div class="container" style="margin-left:0px;">
   <table class="table table-bordered">
