@@ -1,4 +1,4 @@
-# flexmotiv
+# flexERP (flexmotiv)
 
 Step 1: Clone the repository
 
